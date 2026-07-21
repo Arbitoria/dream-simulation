@@ -35,6 +35,7 @@ button.topbar-inner:hover{opacity:.7}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .screen.center{min-height:72vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:22px}
 .screen[hidden]{display:none!important}  /* POSTMORTEM 규칙 */
+[hidden]{display:none!important}         /* 전역 방어: 어떤 display 규칙도 hidden을 이기지 못하게 */
 
 .glass{background:var(--surface);border:1px solid var(--card-line);border-radius:var(--radius);box-shadow:var(--shadow)}
 .dreamy{font-weight:800;letter-spacing:-.025em;line-height:1.18;color:var(--ink)}
