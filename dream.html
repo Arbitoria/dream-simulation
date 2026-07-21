@@ -27,9 +27,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 /* 상단 브랜드 */
 .topbar{position:sticky;top:0;z-index:50;background:rgba(11,31,23,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--card-line)}
-.topbar-inner{max-width:980px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink)}
-button.topbar-inner{width:100%;background:transparent;border:0;text-align:left;transition:opacity .2s ease}
-button.topbar-inner:hover{opacity:.7}
+.topbar-inner{max-width:980px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand-btn{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink);background:transparent;border:0;text-align:left;transition:opacity .2s ease;cursor:pointer}
+.brand-btn:hover{opacity:.7}
+.topbar-link{color:var(--gold);font-weight:700;font-size:13.5px;text-decoration:none;padding:7px 14px;border:1.5px solid var(--line);border-radius:99px;background:var(--surface-2);transition:all .15s ease;white-space:nowrap}
+.topbar-link:hover{border-color:var(--gold);color:var(--gold-2)}
 .brand-mark{width:26px;height:26px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#0B1F17;font-size:13px;font-weight:800}
 .brand-sub{color:var(--ink-3);font-weight:500;font-size:13.5px}
 .brand-sub::before{content:'·';margin:0 8px;color:var(--ink-3)}
@@ -285,10 +287,13 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
   <div class="progress" id="progress" aria-hidden="true"><span id="progressFill"></span></div>
 
   <header class="topbar">
-    <button class="topbar-inner" type="button" data-go="0" aria-label="ARBITORIA — 메인으로">
-      <div class="brand-mark">A</div>
-      ARBITORIA <span class="brand-sub">Dream Simulation</span>
-    </button>
+    <div class="topbar-inner">
+      <button class="brand-btn" type="button" data-go="0" aria-label="ARBITORIA — 메인으로">
+        <div class="brand-mark">A</div>
+        ARBITORIA <span class="brand-sub">Dream Simulation</span>
+      </button>
+      <a class="topbar-link" href="https://arbitoria.com/insights" target="_blank" rel="noopener">🌍 Insights</a>
+    </div>
   </header>
 
   <main id="stage">
