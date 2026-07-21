@@ -595,8 +595,10 @@ function syncJobLine() {
 
 /* ── 10. 인생 이벤트 ── */
 function renderEvents() {
+  renderLifeLive();
   const firstOpen = S.events.findIndex((v) => v === 0);
   $('eventList').innerHTML = EVENTS.map((ev, i) => {
+    // done도 클릭 가능 — 선택은 언제든 바꿀 수 있다
     const state = S.events[i] ? 'done' : (i === (firstOpen === -1 ? -1 : firstOpen) ? 'active' : '');
     const fx = (c) => {
       const parts = [];
@@ -621,6 +623,19 @@ function renderEvents() {
       <div class="bvr-sub" style="margin-bottom:0">${t('life.otherSub')}</div>
     </div>`;
   renderLifeResult();
+}
+/* 실시간 트래커 — 선택을 바꿀 때마다 행복·도달이 살아 움직인다 */
+function renderLifeLive() {
+  const N = seedNeeded();
+  const months = monthsToReach(N);
+  const reachAge = months === Infinity ? '∞' : S.age + Math.round(months / 12);
+  const h = happiness();
+  const hearts = '❤️'.repeat(Math.round(h / 2)) + '🤍'.repeat(Math.max(0, 5 - Math.round(h / 2)));
+  $('lifeLive').innerHTML = `
+    <div class="ll-col"><span class="ll-l">${t('life.happy')}</span>
+      <span class="ll-v bump">${hearts} <b>${h}/10</b></span></div>
+    <div class="ll-col"><span class="ll-l">${t('life.scoreReach')}</span>
+      <span class="ll-v bump"><b>${reachAge}${lang === 'ko' && reachAge !== '∞' ? '세' : ''}</b></span></div>`;
 }
 function renderLifeResult() {
   const done = S.events.every((v) => v !== 0);
