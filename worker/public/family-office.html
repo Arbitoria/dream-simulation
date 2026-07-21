@@ -166,6 +166,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .gen-switcher button { padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
 .gen-switcher button.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 .todo-row { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--surface-2); border-radius: 8px; }
+.fx-sub { font-size: 11px; color: var(--ink-3); font-weight: 600; letter-spacing: 0; white-space: nowrap; }
 .todo-dot { width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; }
 @media (max-width: 720px) {
   .hero { padding: 48px 20px 40px; }
@@ -224,12 +225,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     <div class="grid grid-4">
       <div class="card">
         <div class="card-title" data-i18n="d.networth">순자산 <span style="color:var(--ink-3); font-weight:400; font-size:12px;">오늘</span></div>
-        <div class="card-value">₩5억 2,340만</div>
+        <div class="card-value" data-i18n="v.networth">₩5억 2,340만</div>
         <div class="card-delta" data-i18n="d.networthD">▲ ₩186만 (이번 달)</div>
       </div>
       <div class="card">
         <div class="card-title" data-i18n="d.cash">월 현금 흐름</div>
-        <div class="card-value">+₩412만</div>
+        <div class="card-value" data-i18n="v.cash">+₩412만</div>
         <div class="card-delta" data-i18n="d.cashD">▲ 3.2% (전월 대비)</div>
       </div>
       <div class="card">
@@ -271,10 +272,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <text x="252" y="210" data-i18n="d.axOct">10월</text>
           <text x="464" y="210" data-i18n="d.axFeb">2월</text>
           <text x="640" y="210" data-i18n="d.axNow">오늘</text>
-          <text x="0" y="44">5.5억</text>
-          <text x="0" y="94">5.0억</text>
-          <text x="0" y="144">4.5억</text>
-          <text x="0" y="194">4.0억</text>
+          <text x="0" y="44" data-i18n="v.ax55">5.5억</text>
+          <text x="0" y="94" data-i18n="v.ax50">5.0억</text>
+          <text x="0" y="144" data-i18n="v.ax45">4.5억</text>
+          <text x="0" y="194" data-i18n="v.ax40">4.0억</text>
         </g>
       </svg>
     </div>
@@ -294,7 +295,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
               <circle r="65" fill="none" stroke="#4A7C59" stroke-width="24" stroke-dasharray="24 408" stroke-dashoffset="-360" transform="rotate(-90)"/>
               <circle r="65" fill="none" stroke="#C97B5A" stroke-width="24" stroke-dasharray="24 408" stroke-dashoffset="-384" transform="rotate(-90)"/>
               <text class="donut-center" x="0" y="-6" text-anchor="middle" data-i18n="d.total">총 자산</text>
-              <text class="donut-center big" x="0" y="18" text-anchor="middle">5.23억</text>
+              <text class="donut-center big" x="0" y="18" text-anchor="middle" data-i18n="v.donut">5.23억</text>
             </g>
           </svg>
           <div class="donut-legend" style="width:100%;">
@@ -302,31 +303,31 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
               <div class="asset-dot" style="background:#2B3E5A;"></div>
               <div class="asset-name" data-i18n="a.re">부동산</div>
               <div class="asset-pct">58%</div>
-              <div class="asset-amt">3.03억</div>
+              <div class="asset-amt" data-i18n="v.a1">3.03억</div>
             </div>
             <div class="asset-row" style="padding:9px 0;">
               <div class="asset-dot" style="background:#D88A91;"></div>
               <div class="asset-name" data-i18n="a.stock">주식·ETF</div>
               <div class="asset-pct">18%</div>
-              <div class="asset-amt">94백만</div>
+              <div class="asset-amt" data-i18n="v.a2">94백만</div>
             </div>
             <div class="asset-row" style="padding:9px 0;">
               <div class="asset-dot" style="background:#C9A961;"></div>
               <div class="asset-name" data-i18n="a.dep">예적금</div>
               <div class="asset-pct">12%</div>
-              <div class="asset-amt">63백만</div>
+              <div class="asset-amt" data-i18n="v.a3">63백만</div>
             </div>
             <div class="asset-row" style="padding:9px 0;">
               <div class="asset-dot" style="background:#4A7C59;"></div>
               <div class="asset-name" data-i18n="a.crypto">가상자산</div>
               <div class="asset-pct">6%</div>
-              <div class="asset-amt">31백만</div>
+              <div class="asset-amt" data-i18n="v.a4">31백만</div>
             </div>
             <div class="asset-row" style="padding:9px 0; border:none;">
               <div class="asset-dot" style="background:#C97B5A;"></div>
               <div class="asset-name" data-i18n="a.etc">기타</div>
               <div class="asset-pct">6%</div>
-              <div class="asset-amt">31백만</div>
+              <div class="asset-amt" data-i18n="v.a5">31백만</div>
             </div>
           </div>
         </div>
@@ -395,19 +396,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <div class="asset-row">
         <div class="asset-dot" style="background:var(--terra);"></div>
         <div class="asset-name" data-i18n="as.rb1">부동산 일부 매각 <small>임대수익 낮은 비주력 1건</small></div>
-        <div class="asset-pct">−6,800만</div>
+        <div class="asset-pct" data-i18n="v.rb1">−6,800만</div>
         <div class="asset-amt" style="color:var(--terra);">−13%</div>
       </div>
       <div class="asset-row">
         <div class="asset-dot" style="background:var(--sage);"></div>
         <div class="asset-name" data-i18n="as.rb2">글로벌 인덱스 ETF 매수 <small>VT · QQQ · KODEX 200 분산</small></div>
-        <div class="asset-pct">+5,200만</div>
+        <div class="asset-pct" data-i18n="v.rb2">+5,200만</div>
         <div class="asset-amt" style="color:var(--sage);">+10%</div>
       </div>
       <div class="asset-row">
         <div class="asset-dot" style="background:var(--sage);"></div>
         <div class="asset-name" data-i18n="as.rb3">단기 채권형 추가 <small>유동성 + 이자 수익</small></div>
-        <div class="asset-pct">+1,600만</div>
+        <div class="asset-pct" data-i18n="v.rb3">+1,600만</div>
         <div class="asset-amt" style="color:var(--sage);">+3%</div>
       </div>
     </div>
@@ -429,7 +430,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       </div>
       <div class="card">
         <div class="card-title" data-i18n="as.fx3">10년 누적 차이</div>
-        <div class="card-value">+1.4억</div>
+        <div class="card-value" data-i18n="v.fx3">+1.4억</div>
         <div class="card-foot" data-i18n="as.fx3f">복리 가정 기준</div>
       </div>
     </div>
@@ -449,7 +450,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           </div>
           <div class="goal-badge" data-i18n="g.ok">순항</div>
         </div>
-        <div class="goal-progress-text"><span data-i18n="g.prog">현재 진행</span><strong>3.6억 / 8억</strong></div>
+        <div class="goal-progress-text"><span data-i18n="g.prog">현재 진행</span><strong data-i18n="v.g1">3.6억 / 8억</strong></div>
         <div class="bar"><div class="bar-fill" style="width:45%; background:var(--sage);"></div></div>
         <div class="card-foot" data-i18n="g.1f">월 75만 추가 적립 시 19년 6개월에 달성. 연 4%p 수익률 가정.</div>
       </div>
@@ -462,7 +463,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           </div>
           <div class="goal-badge" data-i18n="g.ok2">순항</div>
         </div>
-        <div class="goal-progress-text"><span data-i18n="g.prog2">현재 진행</span><strong>4,200만 / 1.5억</strong></div>
+        <div class="goal-progress-text"><span data-i18n="g.prog2">현재 진행</span><strong data-i18n="v.g2">4,200만 / 1.5억</strong></div>
         <div class="bar"><div class="bar-fill" style="width:28%; background:var(--sage);"></div></div>
         <div class="card-foot" data-i18n="g.2f">교육 전용 계좌로 분리 운용 중. 비과세 한도 활용.</div>
       </div>
@@ -475,7 +476,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           </div>
           <div class="goal-badge warn" data-i18n="g.warn">주의</div>
         </div>
-        <div class="goal-progress-text"><span data-i18n="g.prog3">현재 진행</span><strong>5,800만 / 3억</strong></div>
+        <div class="goal-progress-text"><span data-i18n="g.prog3">현재 진행</span><strong data-i18n="v.g3">5,800만 / 3억</strong></div>
         <div class="bar"><div class="bar-fill" style="width:19%; background:var(--gold);"></div></div>
         <div class="card-foot" data-i18n="g.3f">현재 속도로는 7년 8개월. 시계 조정 또는 월 적립액 +60% 필요.</div>
       </div>
@@ -488,7 +489,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           </div>
           <div class="goal-badge" data-i18n="g.soon">완료 임박</div>
         </div>
-        <div class="goal-progress-text"><span data-i18n="g.prog4">현재 진행</span><strong>8,800만 / 1억</strong></div>
+        <div class="goal-progress-text"><span data-i18n="g.prog4">현재 진행</span><strong data-i18n="v.g4">8,800만 / 1억</strong></div>
         <div class="bar"><div class="bar-fill" style="width:88%; background:var(--sage);"></div></div>
         <div class="card-foot" data-i18n="g.4f">유동성 자산으로 분리 보관. 12% 남음.</div>
       </div>
@@ -521,21 +522,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <div class="gen-tag" data-i18n="gn.g1t">제 1세대</div>
         <h4 data-i18n="gn.g1">본인</h4>
         <div class="gen-when" data-i18n="gn.g1w">2026 · 오늘</div>
-        <div class="gen-amt">₩5.23억</div>
+        <div class="gen-amt" data-i18n="v.gen1">₩5.23억</div>
         <div class="gen-note" data-i18n="gn.g1n">현재 순자산. 연 4.6% 수익률, 월 412만 현금 흐름 가정.</div>
       </div>
       <div class="gen-card" style="border-color: var(--rose); background: linear-gradient(180deg, var(--surface) 0%, var(--rose-soft) 100%);">
         <div class="gen-tag" data-i18n="gn.g2t">제 2세대</div>
         <h4 data-i18n="gn.g2">자녀 (35세)</h4>
         <div class="gen-when" data-i18n="gn.g2w">2056 · 30년 후</div>
-        <div class="gen-amt">₩18.6억</div>
+        <div class="gen-amt" data-i18n="v.gen2">₩18.6억</div>
         <div class="gen-note" data-i18n="gn.g2n">신탁 구조로 자녀에게 이전. 상속세 최소화 시 + 가족 펀드 복리 효과.</div>
       </div>
       <div class="gen-card">
         <div class="gen-tag" data-i18n="gn.g3t">제 3세대</div>
         <h4 data-i18n="gn.g3">손자녀 (35세)</h4>
         <div class="gen-when" data-i18n="gn.g3w">2086 · 60년 후</div>
-        <div class="gen-amt">₩68.2억</div>
+        <div class="gen-amt" data-i18n="v.gen3">₩68.2억</div>
         <div class="gen-note" data-i18n="gn.g3n">3세대 분산 + 복리 + 인플레이션 조정. 록펠러 모델과 동일한 구조.</div>
       </div>
     </div>
@@ -547,17 +548,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     <div class="grid grid-3">
       <div class="card">
         <div class="card-title" data-i18n="gn.w1">월 30만 추가 적립 시</div>
-        <div class="card-value">+₩4.8억</div>
+        <div class="card-value" data-i18n="v.w1">+₩4.8억</div>
         <div class="card-foot" data-i18n="gn.w1f">60년 뒤 손자녀 세대 자산 증가분</div>
       </div>
       <div class="card">
         <div class="card-title" data-i18n="gn.w2">세금 최적화 구조 적용 시</div>
-        <div class="card-value">+₩12.4억</div>
+        <div class="card-value" data-i18n="v.w2">+₩12.4억</div>
         <div class="card-foot" data-i18n="gn.w2f">상속세·증여세 최소화 전략 — 합법 범위 내</div>
       </div>
       <div class="card">
         <div class="card-title" data-i18n="gn.w3">아무것도 안 할 때</div>
-        <div class="card-value" style="color:var(--terra);">−₩31억</div>
+        <div class="card-value" style="color:var(--terra);" data-i18n="v.w3">−₩31억</div>
         <div class="card-foot" data-i18n="gn.w3f">인플레이션 4%/년 · 세금 비최적화 가정</div>
       </div>
     </div>
@@ -870,6 +871,13 @@ const EN = {
   'f.e3': '🔒 Privacy policy',
   'f.b1': '© 2026 ARBITORIA · manifesto + tools', 'f.b2': 'arbitoria.com · a family office for one person',
   'ck.text': '🍪 No tracking cookies — only your language preference is stored.', 'ck.link': 'Details', 'ck.ok': 'OK',
+  'v.networth': '₩523.4M', 'v.cash': '+₩4.12M',
+  'v.ax55': '₩550M', 'v.ax50': '₩500M', 'v.ax45': '₩450M', 'v.ax40': '₩400M',
+  'v.donut': '₩523M', 'v.a1': '₩303M', 'v.a2': '₩94M', 'v.a3': '₩63M', 'v.a4': '₩31M', 'v.a5': '₩31M',
+  'v.rb1': '−₩68M', 'v.rb2': '+₩52M', 'v.rb3': '+₩16M', 'v.fx3': '+₩140M',
+  'v.g1': '₩360M / ₩800M', 'v.g2': '₩42M / ₩150M', 'v.g3': '₩58M / ₩300M', 'v.g4': '₩88M / ₩100M',
+  'v.gen1': '₩523M', 'v.gen2': '₩1.86B', 'v.gen3': '₩6.82B',
+  'v.w1': '+₩480M', 'v.w2': '+₩1.24B', 'v.w3': '−₩3.1B',
 };
 const FR = {
   'nav.game': '🌳 Dream Simulation',
@@ -978,6 +986,13 @@ const FR = {
   'f.e3': '🔒 Politique de confidentialité',
   'f.b1': '© 2026 ARBITORIA · manifeste + outils', 'f.b2': 'arbitoria.com · un family office pour une personne',
   'ck.text': '🍪 Aucun cookie de suivi — seule votre langue est enregistrée.', 'ck.link': 'Détails', 'ck.ok': 'OK',
+  'v.networth': '₩523,4M', 'v.cash': '+₩4,12M',
+  'v.ax55': '₩550M', 'v.ax50': '₩500M', 'v.ax45': '₩450M', 'v.ax40': '₩400M',
+  'v.donut': '₩523M', 'v.a1': '₩303M', 'v.a2': '₩94M', 'v.a3': '₩63M', 'v.a4': '₩31M', 'v.a5': '₩31M',
+  'v.rb1': '−₩68M', 'v.rb2': '+₩52M', 'v.rb3': '+₩16M', 'v.fx3': '+₩140M',
+  'v.g1': '₩360M / ₩800M', 'v.g2': '₩42M / ₩150M', 'v.g3': '₩58M / ₩300M', 'v.g4': '₩88M / ₩100M',
+  'v.gen1': '₩523M', 'v.gen2': '₩1,86B', 'v.gen3': '₩6,82B',
+  'v.w1': '+₩480M', 'v.w2': '+₩1,24B', 'v.w3': '−₩3,1B',
 };
 const SIM_NOTE = {
   ko: (sign, v) => `기준 시나리오 대비 ${sign}₩${v}억. 슬라이더를 움직여 결과를 다시 계산해보세요.`,
@@ -995,6 +1010,60 @@ const CHAT_PH = {
   fr: 'Actifs · impôts · retraite — demandez tout',
 };
 
+/* ═══ 금액 값: 실환율 3통화 렌더 (만원 단위 원본 → 현재 언어 통화 + 나머지 꼬리표) ═══ */
+const FXR = { usd: 1400, eur: 1500 };
+const VALS = {
+  'v.networth': { v: 52340 }, 'v.cash': { v: 412, sign: '+' },
+  'v.ax55': { v: 55000, tail: false }, 'v.ax50': { v: 50000, tail: false },
+  'v.ax45': { v: 45000, tail: false }, 'v.ax40': { v: 40000, tail: false },
+  'v.donut': { v: 52300, tail: false },
+  'v.a1': { v: 30300, tail: false }, 'v.a2': { v: 9400, tail: false }, 'v.a3': { v: 6300, tail: false },
+  'v.a4': { v: 3100, tail: false }, 'v.a5': { v: 3100, tail: false },
+  'v.rb1': { v: 6800, sign: '−', tail: false }, 'v.rb2': { v: 5200, sign: '+', tail: false }, 'v.rb3': { v: 1600, sign: '+', tail: false },
+  'v.fx3': { v: 14000, sign: '+' },
+  'v.g1': { pair: [36000, 80000] }, 'v.g2': { pair: [4200, 15000] },
+  'v.g3': { pair: [5800, 30000] }, 'v.g4': { pair: [8800, 10000] },
+  'v.gen1': { v: 52300 }, 'v.gen2': { v: 186000 }, 'v.gen3': { v: 682000 },
+  'v.w1': { v: 48000, sign: '+' }, 'v.w2': { v: 124000, sign: '+' }, 'v.w3': { v: 310000, sign: '−' },
+};
+const wonKo = (v) => { v = Math.round(v); const e = Math.floor(v / 10000), m = v % 10000;
+  if (e > 0) { if (m === 0) return e + '억'; const c = Math.round(m / 1000); if (c >= 1 && c <= 9 && m % 1000 < 500) return e + '억 ' + c + '천'; return e + '억 ' + m.toLocaleString() + '만'; }
+  return v.toLocaleString() + '만'; };
+const cFmt = (krw, cur, loc, rate) => new Intl.NumberFormat(loc, { style: 'currency', currency: cur, notation: 'compact', maximumFractionDigits: 1 }).format(krw / rate);
+function moneyP(manwon) {
+  const krw = Math.round(manwon) * 10000;
+  if (lang === 'en') return cFmt(krw, 'USD', 'en-US', FXR.usd);
+  if (lang === 'fr') return cFmt(krw, 'EUR', 'fr-FR', FXR.eur);
+  return '₩' + wonKo(manwon);
+}
+function moneyTail(manwon) {
+  const krw = Math.round(manwon) * 10000;
+  const usd = cFmt(krw, 'USD', 'en-US', FXR.usd);
+  const eur = cFmt(krw, 'EUR', 'fr-FR', FXR.eur);
+  const wk = '₩' + new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(krw);
+  if (lang === 'ko') return usd + ' · ' + eur;
+  if (lang === 'en') return wk + ' · ' + eur;
+  return wk + ' · ' + usd;
+}
+function renderValues() {
+  document.querySelectorAll('[data-i18n]').forEach((e) => {
+    const d = VALS[e.dataset.i18n];
+    if (!d) return;
+    if (d.pair) {
+      e.innerHTML = moneyP(d.pair[0]) + ' / ' + moneyP(d.pair[1]);
+    } else {
+      const sign = d.sign || '';
+      const tail = d.tail === false ? '' : ' <span class="fx-sub">' + moneyTail(d.v) + '</span>';
+      e.innerHTML = sign + moneyP(d.v) + tail;
+    }
+  });
+}
+const TITLES = {
+  ko: 'ARBITORIA Family Office — 한 사람을 위한 패밀리 오피스',
+  en: 'ARBITORIA Family Office — a family office for one person',
+  fr: 'ARBITORIA Family Office — un family office pour une personne',
+};
+
 let lang = localStorage.getItem('dreamLang')
   || ({ ko: 'ko', fr: 'fr' }[(navigator.language || 'en').slice(0, 2)] || 'en');
 let KO = null;
@@ -1006,11 +1075,16 @@ function applyLang(l) {
     const v = d[e.dataset.i18n]; if (v != null) e.innerHTML = v;
   });
   document.documentElement.lang = l;
+  document.title = TITLES[l] || TITLES.ko;
   document.getElementById('langSel').value = l;
   document.getElementById('chatInput').placeholder = CHAT_PH[l] || CHAT_PH.ko;
   try { localStorage.setItem('dreamLang', l); } catch (_) {}
+  renderValues();
   updateSim();
 }
+fetch('/api/fx').then((r) => r.json()).then((d) => {
+  if (d && d.usd_krw > 0 && d.eur_krw > 0) { FXR.usd = d.usd_krw; FXR.eur = d.eur_krw; renderValues(); }
+}).catch(() => {});
 document.getElementById('langSel').addEventListener('change', (e) => applyLang(e.target.value));
 
 /* 탭 전환 */
