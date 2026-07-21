@@ -157,6 +157,8 @@ const L = {
     'sit.mort': '대출 {l} 가정 · 월 상환 <b>{p}</b> — 이자 {i} + <b>원금 {pr}</b> · {r}%/{y}년',
     'sit.fixed': '고정비 (차 · 공과금 · 구독)', 'sit.save': '미래를 위해 투자하는 돈', 'sit.assets': '이미 모아둔 돈',
     'sit.next': '내 돈의 흐름 보기 →',
+    'sit.liveTitle': '한 달의 흐름 — 실시간', 'sit.liveLeft': '남는 삶의 돈 <b>{v}</b> ({p}%)',
+    'sit.liveOver': '수입보다 <b>{v}</b> 초과 — 어딘가를 줄여야 흐름이 살아요',
     'diag.step': '진단', 'diag.h': '당신의 돈은 이렇게 흐릅니다', 'diag.sub': '어디로 새는지가 아니라, 어디로 흐르는지를 봅니다.',
     'diag.flowTitle': '한 달의 흐름', 'diag.housing': '주거', 'diag.fixed': '고정비', 'diag.save': '저축·투자', 'diag.living': '삶',
     'diag.saveRate': '저축률 — 미래로 흐르는 비율',
@@ -237,6 +239,8 @@ const L = {
     'sit.mort': 'Assuming {l} loan · monthly payment <b>{p}</b> — interest {i} + <b>principal {pr}</b> · {r}%/{y}y',
     'sit.fixed': 'Fixed costs (car · utilities · subs)', 'sit.save': 'Invested for the future each month', 'sit.assets': 'Already saved',
     'sit.next': 'See where my money flows →',
+    'sit.liveTitle': 'One month of flow — live', 'sit.liveLeft': '<b>{v}</b> left for living ({p}%)',
+    'sit.liveOver': '<b>{v}</b> over your income — trim somewhere to keep the flow alive',
     'diag.step': 'DIAGNOSIS', 'diag.h': 'This is how your money flows', 'diag.sub': 'Not where it leaks — where it flows.',
     'diag.flowTitle': 'One month of flow', 'diag.housing': 'Housing', 'diag.fixed': 'Fixed', 'diag.save': 'Saving', 'diag.living': 'Living',
     'diag.saveRate': 'Savings rate — the share flowing to your future',
@@ -317,6 +321,8 @@ const L = {
     'sit.mort': 'Prêt {l} supposé · mensualité <b>{p}</b> — intérêts {i} + <b>capital {pr}</b> · {r}%/{y} ans',
     'sit.fixed': 'Charges fixes (voiture · factures · abonnements)', 'sit.save': 'Investi pour le futur chaque mois', 'sit.assets': 'Déjà épargné',
     'sit.next': 'Voir où coule mon argent →',
+    'sit.liveTitle': 'Un mois de flux — en direct', 'sit.liveLeft': '<b>{v}</b> restent pour vivre ({p}%)',
+    'sit.liveOver': '<b>{v}</b> au-delà du revenu — réduisez quelque part pour garder le flux vivant',
     'diag.step': 'DIAGNOSTIC', 'diag.h': 'Voici comment coule votre argent', 'diag.sub': 'Non pas où il fuit — où il coule.',
     'diag.flowTitle': 'Un mois de flux', 'diag.housing': 'Logement', 'diag.fixed': 'Fixe', 'diag.save': 'Épargne', 'diag.living': 'Vivre',
     'diag.saveRate': 'Taux d’épargne — la part qui coule vers votre futur',
@@ -675,6 +681,35 @@ function syncSitOutputs() {
     const sp = splitPayment(S.homeValue * (1 - DOWN_PCT), LOAN_RATE, LOAN_YEARS);
     $('mortNote').innerHTML = t('sit.mort', { l: Math.round((1 - DOWN_PCT) * 100) + '%', p: money(sp.pay), i: money(sp.interest), pr: money(sp.principal), r: LOAN_RATE, y: LOAN_YEARS });
   }
+  renderSitLive();
+}
+
+/* 실시간 흐름 바 — 슬라이더가 움직일 때마다 수입 대비 지출·투자가 변한다 */
+function renderSitLive() {
+  const me = computeMe();
+  const income = me.income;
+  const spend = me.housingOutflow + S.fixedCost + S.save;
+  const over = Math.max(0, spend - income);
+  const living = Math.max(0, income - spend);
+  const segs = [
+    { k: 'housing', v: me.housingOutflow, c: '#C9A961' },
+    { k: 'fixed', v: S.fixedCost, c: '#D08B6A' },
+    { k: 'save', v: S.save, c: '#3FA37C' },
+    { k: 'living', v: living, c: '#51695C' },
+  ];
+  const base = Math.max(1, income, spend);
+  const bar = segs.map((s) => `<i style="width:${(s.v / base * 100).toFixed(1)}%;background:${s.c}" title="${t('diag.' + s.k)}"></i>`).join('')
+    + (over > 0 ? `<i style="width:${(over / base * 100).toFixed(1)}%;background:#E05B4B" class="overflow"></i>` : '');
+  const legend = segs.filter((s) => s.v > 0).map((s) =>
+    `<span class="sl-item"><i class="sl-dot" style="background:${s.c}"></i>${t('diag.' + s.k)} ${income > 0 ? Math.round(s.v / income * 100) : 0}%</span>`).join('');
+  const verdict = over > 0
+    ? `<div class="sit-verdict over">⚠ ${t('sit.liveOver', { v: money(over) })}</div>`
+    : `<div class="sit-verdict ok">${t('sit.liveLeft', { v: money(living), p: income > 0 ? Math.round(living / income * 100) : 0 })}</div>`;
+  $('sitLive').innerHTML = `
+    <div class="sl-head"><span class="muted">${t('sit.liveTitle')}</span><b>${money(income)}</b></div>
+    <div class="flow-bar slim ${over > 0 ? 'warn' : ''}">${bar}</div>
+    <div class="sl-legend">${legend}</div>
+    ${verdict}`;
 }
 
 /* ── 4. 진단 ── */

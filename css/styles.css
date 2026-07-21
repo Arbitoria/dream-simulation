@@ -97,7 +97,24 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .diag{display:flex;flex-direction:column;gap:14px;max-width:640px;margin:0 auto}
 .diag .glass{padding:22px}
 .flow-bar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:14px 0 10px}
-.flow-bar i{display:block;height:100%}
+.flow-bar i{display:block;height:100%;transition:width .35s cubic-bezier(.2,.7,.2,1)}
+.flow-bar.slim{height:18px;margin:10px 0 8px}
+.flow-bar.warn{box-shadow:0 0 0 1.5px #E05B4B}
+.flow-bar i.overflow{animation:pulseOver 1.2s ease-in-out infinite}
+@keyframes pulseOver{0%,100%{opacity:1}50%{opacity:.55}}
+
+/* 현실 화면 실시간 흐름 */
+.sit-live{position:sticky;top:62px;z-index:10;padding:14px 18px}
+.sl-head{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px}
+.sl-head b{color:var(--gold-2);font-size:15px}
+.sl-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-3)}
+.sl-item{display:inline-flex;align-items:center;gap:5px}
+.sl-dot{width:9px;height:9px;border-radius:3px;display:inline-block}
+.sit-verdict{margin-top:8px;font-size:13px;font-weight:700}
+.sit-verdict.ok{color:var(--emerald)}
+.sit-verdict.ok b{color:var(--emerald)}
+.sit-verdict.over{color:#E05B4B}
+.sit-verdict.over b{color:#E05B4B}
 .flow-legend{display:flex;flex-direction:column;gap:7px}
 .fl-row{display:flex;align-items:center;gap:10px;font-size:13.5px}
 .fl-dot{width:11px;height:11px;border-radius:4px;flex-shrink:0}
