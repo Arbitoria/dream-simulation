@@ -127,6 +127,8 @@ let lang = 'ko';
 const L = {
   ko: {
     'cover.title': '미래의 나를<br/>꿈꾸다', 'cover.sub': '지금의 나를 넣고, 꿈을 고르면 — 시간이 그 사이를 잇습니다.', 'cover.start': '시작하기',
+    'cover.privacy': '🔒 이 게임은 어떤 개인정보도 저장하지 않습니다 — 익명의 꿈만 모입니다.',
+    'gen.insights': '🌍 모두의 꿈 보기 — Dream Index →',
     'nav.back': '뒤로', 'nav.next': '다음',
     'gender.h': '당신은 누구인가요?', 'g.female': '여성', 'g.male': '남성', 'g.other': '그 외',
     'age.h': '지금, 몇 살인가요?', 'age.hint': '이른 시작일수록 시간이 당신 편입니다.',
@@ -209,6 +211,8 @@ const L = {
   },
   en: {
     'cover.title': 'Dreaming of<br/>my future self', 'cover.sub': 'Enter who you are, choose the dream — time draws the line between them.', 'cover.start': 'Begin',
+    'cover.privacy': '🔒 This game stores no personal data — only anonymous dreams are gathered.',
+    'gen.insights': '🌍 See everyone’s dreams — Dream Index →',
     'nav.back': 'Back', 'nav.next': 'Next',
     'gender.h': 'Who are you?', 'g.female': 'Woman', 'g.male': 'Man', 'g.other': 'Other',
     'age.h': 'How old are you now?', 'age.hint': 'The earlier you start, the more time is on your side.',
@@ -291,6 +295,8 @@ const L = {
   },
   fr: {
     'cover.title': 'Rêver de<br/>mon futur moi', 'cover.sub': 'Entrez qui vous êtes, choisissez le rêve — le temps trace la ligne entre les deux.', 'cover.start': 'Commencer',
+    'cover.privacy': '🔒 Ce jeu ne stocke aucune donnée personnelle — seuls des rêves anonymes sont recueillis.',
+    'gen.insights': '🌍 Voir les rêves de tous — Dream Index →',
     'nav.back': 'Retour', 'nav.next': 'Suivant',
     'gender.h': 'Qui êtes-vous ?', 'g.female': 'Femme', 'g.male': 'Homme', 'g.other': 'Autre',
     'age.h': 'Quel âge avez-vous ?', 'age.hint': 'Plus tôt vous commencez, plus le temps est de votre côté.',

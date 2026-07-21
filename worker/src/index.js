@@ -8,6 +8,12 @@ export default {
         const d = await request.json();
         const s = (v, max) => (typeof v === 'string' ? v.slice(0, max || 32) : null);
         const n = (v, lo, hi) => (Number.isFinite(+v) ? Math.max(lo, Math.min(hi, Math.round(+v))) : null);
+        // 중복 방어: 최근 10분 내 동일한 꿈(주요 필드 일치)은 저장하지 않음 — IP 없이 하는 프라이버시 클린 dedupe
+        const dup = await env.DB.prepare(
+          `SELECT COUNT(*) AS c FROM dreams WHERE created_at > datetime('now','-10 minutes')
+           AND age IS ? AND salary IS ? AND car IS ? AND home IS ? AND trip IS ? AND seed IS ?`
+        ).bind(n(d.age, 10, 100), n(d.salary, 0, 100000), s(d.car), s(d.home), s(d.trip), n(d.seed, 0, 100000000)).first();
+        if (dup && dup.c > 0) return new Response(JSON.stringify({ ok: true, dedup: true }), { headers: { 'content-type': 'application/json' } });
         await env.DB.prepare(
           `INSERT INTO dreams (lang, gender, age, job, salary, save, tenure, assets,
              car, home, trip, trip_freq, rate, country,
@@ -54,6 +60,33 @@ export default {
     if (url.pathname === '/api/stats' && request.method === 'GET') {
       const row = await env.DB.prepare('SELECT COUNT(*) AS total FROM dreams').first();
       return new Response(JSON.stringify({ total: row.total }), { headers: { 'content-type': 'application/json' } });
+    }
+
+    /* Dream Index — 익명 꿈들의 집계 (개인 단위 데이터는 절대 반환하지 않음) */
+    if (url.pathname === '/api/insights' && request.method === 'GET') {
+      const [summary, cities, cars, trips, countries, rates, tenures, happy] = await Promise.all([
+        env.DB.prepare(`SELECT COUNT(*) AS total,
+            ROUND(AVG(age),1) AS avg_age,
+            ROUND(AVG(salary),0) AS avg_salary,
+            ROUND(AVG(CASE WHEN salary>0 THEN CAST(save AS REAL)/salary*100 END),1) AS avg_save_pct,
+            ROUND(AVG(reach_age),1) AS avg_reach,
+            ROUND(AVG(happiness),1) AS avg_happy,
+            ROUND(AVG(seed),0) AS avg_seed,
+            ROUND(AVG(partner)*100,0) AS partner_pct
+          FROM dreams`).first(),
+        env.DB.prepare(`SELECT home AS k, COUNT(*) AS c FROM dreams WHERE home IS NOT NULL GROUP BY home ORDER BY c DESC LIMIT 10`).all(),
+        env.DB.prepare(`SELECT car AS k, COUNT(*) AS c FROM dreams WHERE car IS NOT NULL GROUP BY car ORDER BY c DESC LIMIT 10`).all(),
+        env.DB.prepare(`SELECT trip AS k, COUNT(*) AS c FROM dreams WHERE trip IS NOT NULL GROUP BY trip ORDER BY c DESC LIMIT 10`).all(),
+        env.DB.prepare(`SELECT country AS k, COUNT(*) AS c FROM dreams WHERE country IS NOT NULL GROUP BY country ORDER BY c DESC`).all(),
+        env.DB.prepare(`SELECT rate AS k, COUNT(*) AS c FROM dreams WHERE rate IS NOT NULL GROUP BY rate ORDER BY c DESC`).all(),
+        env.DB.prepare(`SELECT tenure AS k, COUNT(*) AS c FROM dreams WHERE tenure IS NOT NULL GROUP BY tenure ORDER BY c DESC`).all(),
+        env.DB.prepare(`SELECT happiness AS k, COUNT(*) AS c FROM dreams WHERE happiness IS NOT NULL GROUP BY happiness ORDER BY k`).all(),
+      ]);
+      return new Response(JSON.stringify({
+        summary,
+        cities: cities.results, cars: cars.results, trips: trips.results,
+        countries: countries.results, rates: rates.results, tenures: tenures.results, happy: happy.results,
+      }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=300' } });
     }
 
     return env.ASSETS.fetch(request);

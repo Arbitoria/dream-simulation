@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dream Index — ARBITORIA</title>
+<meta name="description" content="익명의 꿈들이 모여 만드는 지도 — 사람들은 어디에서 살고, 무엇을 몰고, 어디로 떠나고 싶어할까." />
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{--bg:#0B1F17;--surface:#122A20;--surface-2:#1A3A2C;--card-line:rgba(255,255,255,.08);
+--ink:#F2EEE3;--ink-2:#BFCDC0;--ink-3:#7E9284;--gold:#C9A961;--gold-2:#E4C77B;
+--emerald:#3FA37C;--shadow:0 2px 6px rgba(0,0,0,.25),0 16px 40px rgba(0,0,0,.35);--radius:14px;
+--sans:'Pretendard',-apple-system,'Apple SD Gothic Neo',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(1200px 700px at 50% -10%,#123024 0%,var(--bg) 55%);color:var(--ink);
+font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;min-height:100vh}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(11,31,23,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--card-line)}
+.topbar a{max-width:940px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:var(--ink);text-decoration:none}
+.mark{width:26px;height:26px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#0B1F17;font-size:13px;font-weight:800}
+.sub{color:var(--ink-3);font-weight:500;font-size:13.5px}
+.sub::before{content:'·';margin:0 8px}
+main{max-width:940px;margin:0 auto;padding:44px clamp(20px,5vw,32px) 80px}
+.eyebrow{display:inline-block;background:rgba(201,169,97,.14);color:var(--gold);padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+h1{font-size:clamp(26px,5vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 6px}
+.lead{color:var(--ink-3);margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:26px}
+.stat{background:var(--surface);border:1px solid var(--card-line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.stat .l{font-size:12px;color:var(--ink-3);font-weight:700}
+.stat .v{font-size:26px;font-weight:800;color:var(--gold-2);letter-spacing:-.01em;margin-top:2px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--card-line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.card h2{font-size:15px;font-weight:800;margin-bottom:14px}
+.row{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13.5px}
+.row .name{min-width:110px;color:var(--ink-2)}
+.row .bar{flex:1;height:10px;border-radius:6px;background:var(--surface-2);overflow:hidden}
+.row .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));border-radius:6px;transition:width .6s cubic-bezier(.2,.7,.2,1)}
+.row .pct{min-width:44px;text-align:right;font-weight:800;color:var(--gold-2);font-variant-numeric:tabular-nums}
+.foot{text-align:center;color:var(--ink-3);font-size:12px;margin-top:34px}
+.foot a{color:var(--gold);text-decoration:none;font-weight:700}
+.privacy{text-align:center;color:var(--ink-3);font-size:12px;margin-top:8px}
+#loading{text-align:center;color:var(--ink-3);padding:60px 0}
+</style>
+</head>
+<body>
+<header class="topbar"><a href="/"><span class="mark">A</span>ARBITORIA <span class="sub">Dream Index</span></a></header>
+<main>
+  <span class="eyebrow">DREAM · INDEX</span>
+  <h1>익명의 꿈들이 모여 만드는 지도</h1>
+  <p class="lead">사람들은 어디에서 살고, 무엇을 몰고, 어디로 떠나고 싶어할까 — 실시간 집계입니다.<br/>
+  <span style="font-size:12.5px">Where do people dream of living, driving, going — a live aggregate.</span></p>
+
+  <div id="loading">모으는 중…</div>
+  <div id="content" style="display:none">
+    <div class="grid" id="stats"></div>
+    <div class="cols" id="lists"></div>
+  </div>
+
+  <p class="privacy">🔒 개인정보는 저장되지 않습니다 — 이 페이지의 모든 수치는 익명 집계입니다.</p>
+  <p class="foot"><a href="/">🌳 나의 꿈도 그려보기 — Dream Simulation →</a></p>
+</main>
+<script>
+const NM = {
+  ny:'뉴욕', paris:'파리', la:'비버리힐스', dubai:'두바이', bali:'발리', swiss:'스위스', singapore:'싱가포르', london:'런던', tokyo:'도쿄', sydney:'시드니',
+  porsche:'포르쉐 911', huracan:'우라칸', ferrari:'페라리', rolls:'롤스로이스', bentley:'벤틀리', mclaren:'맥라렌', aston:'애스턴마틴', gwagon:'G-바겐', plaid:'테슬라 플래드', maserati:'마세라티',
+  cruise:'세계일주 크루즈', space:'우주여행', safari:'사파리', antarctica:'남극', island:'프라이빗 아일랜드', firstclass:'퍼스트클래스', maldives:'몰디브', aurora:'오로라', everest:'에베레스트', yacht:'지중해 요트',
+  kr:'🇰🇷 한국', us:'🇺🇸 미국', fr:'🇫🇷 프랑스', own:'자가', rent:'월세', none:'아직 없음',
+};
+const nm = (k) => NM[k] || k;
+const wonKo = (v) => { v = Math.round(v||0); const e = Math.floor(v/10000), m = v%10000;
+  if (e>0) return m===0 ? e+'억' : e+'억 '+Math.round(m/1000)+'천'; return v.toLocaleString()+'만원'; };
+
+fetch('/api/insights').then(r=>r.json()).then(d=>{
+  const s = d.summary || {};
+  document.getElementById('stats').innerHTML = [
+    ['모인 꿈', (s.total||0).toLocaleString()+'개'],
+    ['평균 나이', (s.avg_age||0)+'세'],
+    ['평균 월수입', wonKo(s.avg_salary)],
+    ['평균 저축률', (s.avg_save_pct||0)+'%'],
+    ['평균 도달 나이', (s.avg_reach||0)+'세'],
+    ['평균 행복지수', (s.avg_happy||0)+'/10'],
+    ['평균 종자돈', wonKo(s.avg_seed)],
+    ['동반자와 함께', (s.partner_pct||0)+'%'],
+  ].map(([l,v])=>`<div class="stat"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
+
+  const list = (title, rows) => {
+    if (!rows || !rows.length) return '';
+    const max = rows[0].c || 1;
+    const total = rows.reduce((a,r)=>a+r.c,0) || 1;
+    return `<div class="card"><h2>${title}</h2>` + rows.map(r=>`
+      <div class="row"><span class="name">${nm(String(r.k))}</span>
+        <span class="bar"><i style="width:${(r.c/max*100).toFixed(0)}%"></i></span>
+        <span class="pct">${Math.round(r.c/total*100)}%</span></div>`).join('') + '</div>';
+  };
+  document.getElementById('lists').innerHTML =
+    list('🏙️ 꿈의 도시', d.cities) + list('🏎️ 드림카', d.cars) + list('✈️ 꿈의 여행', d.trips) +
+    list('🌏 나라 (세금 기준)', d.countries) +
+    list('📈 수익률 성향', (d.rates||[]).map(r=>({k:r.k+'%', c:r.c}))) +
+    list('🏠 지금 사는 곳', d.tenures);
+  document.getElementById('loading').style.display='none';
+  document.getElementById('content').style.display='block';
+}).catch(()=>{ document.getElementById('loading').textContent='잠시 후 다시 시도해주세요.'; });
+</script>
+</body>
+</html>
