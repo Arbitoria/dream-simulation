@@ -162,6 +162,27 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .path-col.hero .pc-t{color:var(--gold)}
 .path-col.hero .pc-v{color:var(--gold-2);text-decoration:none;font-size:25px}
 .path-col.hero .pc-n{color:var(--ink-2)}
+/* 종자돈 3박자 공개 애니메이션: 월 → ×12 → ÷4% → 🌳 */
+.seed-steps{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+.seed-steps .ss{background:var(--surface-2);border:1px solid var(--card-line);border-radius:12px;padding:8px 14px;
+  font-weight:800;font-size:15px;color:var(--ink);opacity:0;animation:ssPop .5s cubic-bezier(.2,.7,.2,1) forwards}
+.seed-steps .ss.s3{background:rgba(201,169,97,.16);border-color:var(--gold);color:var(--gold-2);font-size:18px}
+.seed-steps .ss-arrow{color:var(--gold);font-weight:700;font-size:12.5px;opacity:0;animation:ssPop .4s ease forwards}
+.seed-steps .s1{animation-delay:.1s}
+.seed-steps .a1{animation-delay:.55s}
+.seed-steps .s2{animation-delay:.8s}
+.seed-steps .a2{animation-delay:1.35s}
+.seed-steps .s3{animation-delay:1.7s}
+@keyframes ssPop{0%{opacity:0;transform:translateY(8px) scale(.92)}60%{opacity:1;transform:translateY(-2px) scale(1.04)}100%{opacity:1;transform:none}}
+
+/* 수익률 반응형 설명 */
+.rate-hint{margin-top:8px;font-size:12.5px;color:var(--ink-3);line-height:1.55;min-height:1.5em}
+.rate-hint b{color:var(--gold)}
+
+/* 더 깊이 보기 접기 */
+.deep-toggle{align-self:center;font-size:13px}
+#deepBody{display:flex;flex-direction:column;gap:14px}
+
 .seed-note{font-size:13px;color:var(--ink-2);margin-top:10px;font-weight:600}
 .seed-note b{color:var(--gold)}
 .seed-assume{font-size:11.5px;color:var(--ink-3);margin-top:4px}
@@ -480,8 +501,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
         <div class="glass total-card">
           <span class="muted" data-i18n="calc.dreamMonth"></span>
           <b class="total-num" id="monthNum">–</b>
-          <div class="two-path" id="twoPath"></div>
+          <div class="seed-steps" id="seedSteps"></div>
           <p class="seed-note" id="seedFlow"></p>
+          <div class="two-path" id="twoPath"></div>
           <p class="seed-assume" data-i18n="calc.assume"></p>
         </div>
 
@@ -504,6 +526,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
               <button data-rate="7" class="on" type="button" data-i18n="calc.index"></button>
               <button data-rate="10" type="button" data-i18n="calc.bold"></button>
             </div>
+            <p class="rate-hint" id="rateHint"></p>
           </div>
           <div class="field">
             <span class="ft"><span data-i18n="calc.country"></span></span>
@@ -531,10 +554,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
           </div>
         </div>
 
-        <div class="glass bvr" id="bvrCard"></div>
-
-        <div class="weight-h"><h3 data-i18n="weight.h"></h3><p data-i18n="weight.sub"></p></div>
-        <div class="grid3" id="weightCards"></div>
+        <button class="btn ghost deep-toggle" id="deepToggle" type="button"></button>
+        <div id="deepBody" hidden>
+          <div class="glass bvr" id="bvrCard"></div>
+          <div class="weight-h"><h3 data-i18n="weight.h"></h3><p data-i18n="weight.sub"></p></div>
+          <div class="grid3" id="weightCards"></div>
+        </div>
       </div>
       <nav class="s-nav">
         <button class="btn ghost" data-go="0" data-i18n="calc.again"></button>
@@ -775,9 +800,14 @@ const L = {
     'calc.step': '계산', 'calc.h': '이 꿈, 사지 말고 유지하세요',
     'calc.dreamMonth': '이 꿈의 한 달',
     'calc.buyPath': '일시불로 사면', 'calc.buyNote': '사는 순간부터 낡고, 여행은 한 번으로 끝나요.',
-    'calc.keepPath': '우리의 길 — 유지하기', 'calc.keepNote': '이 종자돈이면 매달 <b>{m}</b>이 평생 나와요. 부자들의 방식.',
-    'calc.seedFlow': '종자돈의 연 4% = <b>월 0.34%</b> — 세금 {t}%를 떼고도 매달 꿈값이 나옵니다. 원금은 줄지 않아요.',
+    'calc.keepPath': '우리의 길 — 나무 심기', 'calc.keepNote': '이만큼의 나무면, 매달 <b>{m}</b>의 열매가 평생 열려요.',
+    'calc.seedFlow': '종자돈은 <b>나무</b>예요. 해마다 4%의 열매가 열리고 — <b>열매만 따먹으면 나무는 평생 그대로</b>. (세금 {t}%를 떼고도요)',
     'calc.assume': '월 비용은 리스·렌트·여행 월예산 기준의 단순화 가정입니다',
+    'viz.tree': '🌳 나무 완성 — 여기부터 월 {m}',
+    'calc.deeper': '🔍 더 깊이 보기 — 사기vs렌트 · 한 결정의 무게', 'calc.deeperClose': '접기 ▴',
+    'hint.5': '<b>안전 5%</b> — 국채·예금처럼 흔들림이 적은 곳. 느리지만 단단해요.',
+    'hint.7': '<b>지수 7%</b> — 전 세계 주식을 통째로 사는 것. 지난 수십 년의 평균이 이 정도였어요.',
+    'hint.10': '<b>공격 10%</b> — 성장주 위주. 크게 오르내리지만, 시간이 길수록 견딜 만해요.',
     'calc.saveEcho': '매달 미래로 보내는 돈', 'calc.split': '수입 {inc} 중 미래로 <b>{fut}</b>',
     'calc.slow': '지금을 즐기기', 'calc.fast': '미래에 올인',
     'calc.rate': '어떻게 굴릴까', 'calc.safe': '안전 5%', 'calc.index': '지수 7%', 'calc.bold': '공격 10%',
@@ -785,7 +815,7 @@ const L = {
     'calc.partnerH': '함께하는 사람', 'calc.partnerBtn': '동반자 추가', 'calc.partnerOn': '동반자와 함께',
     'calc.partnerAge': '몇 살에 함께하나요', 'calc.partnerM': '동반자도 매달',
     'calc.partnerNote': '동반자 합류로 도달이 {y}년 빨라져요',
-    'calc.reach': '지금부터 <b>{y}년</b> — <b>{age}세</b>부터 매달 <b>{m}</b>이 평생 나오기 시작해요.',
+    'calc.reach': '지금부터 <b>{y}년</b> — <b>{age}세</b>에 나무가 다 자라요. 매달 <b>{m}</b>의 열매가 평생.',
     'calc.reachNone': '이 속도로는 한 생을 넘어서요. 저축이나 수입, 동반자를 조정해보세요.',
     'calc.faster': '투자를 두 배로 하면 <b>{y}년</b> 더 빨라져요.',
     'bvr.h': '{city}의 집 — 사기 vs 렌트', 'bvr.sub': '같은 월 예산으로 {y}년, 두 길을 걸으면 (집값 상승 {g}%/년 가정)',
@@ -795,12 +825,12 @@ const L = {
     'weight.h': '한 결정의 무게', 'weight.sub': '오늘의 작은 선택이 만드는 차이',
     'weight.plus30': '매달 30만원 더 넣으면', 'weight.plus30f': '도달이 {y}년 빨라져요',
     'weight.delay': '시작을 10년 미루면', 'weight.delayf': '같은 나이에 닿으려면 매달 {x}배 필요해요',
-    'weight.nothing': '아무것도 안 하면', 'weight.nothingf': '30년 뒤 이 종자돈은 {v}이 필요해요 (물가 4%/년)',
+    'weight.nothing': '아무것도 안 하면', 'weight.nothingf': '기다릴수록 더 큰 나무가 필요해요 — 30년 뒤엔 {v} (물가 4%/년)',
     'calc.again': '다시 그리기', 'calc.share': '내 꿈 공유하기', 'calc.nextGen': '이 꿈, 그 다음은 →',
-    'gen.step': '세대 곡선', 'gen.h': '이 꿈은 당신에서 끝나지 않아요', 'gen.sub': '종자돈은 다 쓰지 않는 돈 — 세대를 건너며 자라는 곡선입니다. 록펠러 가문이 100년간 쓴 구조.',
-    'gen.g1': '제 1세대 — 나', 'gen.g1when': '{age}세 · 종자돈 완성', 'gen.g1note': '당신이 완성한 종자돈. 4%만 꺼내 쓰니 원금은 그대로 — 여기서 곡선이 시작됩니다.',
-    'gen.g2': '제 2세대 — 자녀', 'gen.g2when': '+30년', 'gen.g2note': '같은 수익률로 재투자만 해도, 자녀 세대엔 이만큼이 됩니다.',
-    'gen.g3': '제 3세대 — 손자녀', 'gen.g3when': '+60년', 'gen.g3note': '시간이 세 번째 세대를 건널 때, 복리는 기하급수가 됩니다.',
+    'gen.step': '세대 곡선', 'gen.h': '이 꿈은 당신에서 끝나지 않아요', 'gen.sub': '다 자란 나무는 베지 않아요 — 세대를 건너며 숲이 됩니다. 록펠러 가문이 100년간 한 일.',
+    'gen.g1': '제 1세대 — 나', 'gen.g1when': '{age}세 · 나무 완성', 'gen.g1note': '당신이 키워낸 나무. 열매만 따먹으니 나무는 그대로 — 여기서 숲이 시작됩니다.',
+    'gen.g2': '제 2세대 — 자녀', 'gen.g2when': '+30년', 'gen.g2note': '같은 나무가 30년 더 자라면 — 자녀 세대의 숲.',
+    'gen.g3': '제 3세대 — 손자녀', 'gen.g3when': '+60년', 'gen.g3note': '세 번째 세대에 이르면, 숲은 스스로 자랍니다.',
     'gen.philoTag': '철학', 'gen.philo': '한 사람의 일생만으로는 보이지 않는 곡선이 있습니다. <em>시간을 자산으로</em> 보면, 오늘의 결정은 60년 뒤의 누군가에게 닿습니다.',
     'cta.line': '꿈은 시간이 이룹니다. 지키는 건 <em>구조</em>입니다.', 'cta.btn': 'ARBITORIA Family Office 보기',
     'calc.disclaim': '교육·상상용 시뮬레이션입니다. 수익률·가격·세율·대출 조건은 단순화한 가정이며 투자·세무 조언이 아닙니다.',
@@ -860,9 +890,14 @@ const L = {
     'calc.step': 'THE NUMBER', 'calc.h': 'Don’t buy this dream. Sustain it.',
     'calc.dreamMonth': 'This dream, per month',
     'calc.buyPath': 'Buy it outright', 'calc.buyNote': 'It ages the day you buy it, and the journey ends once.',
-    'calc.keepPath': 'Our way — sustain it', 'calc.keepNote': 'This seed pays <b>{m}</b> every month, for life. The way the wealthy do it.',
-    'calc.seedFlow': '4% a year = <b>0.34% a month</b> — even after {t}% tax, the dream pays itself monthly. The principal never shrinks.',
+    'calc.keepPath': 'Our way — plant a tree', 'calc.keepNote': 'A tree this size bears <b>{m}</b> of fruit every month, for life.',
+    'calc.seedFlow': 'Your seed is a <b>tree</b>. It bears 4% of fruit each year — <b>eat only the fruit, and the tree stands forever</b> (even after {t}% tax).',
     'calc.assume': 'Monthly costs are simplified lease · rent · travel-budget assumptions',
+    'viz.tree': '🌳 Tree grown — {m}/mo from here',
+    'calc.deeper': '🔍 Look deeper — buy vs rent · the weight of one decision', 'calc.deeperClose': 'Fold ▴',
+    'hint.5': '<b>Safe 5%</b> — bonds and deposits, little turbulence. Slow but sturdy.',
+    'hint.7': '<b>Index 7%</b> — buying the whole world’s stock market at once. Decades of history average about this.',
+    'hint.10': '<b>Bold 10%</b> — growth-heavy. Big swings, easier to bear the longer your horizon.',
     'calc.saveEcho': 'Sent to the future each month', 'calc.split': 'Of {inc} income, <b>{fut}</b> flows forward',
     'calc.slow': 'live for now', 'calc.fast': 'all-in future',
     'calc.rate': 'How to grow it', 'calc.safe': 'Safe 5%', 'calc.index': 'Index 7%', 'calc.bold': 'Bold 10%',
@@ -870,7 +905,7 @@ const L = {
     'calc.partnerH': 'Who joins you', 'calc.partnerBtn': 'Add a partner', 'calc.partnerOn': 'With a partner',
     'calc.partnerAge': 'At what age do they join', 'calc.partnerM': 'Partner invests monthly',
     'calc.partnerNote': 'With your partner, you arrive {y} years sooner',
-    'calc.reach': 'In <b>{y} years</b> — from <b>age {age}</b>, <b>{m}</b> flows to you every month, for life.',
+    'calc.reach': 'In <b>{y} years</b> — at <b>{age}</b>, your tree is fully grown. <b>{m}</b> of fruit each month, for life.',
     'calc.reachNone': 'At this pace it outlasts a lifetime. Adjust saving, income, or add a partner.',
     'calc.faster': 'Double the investment and it comes <b>{y} years</b> sooner.',
     'bvr.h': 'A home in {city} — buy vs rent', 'bvr.sub': 'The same monthly budget, two roads, {y} years (home growth {g}%/yr)',
@@ -880,12 +915,12 @@ const L = {
     'weight.h': 'The weight of one decision', 'weight.sub': 'What a small choice today becomes',
     'weight.plus30': 'Add ₩300K a month', 'weight.plus30f': 'You arrive {y} years sooner',
     'weight.delay': 'Delay the start by 10 years', 'weight.delayf': 'Reaching the same age takes {x}× more each month',
-    'weight.nothing': 'Do nothing', 'weight.nothingf': 'In 30 years the seed you need becomes {v} (4%/yr inflation)',
+    'weight.nothing': 'Do nothing', 'weight.nothingf': 'Waiting grows the tree you need — {v} in 30 years (4%/yr inflation)',
     'calc.again': 'Draw again', 'calc.share': 'Share my dream', 'calc.nextGen': 'Beyond this dream →',
-    'gen.step': 'GENERATIONS', 'gen.h': 'This dream does not end with you', 'gen.sub': 'A seed is money you never spend — a curve that keeps compounding across generations. The Rockefeller structure.',
-    'gen.g1': '1st generation — You', 'gen.g1when': 'Age {age} · seed complete', 'gen.g1note': 'The seed you built. Drawing only 4%, the principal stands — the curve starts here.',
-    'gen.g2': '2nd generation — Your child', 'gen.g2when': '+30 years', 'gen.g2note': 'Reinvested at the same rate, it becomes this by your child’s generation.',
-    'gen.g3': '3rd generation — Grandchild', 'gen.g3when': '+60 years', 'gen.g3note': 'When time crosses a third generation, compounding turns geometric.',
+    'gen.step': 'GENERATIONS', 'gen.h': 'This dream does not end with you', 'gen.sub': 'A grown tree is never cut — it crosses generations and becomes a forest. What the Rockefellers did for a century.',
+    'gen.g1': '1st generation — You', 'gen.g1when': 'Age {age} · tree grown', 'gen.g1note': 'The tree you raised. Eating only the fruit, the tree stands — the forest starts here.',
+    'gen.g2': '2nd generation — Your child', 'gen.g2when': '+30 years', 'gen.g2note': 'The same tree, 30 more years — your child’s forest.',
+    'gen.g3': '3rd generation — Grandchild', 'gen.g3when': '+60 years', 'gen.g3note': 'By the third generation, the forest grows on its own.',
     'gen.philoTag': 'Philosophy', 'gen.philo': 'Some curves cannot be seen within one lifetime. Treat <em>time as an asset</em>, and today’s decision reaches someone 60 years away.',
     'cta.line': 'Time builds the dream. <em>Structure</em> keeps it.', 'cta.btn': 'See ARBITORIA Family Office',
     'calc.disclaim': 'A simulation for learning and imagining. Returns, prices, taxes and loan terms are simplified assumptions — not financial or tax advice.',
@@ -945,9 +980,14 @@ const L = {
     'calc.step': 'LE CHIFFRE', 'calc.h': 'N’achetez pas ce rêve. Entretenez-le.',
     'calc.dreamMonth': 'Ce rêve, par mois',
     'calc.buyPath': 'Acheter comptant', 'calc.buyNote': 'Il vieillit dès l’achat, et le voyage ne se vit qu’une fois.',
-    'calc.keepPath': 'Notre voie — l’entretenir', 'calc.keepNote': 'Ce capital verse <b>{m}</b> chaque mois, à vie. La méthode des fortunes.',
-    'calc.seedFlow': '4% par an = <b>0,34% par mois</b> — même après {t}% d’impôt, le rêve se paie chaque mois. Le capital ne diminue jamais.',
+    'calc.keepPath': 'Notre voie — planter un arbre', 'calc.keepNote': 'Un arbre de cette taille donne <b>{m}</b> de fruits chaque mois, à vie.',
+    'calc.seedFlow': 'Votre capital est un <b>arbre</b>. Il donne 4% de fruits par an — <b>ne mangez que les fruits, et l’arbre reste debout pour toujours</b> (même après {t}% d’impôt).',
     'calc.assume': 'Coûts mensuels : hypothèses simplifiées de leasing · loyer · budget voyage',
+    'viz.tree': '🌳 Arbre adulte — {m}/mois dès ici',
+    'calc.deeper': '🔍 Voir plus loin — acheter vs louer · le poids d’une décision', 'calc.deeperClose': 'Replier ▴',
+    'hint.5': '<b>Sûr 5%</b> — obligations et dépôts, peu de secousses. Lent mais solide.',
+    'hint.7': '<b>Indice 7%</b> — acheter d’un coup tout le marché mondial. Des décennies d’histoire tournent autour de ça.',
+    'hint.10': '<b>Audacieux 10%</b> — axé croissance. Grandes vagues, plus supportables avec le temps.',
     'calc.saveEcho': 'Envoyé vers le futur chaque mois', 'calc.split': 'Sur {inc} de revenu, <b>{fut}</b> coule vers l’avant',
     'calc.slow': 'vivre maintenant', 'calc.fast': 'tout au futur',
     'calc.rate': 'Comment le faire croître', 'calc.safe': 'Sûr 5%', 'calc.index': 'Indice 7%', 'calc.bold': 'Audacieux 10%',
@@ -955,7 +995,7 @@ const L = {
     'calc.partnerH': 'Qui vous rejoint', 'calc.partnerBtn': 'Ajouter un partenaire', 'calc.partnerOn': 'Avec un partenaire',
     'calc.partnerAge': 'À quel âge vous rejoint-il', 'calc.partnerM': 'Le partenaire investit par mois',
     'calc.partnerNote': 'Avec votre partenaire, vous arrivez {y} ans plus tôt',
-    'calc.reach': 'Dans <b>{y} ans</b> — dès <b>{age} ans</b>, <b>{m}</b> vous revient chaque mois, à vie.',
+    'calc.reach': 'Dans <b>{y} ans</b> — à <b>{age} ans</b>, votre arbre est adulte. <b>{m}</b> de fruits chaque mois, à vie.',
     'calc.reachNone': 'À ce rythme, cela dépasse une vie. Ajustez l’épargne, le revenu, ou ajoutez un partenaire.',
     'calc.faster': 'Doublez l’investissement et cela arrive <b>{y} ans</b> plus tôt.',
     'bvr.h': 'Un logement à {city} — acheter vs louer', 'bvr.sub': 'Le même budget mensuel, deux routes, {y} ans (immobilier {g}%/an)',
@@ -965,12 +1005,12 @@ const L = {
     'weight.h': 'Le poids d’une décision', 'weight.sub': 'Ce que devient un petit choix d’aujourd’hui',
     'weight.plus30': 'Ajoutez 300 k₩ par mois', 'weight.plus30f': 'Vous arrivez {y} ans plus tôt',
     'weight.delay': 'Retardez le départ de 10 ans', 'weight.delayf': 'Atteindre le même âge exige {x}× plus par mois',
-    'weight.nothing': 'Ne rien faire', 'weight.nothingf': 'Dans 30 ans le capital requis devient {v} (inflation 4%/an)',
+    'weight.nothing': 'Ne rien faire', 'weight.nothingf': 'Attendre agrandit l’arbre qu’il vous faut — {v} dans 30 ans (inflation 4%/an)',
     'calc.again': 'Recommencer', 'calc.share': 'Partager mon rêve', 'calc.nextGen': 'Au-delà de ce rêve →',
-    'gen.step': 'GÉNÉRATIONS', 'gen.h': 'Ce rêve ne s’arrête pas à vous', 'gen.sub': 'Un capital qu’on ne dépense jamais — une courbe qui compose à travers les générations. La structure Rockefeller.',
-    'gen.g1': '1re génération — Vous', 'gen.g1when': '{age} ans · capital constitué', 'gen.g1note': 'Le capital que vous avez bâti. En ne retirant que 4%, il demeure — la courbe commence ici.',
-    'gen.g2': '2e génération — Votre enfant', 'gen.g2when': '+30 ans', 'gen.g2note': 'Réinvesti au même taux, cela devient ceci à la génération suivante.',
-    'gen.g3': '3e génération — Petit-enfant', 'gen.g3when': '+60 ans', 'gen.g3note': 'Quand le temps traverse une troisième génération, les intérêts composés deviennent géométriques.',
+    'gen.step': 'GÉNÉRATIONS', 'gen.h': 'Ce rêve ne s’arrête pas à vous', 'gen.sub': 'Un arbre adulte ne se coupe jamais — il traverse les générations et devient une forêt. Ce que les Rockefeller ont fait pendant un siècle.',
+    'gen.g1': '1re génération — Vous', 'gen.g1when': '{age} ans · arbre adulte', 'gen.g1note': 'L’arbre que vous avez fait grandir. En ne mangeant que les fruits, l’arbre demeure — la forêt commence ici.',
+    'gen.g2': '2e génération — Votre enfant', 'gen.g2when': '+30 ans', 'gen.g2note': 'Le même arbre, 30 ans de plus — la forêt de votre enfant.',
+    'gen.g3': '3e génération — Petit-enfant', 'gen.g3when': '+60 ans', 'gen.g3note': 'À la troisième génération, la forêt pousse toute seule.',
     'gen.philoTag': 'Philosophie', 'gen.philo': 'Certaines courbes sont invisibles en une seule vie. Voyez le <em>temps comme un actif</em>, et la décision d’aujourd’hui touche quelqu’un dans 60 ans.',
     'cta.line': 'Le temps bâtit le rêve. La <em>structure</em> le garde.', 'cta.btn': 'Voir ARBITORIA Family Office',
     'calc.disclaim': 'Une simulation pour apprendre et imaginer. Rendements, prix, impôts et prêts sont des hypothèses simplifiées — ni conseil financier ni fiscal.',
@@ -1370,12 +1410,23 @@ function renderCalc() {
   $('partnerBtn').classList.toggle('on', S.partner);
   $('partnerBtn').innerHTML = t(S.partner ? 'calc.partnerOn' : 'calc.partnerBtn');
   $('partnerFields').hidden = !S.partner;
+  $('deepToggle').innerHTML = t($('deepBody').hidden ? 'calc.deeper' : 'calc.deeperClose');
   updateReach();
 }
 function updateReach() {
   const N = seedNeeded();
   const dm = dreamMonthly();
   $('monthNum').textContent = (lang === 'ko' ? '월 ' : '') + money(dm) + (lang === 'ko' ? '' : lang === 'fr' ? ' /mois' : ' /mo');
+  /* 3박자 공개: 월 → ×12 → ÷4% → 🌳 (innerHTML 재생성으로 애니메이션 재생) */
+  const perMo = lang === 'ko' ? '월 ' : '';
+  const perMoSuf = lang === 'ko' ? '' : lang === 'fr' ? '/mois' : '/mo';
+  $('seedSteps').innerHTML = `
+    <span class="ss s1">${perMo}${money(dm)}${perMoSuf}</span>
+    <span class="ss-arrow a1">×12</span>
+    <span class="ss s2">${money(dm * 12)}</span>
+    <span class="ss-arrow a2">÷4%</span>
+    <span class="ss s3">🌳 ${money(N)}</span>`;
+  $('rateHint').innerHTML = t('hint.' + S.rate);
   $('twoPath').innerHTML = `
     <div class="path-col"><div class="pc-t">${t('calc.buyPath')}</div>
       <div class="pc-v">${money(buyTotal())}</div><div class="pc-n">${t('calc.buyNote')}</div></div>
@@ -1514,7 +1565,7 @@ function drawViz(N, months, svgEl) {
     <line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y0}" stroke="rgba(255,255,255,.12)" stroke-width="1"/>${ticks}
     <line x1="${x0}" y1="${pY.toFixed(1)}" x2="${x1}" y2="${pY.toFixed(1)}" stroke="#E4C77B" stroke-width="1.2" stroke-dasharray="3 5"/>
     <text x="${x1}" y="${(pY - 19).toFixed(1)}" font-size="11.5" fill="#E4C77B" text-anchor="end" font-family="Pretendard" font-weight="700">${money(N)}</text>
-    <text x="${x1}" y="${(pY - 6).toFixed(1)}" font-size="10.5" fill="#E4C77B" text-anchor="end" font-family="Pretendard">${lang === 'ko' ? '여기부터 월 ' + money(dreamMonthly()) : '→ ' + money(dreamMonthly()) + (lang === 'fr' ? ' /mois' : ' /mo')}</text>
+    <text x="${x1}" y="${(pY - 6).toFixed(1)}" font-size="10.5" fill="#E4C77B" text-anchor="end" font-family="Pretendard">${t('viz.tree', { m: money(dreamMonthly()) })}</text>
     ${joinMark}
     <path d="${area}" fill="url(#vz)"/>
     <path d="${path}" fill="none" stroke="#C9A961" stroke-width="2.5" stroke-linejoin="round"/>
@@ -1604,6 +1655,12 @@ function bind() {
     if (e.target.closest('#shareBtn')) { share(); return; }
     if (e.target.closest('#ctaBtn')) { window.open('https://arbitoria.com/family-office', '_blank'); return; }
     if (e.target.closest('#cookieOk')) { try { localStorage.setItem('cookieAck', '1'); } catch (_) {} $('cookieBar').hidden = true; return; }
+    if (e.target.closest('#deepToggle')) {
+      const body = $('deepBody');
+      body.hidden = !body.hidden;
+      $('deepToggle').innerHTML = t(body.hidden ? 'calc.deeper' : 'calc.deeperClose');
+      return;
+    }
   });
   document.body.addEventListener('input', (e) => {
     const el = e.target; if (el.type !== 'range') return;

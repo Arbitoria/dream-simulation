@@ -199,8 +199,9 @@
         <div class="glass total-card">
           <span class="muted" data-i18n="calc.dreamMonth"></span>
           <b class="total-num" id="monthNum">–</b>
-          <div class="two-path" id="twoPath"></div>
+          <div class="seed-steps" id="seedSteps"></div>
           <p class="seed-note" id="seedFlow"></p>
+          <div class="two-path" id="twoPath"></div>
           <p class="seed-assume" data-i18n="calc.assume"></p>
         </div>
 
@@ -223,6 +224,7 @@
               <button data-rate="7" class="on" type="button" data-i18n="calc.index"></button>
               <button data-rate="10" type="button" data-i18n="calc.bold"></button>
             </div>
+            <p class="rate-hint" id="rateHint"></p>
           </div>
           <div class="field">
             <span class="ft"><span data-i18n="calc.country"></span></span>
@@ -250,10 +252,12 @@
           </div>
         </div>
 
-        <div class="glass bvr" id="bvrCard"></div>
-
-        <div class="weight-h"><h3 data-i18n="weight.h"></h3><p data-i18n="weight.sub"></p></div>
-        <div class="grid3" id="weightCards"></div>
+        <button class="btn ghost deep-toggle" id="deepToggle" type="button"></button>
+        <div id="deepBody" hidden>
+          <div class="glass bvr" id="bvrCard"></div>
+          <div class="weight-h"><h3 data-i18n="weight.h"></h3><p data-i18n="weight.sub"></p></div>
+          <div class="grid3" id="weightCards"></div>
+        </div>
       </div>
       <nav class="s-nav">
         <button class="btn ghost" data-go="0" data-i18n="calc.again"></button>
