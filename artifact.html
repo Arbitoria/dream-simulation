@@ -213,6 +213,15 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .ev-choice .cf .happy-fx{color:var(--emerald);font-weight:700}
 .ev-choice .cf .happy-fx.neg{color:var(--terra)}
 .fx-sub{font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:0}
+/* 히든 직업 카드 */
+.sit-narrow{max-width:640px;margin:0 auto}
+.card.mystery{background:linear-gradient(160deg,#16332A 0%,#0E271D 100%);border-color:var(--line);cursor:pointer}
+.card.mystery .ce{filter:grayscale(.2);opacity:.9}
+.card.mystery .nm{color:var(--gold);letter-spacing:.2em}
+.card.mystery .pr{color:var(--ink-3)}
+.card.mystery:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 24px rgba(201,169,97,.18)}
+.card.revealing{animation:flipIn .55s cubic-bezier(.2,.7,.2,1) both}
+@keyframes flipIn{0%{transform:rotateY(90deg);opacity:0}60%{transform:rotateY(-12deg);opacity:1}100%{transform:rotateY(0)}}
 .ev-card.otherjob{opacity:1;pointer-events:auto;cursor:pointer;border-color:var(--emerald);transition:all .18s ease}
 .ev-card.otherjob:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.4)}
 .life-result{max-width:640px;margin:16px auto 0;padding:22px;text-align:center}
@@ -290,8 +299,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
     <!-- 3. 직업 -->
     <section class="screen" data-screen="3" hidden>
       <header class="s-head"><p class="step-no" data-i18n="job.step"></p><h2 data-i18n="job.h"></h2><p class="s-sub" data-i18n="job.sub"></p></header>
-      <div class="grid" id="gridJob"></div>
-      <div class="glass controls" id="customJobField" style="margin-top:14px" hidden>
+      <div class="glass controls sit-narrow" id="customJobField">
         <span class="ft"><span data-i18n="job.customLabel"></span></span>
         <label class="field">
           <span class="ft"><span data-i18n="fx.krw"></span><output id="customKrwOut"></output></span>
@@ -308,6 +316,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
         <p class="mort-note" id="fxNote"></p>
       </div>
       <p class="split" id="jobLine" style="margin-top:14px"></p>
+      <div class="s-head" style="margin-top:34px;margin-bottom:16px">
+        <p class="step-no" data-i18n="job.hiddenTag"></p>
+        <h2 style="font-size:clamp(18px,3vw,22px)" data-i18n="job.hiddenH"></h2>
+        <p class="s-sub" data-i18n="job.hiddenSub"></p>
+      </div>
+      <div class="grid" id="gridJob"></div>
       <nav class="s-nav"><button class="btn ghost" data-go="2" data-i18n="nav.back"></button><button class="btn glow" data-go="4" data-i18n="nav.next"></button></nav>
     </section>
 
@@ -660,6 +674,8 @@ const L = {
     'job.customLine': '내 수입 — 월 {sal}. 수입의 30%인 <b>{save}</b>를 미래로 보내는 것으로 시작해요.',
     'fx.krw': '₩ 원', 'fx.usd': '$ 달러', 'fx.eur': '€ 유로',
     'fx.note': '환율 {m} 기준 · $1 = ₩{u} · €1 = ₩{e} — 매달 자동 업데이트',
+    'job.mystery': '숨겨진 인생', 'job.hiddenTag': '히든', 'job.hiddenH': '숨겨진 인생들',
+    'job.hiddenSub': '카드를 뒤집으면 다른 삶의 출발선이 보여요 — 그 삶으로 계산해볼 수도 있어요.',
     'calc.nextLife': '인생을 살아보기 →',
     'life.step': '인생', 'life.h': '계획대로만 흘러가진 않죠', 'life.sub': '인생이 끼어듭니다. 하나씩, 당신의 선택은?',
     'life.at': '{age}세',
@@ -738,6 +754,8 @@ const L = {
     'job.customLine': 'My income — {sal} a month. You start by sending 30%, <b>{save}</b>, to the future.',
     'fx.krw': '₩ KRW', 'fx.usd': '$ USD', 'fx.eur': '€ EUR',
     'fx.note': 'Rates as of {m} · $1 = ₩{u} · €1 = ₩{e} — refreshed monthly',
+    'job.mystery': 'A hidden life', 'job.hiddenTag': 'HIDDEN', 'job.hiddenH': 'Hidden lives',
+    'job.hiddenSub': 'Flip a card to glimpse another life’s starting line — and try the dream from there.',
     'calc.nextLife': 'Live the life →',
     'life.step': 'LIFE', 'life.h': 'Life rarely follows the plan', 'life.sub': 'Life interrupts. One at a time — what do you choose?',
     'life.at': 'Age {age}',
@@ -816,6 +834,8 @@ const L = {
     'job.customLine': 'Mon revenu — {sal} par mois. Vous commencez en envoyant 30%, <b>{save}</b>, vers le futur.',
     'fx.krw': '₩ KRW', 'fx.usd': '$ USD', 'fx.eur': '€ EUR',
     'fx.note': 'Taux de {m} · 1 $ = ₩{u} · 1 € = ₩{e} — actualisés chaque mois',
+    'job.mystery': 'Une vie cachée', 'job.hiddenTag': 'CACHÉ', 'job.hiddenH': 'Les vies cachées',
+    'job.hiddenSub': 'Retournez une carte pour entrevoir la ligne de départ d’une autre vie — et tentez le rêve depuis là.',
     'calc.nextLife': 'Vivre la vie →',
     'life.step': 'LA VIE', 'life.h': 'La vie suit rarement le plan', 'life.sub': 'La vie s’invite. Une à une — que choisissez-vous ?',
     'life.at': '{age} ans',
@@ -888,7 +908,7 @@ const nameOf = (cat, id) => opt(cat, id).nm[lang] || opt(cat, id).nm.ko;
 
 /* ── 상태 ── */
 const S = {
-  gender: null, age: 30, job: null,
+  gender: null, age: 30, job: 'custom',
   salary: 330, tenure: 'none', homeValue: 40000, rent: 80, fixedCost: 70, save: 60, assets: 3000,
   car: 'porsche', home: 'bali', trip: 'aurora', tripFreq: 12,
   rate: 7, country: 'kr',
@@ -1049,21 +1069,29 @@ function renderScreen(n) {
 }
 
 /* ── 3. 직업 ── */
+/* 히든 카드: 뒤집기 전엔 ???, 뒤집으면 그 인생의 출발선이 드러난다 */
+let revealed = [];
 function renderJobs() {
   const per = lang === 'ko' ? '월 ' : lang === 'fr' ? '/mois' : '/mo';
-  $('gridJob').innerHTML = JOBS.map((j) => `
-    <button class="card ${S.job === j.id ? 'on' : ''}" data-job="${j.id}" type="button">
+  $('gridJob').innerHTML = JOBS.map((j) => {
+    if (!revealed.includes(j.id)) {
+      return `
+      <button class="card mystery" data-job="${j.id}" type="button">
+        <span class="ce">🎴</span><span class="nm">???</span>
+        <span class="pr">${t('job.mystery')}</span>
+      </button>`;
+    }
+    return `
+    <button class="card ${S.job === j.id ? 'on' : ''} ${j.id === lastReveal ? 'revealing' : ''}" data-job="${j.id}" type="button">
       <span class="ce">${j.e}</span><span class="nm">${j.nm[lang] || j.nm.ko}</span>
       <span class="pr">${lang === 'ko' ? per + money(j.sal) : money(j.sal) + ' ' + per}</span>
-    </button>`).join('') + `
-    <button class="card ${S.job === 'custom' ? 'on' : ''}" data-job="custom" type="button">
-      <span class="ce">✍️</span><span class="nm">${t('job.custom')}</span>
-      <span class="pr">${S.job === 'custom' ? (lang === 'ko' ? '월 ' + money(S.salary) : money(S.salary) + ' ' + per) : t('job.customPr')}</span>
     </button>`;
-  $('customJobField').hidden = S.job !== 'custom';
+  }).join('');
+  lastReveal = null;
   syncCustomSal();
   syncJobLine();
 }
+let lastReveal = null;
 /* ₩·$·€ 세 바 동기화 — 어느 바를 움직여도 나머지가 따라온다 */
 function syncCustomSal() {
   const krw = S.salary;                                    // 만원
@@ -1307,8 +1335,9 @@ function renderGen() {
   const reachAge = months === Infinity ? S.age + 30 : S.age + Math.round(months / 12);
   const h = happiness();
   const j = jobOf(S.job);
+  const jName = S.job === 'custom' ? t('job.custom') : (j ? (j.nm[lang] || j.nm.ko) : '—');
   $('lifeScore').innerHTML = `
-    <div class="ls-col"><div class="lr-l">${t('life.scoreJob')}</div><div class="lr-v">${j ? (j.nm[lang] || j.nm.ko) : '—'}</div></div>
+    <div class="ls-col"><div class="lr-l">${t('life.scoreJob')}</div><div class="lr-v">${jName}</div></div>
     <div class="ls-col"><div class="lr-l">${t('life.scoreReach')}</div><div class="lr-v">${months === Infinity ? '∞' : reachAge + (lang === 'ko' ? '세' : '')}</div></div>
     <div class="ls-col"><div class="lr-l">${t('life.happy')}</div><div class="lr-v">${'❤️'.repeat(Math.round(h / 2))} ${h}/10</div></div>`;
   const r = S.rate / 100;
@@ -1396,7 +1425,8 @@ function decodeState(str) {
   S.country = COUNTRIES[p[14]] || 'kr';
   S.partner = !!p[15]; S.partnerAge = clamp(p[16], 15, 80); S.partnerMonthly = clamp(p[17], 0, 1500);
   S.tripFreq = [1, 2, 6, 12].includes(p[18]) ? p[18] : 12;
-  S.job = p[19] === 11 ? 'custom' : (p[19] >= 1 && p[19] <= JOBS.length ? JOBS[p[19] - 1].id : null);
+  S.job = p[19] === 11 ? 'custom' : (p[19] >= 1 && p[19] <= JOBS.length ? JOBS[p[19] - 1].id : 'custom');
+  if (S.job !== 'custom' && !revealed.includes(S.job)) revealed.push(S.job);
   let ec = clamp(p[20], 0, 242);
   S.events = S.events.map(() => { const v = ec % 3; ec = Math.floor(ec / 3); return v; });
   return clamp(p[21] || 0, 0, 11);
@@ -1419,10 +1449,12 @@ function bind() {
     const g = e.target.closest('[data-go]'); if (g) { go(+g.dataset.go); return; }
     const gd = e.target.closest('[data-gender]'); if (gd) { S.gender = gd.dataset.gender; renderGender(); updateHash(); return; }
     const jb = e.target.closest('[data-job]'); if (jb) {
-      S.job = jb.dataset.job;
-      const j = jobOf(S.job);
-      if (j) { S.salary = j.sal; S.save = Math.round(j.sal * 0.3); }
-      else if (S.job === 'custom') S.save = Math.round(S.salary * 0.3);
+      const id = jb.dataset.job;
+      const j = jobOf(id);
+      if (j) {
+        if (!revealed.includes(id)) { revealed.push(id); lastReveal = id; }
+        S.job = id; S.salary = j.sal; S.save = Math.round(j.sal * 0.3);
+      }
       renderJobs(); updateHash(); return;
     }
     const ec = e.target.closest('.ev-choice'); if (ec) {
@@ -1457,7 +1489,9 @@ function bind() {
       else S.salary = Math.round(v * FX.fr.rate / 10000);
       S.salary = clamp(S.salary, 50, 5000);
       S.save = Math.round(S.salary * 0.3);
-      syncCustomSal(); syncJobLine(); updateHash(); return;
+      if (S.job !== 'custom') { S.job = 'custom'; renderJobs(); }
+      else { syncCustomSal(); syncJobLine(); }
+      updateHash(); return;
     }
     if (el.id === 'salary') S.salary = v;
     else if (el.id === 'rent') S.rent = v;

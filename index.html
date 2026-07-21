@@ -58,8 +58,7 @@
     <!-- 3. 직업 -->
     <section class="screen" data-screen="3" hidden>
       <header class="s-head"><p class="step-no" data-i18n="job.step"></p><h2 data-i18n="job.h"></h2><p class="s-sub" data-i18n="job.sub"></p></header>
-      <div class="grid" id="gridJob"></div>
-      <div class="glass controls" id="customJobField" style="margin-top:14px" hidden>
+      <div class="glass controls sit-narrow" id="customJobField">
         <span class="ft"><span data-i18n="job.customLabel"></span></span>
         <label class="field">
           <span class="ft"><span data-i18n="fx.krw"></span><output id="customKrwOut"></output></span>
@@ -76,6 +75,12 @@
         <p class="mort-note" id="fxNote"></p>
       </div>
       <p class="split" id="jobLine" style="margin-top:14px"></p>
+      <div class="s-head" style="margin-top:34px;margin-bottom:16px">
+        <p class="step-no" data-i18n="job.hiddenTag"></p>
+        <h2 style="font-size:clamp(18px,3vw,22px)" data-i18n="job.hiddenH"></h2>
+        <p class="s-sub" data-i18n="job.hiddenSub"></p>
+      </div>
+      <div class="grid" id="gridJob"></div>
       <nav class="s-nav"><button class="btn ghost" data-go="2" data-i18n="nav.back"></button><button class="btn glow" data-go="4" data-i18n="nav.next"></button></nav>
     </section>
 
