@@ -211,6 +211,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .ev-choice .cf .money-fx.neg{color:var(--terra)}
 .ev-choice .cf .happy-fx{color:var(--emerald);font-weight:700}
 .ev-choice .cf .happy-fx.neg{color:var(--terra)}
+.fx-sub{font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:0}
+.ev-card.otherjob{opacity:1;pointer-events:auto;cursor:pointer;border-color:var(--emerald);transition:all .18s ease}
+.ev-card.otherjob:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.4)}
 .life-result{max-width:640px;margin:16px auto 0;padding:22px;text-align:center}
 .life-result .lr-row{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin-top:10px}
 .life-result .lr-col{min-width:150px}

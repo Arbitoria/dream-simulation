@@ -220,6 +220,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .ev-choice .cf .money-fx.neg{color:var(--terra)}
 .ev-choice .cf .happy-fx{color:var(--emerald);font-weight:700}
 .ev-choice .cf .happy-fx.neg{color:var(--terra)}
+.fx-sub{font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:0}
+.ev-card.otherjob{opacity:1;pointer-events:auto;cursor:pointer;border-color:var(--emerald);transition:all .18s ease}
+.ev-card.otherjob:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.4)}
 .life-result{max-width:640px;margin:16px auto 0;padding:22px;text-align:center}
 .life-result .lr-row{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin-top:10px}
 .life-result .lr-col{min-width:150px}
@@ -677,6 +680,7 @@ const L = {
     'life.resultH': '인생을 반영한 결과', 'life.plan': '계획의 도달', 'life.real': '인생의 도달', 'life.happy': '행복지수',
     'life.note': '도달이 늦어졌어도 행복이 남았다면 — 그게 손해일까요? 숫자와 마음, 둘 다 당신의 자산입니다.',
     'life.next': '세대 곡선으로 →', 'life.scoreJob': '직업', 'life.scoreReach': '도달 나이',
+    'life.otherTag': '보너스', 'life.otherJob': '다른 직업은 얼마나 벌까?', 'life.otherSub': '직업을 바꿔서 같은 꿈을 다시 계산해보세요 — 출발선이 바뀝니다.',
     'sit.step': '나의 현실', 'sit.h': '지금의 당신을 알려주세요', 'sit.sub': '한 달의 흐름만 있으면 됩니다 — 정확하지 않아도 괜찮아요.',
     'sit.salary': '한 달 수입', 'sit.tenure': '지금 사는 곳은', 'sit.none': '아직 없음', 'sit.rent': '월세', 'sit.own': '자가',
     'sit.rentAmt': '한 달 월세', 'sit.homeValue': '집값',
@@ -754,6 +758,7 @@ const L = {
     'life.resultH': 'The result, with life in it', 'life.plan': 'The plan said', 'life.real': 'Life says', 'life.happy': 'Happiness',
     'life.note': 'If arriving later left you happier — was it a loss? Numbers and heart are both your assets.',
     'life.next': 'To the generations →', 'life.scoreJob': 'Work', 'life.scoreReach': 'Arrival age',
+    'life.otherTag': 'BONUS', 'life.otherJob': 'What would another career pay?', 'life.otherSub': 'Swap your work and recalculate the same dream — the starting line moves.',
     'sit.step': 'YOUR PRESENT', 'sit.h': 'Tell us where you stand', 'sit.sub': 'Just one month of flow — rough numbers are fine.',
     'sit.salary': 'Monthly income', 'sit.tenure': 'Where you live now', 'sit.none': 'Not yet', 'sit.rent': 'Renting', 'sit.own': 'Own',
     'sit.rentAmt': 'Monthly rent', 'sit.homeValue': 'Home value',
@@ -831,6 +836,7 @@ const L = {
     'life.resultH': 'Le résultat, avec la vie dedans', 'life.plan': 'Le plan disait', 'life.real': 'La vie dit', 'life.happy': 'Bonheur',
     'life.note': 'Arriver plus tard mais plus heureux — est-ce une perte ? Les chiffres et le cœur sont vos deux actifs.',
     'life.next': 'Vers les générations →', 'life.scoreJob': 'Métier', 'life.scoreReach': 'Âge d’arrivée',
+    'life.otherTag': 'BONUS', 'life.otherJob': 'Et avec un autre métier ?', 'life.otherSub': 'Changez de métier et recalculez le même rêve — la ligne de départ bouge.',
     'sit.step': 'VOTRE PRÉSENT', 'sit.h': 'Dites-nous où vous en êtes', 'sit.sub': 'Un mois de flux suffit — des chiffres approximatifs conviennent.',
     'sit.salary': 'Revenu mensuel', 'sit.tenure': 'Votre logement actuel', 'sit.none': 'Pas encore', 'sit.rent': 'Locataire', 'sit.own': 'Propriétaire',
     'sit.rentAmt': 'Loyer mensuel', 'sit.homeValue': 'Valeur du logement',
@@ -927,6 +933,18 @@ function money(manwon) {
   const fx = FX[lang] || FX.en;
   return new Intl.NumberFormat(fx.locale, { style: 'currency', currency: fx.cur, notation: 'compact', maximumFractionDigits: 1 }).format(Math.round(manwon) * 10000 / fx.rate);
 }
+/* 나머지 두 통화로 환산한 꼬리표 (예: ko면 "$782 · €678") */
+function fxCompact(v, cur, loc) { return new Intl.NumberFormat(loc, { style: 'currency', currency: cur, notation: 'compact', maximumFractionDigits: 1 }).format(v); }
+function moneyFx(manwon) {
+  const krw = Math.round(manwon) * 10000;
+  const usd = fxCompact(krw / FX.en.rate, 'USD', 'en-US');
+  const eur = fxCompact(krw / FX.fr.rate, 'EUR', 'fr-FR');
+  const wk = '₩' + new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(krw);
+  if (lang === 'ko') return usd + ' · ' + eur;
+  if (lang === 'en') return wk + ' · ' + eur;
+  return wk + ' · ' + usd;
+}
+function money3(manwon) { return money(manwon) + ' <span class="fx-sub">' + moneyFx(manwon) + '</span>'; }
 
 /* ═══ 나의 현실 → 진단 (computeMember 이식·간소화) ═══ */
 function computeMe() {
@@ -1088,7 +1106,7 @@ function renderEvents() {
     const state = S.events[i] ? 'done' : (i === (firstOpen === -1 ? -1 : firstOpen) ? 'active' : '');
     const fx = (c) => {
       const parts = [];
-      if (c.save) parts.push(`<span class="money-fx ${c.save < 0 ? 'neg' : ''}">${c.save > 0 ? '+' : '−'}${money(Math.abs(c.save))}/${lang === 'ko' ? '월' : 'mo'}</span>`);
+      if (c.save) parts.push(`<span class="money-fx ${c.save < 0 ? 'neg' : ''}">${c.save > 0 ? '+' : '−'}${money(Math.abs(c.save))}/${lang === 'ko' ? '월' : 'mo'}</span> <span class="fx-sub">${moneyFx(Math.abs(c.save))}</span>`);
       if (c.happy) parts.push(`<span class="happy-fx ${c.happy < 0 ? 'neg' : ''}">${c.happy > 0 ? '+' : ''}${c.happy} ❤️</span>`);
       if (!parts.length) parts.push(`<span class="faint">—</span>`);
       return parts.join(' ');
@@ -1102,7 +1120,12 @@ function renderEvents() {
         <button class="ev-choice ${S.events[i] === 2 ? 'picked' : ''}" data-ev="${i}" data-pick="2" type="button">
           <span class="cl">${t('ev.' + ev.id + '.b')}</span><span class="cf">${fx(ev.b)}</span></button>
       </div></div>`;
-  }).join('');
+  }).join('') + `
+    <div class="ev-card otherjob" id="otherJobCard" role="button" tabindex="0">
+      <div class="ev-age">${t('life.otherTag')}</div>
+      <div class="ev-title"><span class="ee">💼</span>${t('life.otherJob')}</div>
+      <div class="bvr-sub" style="margin-bottom:0">${t('life.otherSub')}</div>
+    </div>`;
   renderLifeResult();
 }
 function renderLifeResult() {
@@ -1158,12 +1181,12 @@ function renderSituation() {
   syncSitOutputs();
 }
 function syncSitOutputs() {
-  $('salaryOut').textContent = money(S.salary);
-  $('rentOut').textContent = money(S.rent);
-  $('homeValueOut').textContent = money(S.homeValue);
-  $('fixedOut').textContent = money(S.fixedCost);
-  $('saveOut').textContent = money(S.save);
-  $('assetsOut').textContent = money(S.assets);
+  $('salaryOut').innerHTML = money3(S.salary);
+  $('rentOut').innerHTML = money3(S.rent);
+  $('homeValueOut').innerHTML = money3(S.homeValue);
+  $('fixedOut').innerHTML = money3(S.fixedCost);
+  $('saveOut').innerHTML = money3(S.save);
+  $('assetsOut').innerHTML = money3(S.assets);
   $('rentField').hidden = S.tenure !== 'rent';
   $('ownFields').hidden = S.tenure !== 'own';
   if (S.tenure === 'own') {
@@ -1415,6 +1438,7 @@ function bind() {
       S.events[+ec.dataset.ev] = +ec.dataset.pick;
       renderEvents(); updateHash(); return;
     }
+    if (e.target.closest('#otherJobCard')) { go(3); return; }
     const tn = e.target.closest('#tenure button'); if (tn) { S.tenure = tn.dataset.tenure; [...tn.parentElement.children].forEach((x) => x.classList.toggle('on', x === tn)); syncSitOutputs(); updateHash(); return; }
     const card = e.target.closest('.card'); if (card && card.dataset.cat) { S[card.dataset.cat] = card.dataset.id; [...card.parentElement.children].forEach((x) => x.classList.toggle('on', x === card)); if (card.dataset.cat === 'trip') syncTripFreq(); updateHash(); return; }
     const fq = e.target.closest('#tripFreq button'); if (fq) { S.tripFreq = +fq.dataset.freq; syncTripFreq(); updateHash(); return; }
