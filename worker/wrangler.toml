@@ -1,0 +1,17 @@
+name = "dream-simulation"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+routes = [
+  { pattern = "arbitoria.com/*", zone_name = "arbitoria.com" },
+  { pattern = "www.arbitoria.com/*", zone_name = "arbitoria.com" }
+]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dream-simulation"
+database_id = "aa39933c-be1e-417c-945b-03b21fec2f13"

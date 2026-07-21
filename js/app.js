@@ -452,6 +452,30 @@ function go(n) {
   renderScreen(n);
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateHash();
+  if (n === 11) sendDream();
+}
+
+/* 익명 꿈 데이터 수집 (완주 1회 · 같은 오리진에 API 있을 때만 성공) */
+let dreamSent = false;
+function sendDream() {
+  if (dreamSent) return;
+  dreamSent = true;
+  const N = seedNeeded();
+  const months = monthsToReach(N);
+  try {
+    fetch('/api/dream', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        lang, gender: S.gender, age: S.age, job: S.job, salary: S.salary, save: S.save,
+        tenure: S.tenure, assets: S.assets, car: S.car, home: S.home, trip: S.trip,
+        tripFreq: S.tripFreq, rate: S.rate, country: S.country,
+        partner: S.partner, partnerAge: S.partnerAge, partnerMonthly: S.partnerMonthly,
+        events: S.events, happiness: happiness(),
+        reachAge: months === Infinity ? null : S.age + Math.round(months / 12),
+        seed: Math.round(N),
+      }),
+    }).catch(() => {});
+  } catch (_) {}
 }
 function renderScreen(n) {
   if (n === 1) renderGender();
