@@ -69,8 +69,13 @@ h1{font-size:clamp(26px,5vw,38px);font-weight:800;letter-spacing:-.02em;margin:1
   </div>
 
   <p class="privacy" id="privacy"></p>
-  <p class="foot"><a href="/" id="foot"></a></p>
+  <p class="foot"><a href="/" id="foot"></a> · <a href="/privacy" id="privLink" style="color:var(--ink-3)"></a></p>
 </main>
+<div id="cookieBar" hidden style="position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:65;max-width:640px;width:calc(100% - 32px);background:var(--surface-2);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)">
+  <span id="ckText"></span>
+  <a href="/privacy" id="ckLink" style="color:var(--gold);font-weight:700;text-decoration:none;white-space:nowrap"></a>
+  <button id="ckOk" type="button" style="margin-left:auto;padding:7px 18px;font-size:12.5px;font-weight:700;background:var(--gold);color:#0B1F17;border:none;border-radius:10px;cursor:pointer"></button>
+</div>
 <script>
 'use strict';
 /* ── i18n ── */
@@ -84,6 +89,8 @@ const I = {
     lists: { cities: '🏙️ 꿈의 도시', cars: '🏎️ 드림카', trips: '✈️ 꿈의 여행', countries: '🌏 나라 (세금 기준)', rates: '📈 수익률 성향', tenures: '🏠 지금 사는 곳' },
     privacy: '🔒 개인정보는 저장되지 않습니다 — 이 페이지의 모든 수치는 익명 집계입니다.',
     foot: '🌳 나의 꿈도 그려보기 — Dream Simulation →',
+    privLink: '개인정보 정책',
+    ckText: '🍪 추적 쿠키 없음 — 언어 설정만 기기에 저장돼요.', ckLink: '자세히', ckOk: '확인',
   },
   en: {
     title: 'A map made of anonymous dreams',
@@ -94,6 +101,8 @@ const I = {
     lists: { cities: '🏙️ Dream cities', cars: '🏎️ Dream cars', trips: '✈️ Dream journeys', countries: '🌏 Countries (tax basis)', rates: '📈 Return appetite', tenures: '🏠 Living now' },
     privacy: '🔒 No personal data is stored — every number on this page is an anonymous aggregate.',
     foot: '🌳 Draw your own dream — Dream Simulation →',
+    privLink: 'Privacy policy',
+    ckText: '🍪 No tracking cookies — only your language preference is stored.', ckLink: 'Details', ckOk: 'OK',
   },
   fr: {
     title: 'Une carte faite de rêves anonymes',
@@ -104,6 +113,8 @@ const I = {
     lists: { cities: '🏙️ Villes de rêve', cars: '🏎️ Voitures de rêve', trips: '✈️ Voyages de rêve', countries: '🌏 Pays (base fiscale)', rates: '📈 Appétit de rendement', tenures: '🏠 Logement actuel' },
     privacy: '🔒 Aucune donnée personnelle n’est stockée — chaque chiffre de cette page est un agrégat anonyme.',
     foot: '🌳 Dessinez votre propre rêve — Dream Simulation →',
+    privLink: 'Politique de confidentialité',
+    ckText: '🍪 Aucun cookie de suivi — seule votre langue est enregistrée.', ckLink: 'Détails', ckOk: 'OK',
   },
 };
 const NM = {
@@ -144,6 +155,10 @@ function render() {
   document.getElementById('lead').textContent = T.lead;
   document.getElementById('privacy').textContent = T.privacy;
   document.getElementById('foot').textContent = T.foot;
+  document.getElementById('privLink').textContent = T.privLink;
+  document.getElementById('ckText').textContent = T.ckText;
+  document.getElementById('ckLink').textContent = T.ckLink;
+  document.getElementById('ckOk').textContent = T.ckOk;
   document.getElementById('loading').textContent = T.loading;
   if (!DATA) return;
   const s = DATA.summary || {};
@@ -181,6 +196,11 @@ document.getElementById('langSel').addEventListener('change', (e) => {
   try { localStorage.setItem('dreamLang', lang); } catch (_) {}
   render();
 });
+document.getElementById('ckOk').addEventListener('click', () => {
+  try { localStorage.setItem('cookieAck', '1'); } catch (_) {}
+  document.getElementById('cookieBar').hidden = true;
+});
+try { if (!localStorage.getItem('cookieAck')) document.getElementById('cookieBar').hidden = false; } catch (_) {}
 
 render();
 Promise.all([

@@ -743,6 +743,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <ul>
         <li><a href="/" data-i18n="f.e1">🌳 Dream Simulation — 꿈 그리기</a></li>
         <li><a href="/insights" data-i18n="f.e2">🌍 Dream Index — 모두의 꿈</a></li>
+        <li><a href="/privacy" data-i18n="f.e3">🔒 개인정보 정책</a></li>
         <li>X: @Arbitoria</li>
       </ul>
     </div>
@@ -752,6 +753,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     <div data-i18n="f.b2">arbitoria.com · 한 사람을 위한 패밀리 오피스</div>
   </div>
 </footer>
+
+<div id="cookieBar" hidden style="position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:65;max-width:640px;width:calc(100% - 32px);background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)">
+  <span data-i18n="ck.text">🍪 추적 쿠키 없음 — 언어 설정만 기기에 저장돼요.</span>
+  <a href="/privacy" style="color:var(--rose);font-weight:700;text-decoration:none;white-space:nowrap" data-i18n="ck.link">자세히</a>
+  <button id="ckOk" type="button" style="margin-left:auto;padding:7px 18px;font-size:12.5px;font-weight:700;background:var(--ink);color:#fff;border:none;border-radius:10px;cursor:pointer" data-i18n="ck.ok">확인</button>
+</div>
 
 <script>
 'use strict';
@@ -860,7 +867,9 @@ const EN = {
   'f.tag': '<em>"To use is also to change."</em><br/>Moving the Rockefellers’ tools to one person.',
   'f.prodH': 'Product', 'f.p1': 'Dashboard', 'f.p2': 'Asset allocation', 'f.p3': 'Generational simulation', 'f.p4': 'AI advisor',
   'f.ecoH': 'Explore', 'f.e1': '🌳 Dream Simulation — draw your dream', 'f.e2': '🌍 Dream Index — everyone’s dreams',
+  'f.e3': '🔒 Privacy policy',
   'f.b1': '© 2026 ARBITORIA · manifesto + tools', 'f.b2': 'arbitoria.com · a family office for one person',
+  'ck.text': '🍪 No tracking cookies — only your language preference is stored.', 'ck.link': 'Details', 'ck.ok': 'OK',
 };
 const FR = {
   'nav.game': '🌳 Dream Simulation',
@@ -966,7 +975,9 @@ const FR = {
   'f.tag': '<em>« Utiliser, c’est aussi transformer. »</em><br/>Transposer les outils des Rockefeller pour une seule personne.',
   'f.prodH': 'Produit', 'f.p1': 'Tableau de bord', 'f.p2': 'Allocation d’actifs', 'f.p3': 'Simulation générationnelle', 'f.p4': 'Conseiller IA',
   'f.ecoH': 'Explorer', 'f.e1': '🌳 Dream Simulation — dessinez votre rêve', 'f.e2': '🌍 Dream Index — les rêves de tous',
+  'f.e3': '🔒 Politique de confidentialité',
   'f.b1': '© 2026 ARBITORIA · manifeste + outils', 'f.b2': 'arbitoria.com · un family office pour une personne',
+  'ck.text': '🍪 Aucun cookie de suivi — seule votre langue est enregistrée.', 'ck.link': 'Détails', 'ck.ok': 'OK',
 };
 const SIM_NOTE = {
   ko: (sign, v) => `기준 시나리오 대비 ${sign}₩${v}억. 슬라이더를 움직여 결과를 다시 계산해보세요.`,
@@ -1051,6 +1062,12 @@ function updateSim() {
   document.getElementById('simNote').textContent = (SIM_NOTE[lang] || SIM_NOTE.ko)(sign, Math.abs(diff).toFixed(1));
 }
 sliders.forEach((s) => s.addEventListener('input', updateSim));
+
+document.getElementById('ckOk').addEventListener('click', () => {
+  try { localStorage.setItem('cookieAck', '1'); } catch (_) {}
+  document.getElementById('cookieBar').hidden = true;
+});
+try { if (!localStorage.getItem('cookieAck')) document.getElementById('cookieBar').hidden = false; } catch (_) {}
 
 applyLang(lang);
 </script>
