@@ -5,658 +5,168 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ARBITORIA Family Office — 한 사람을 위한 패밀리 오피스</title>
 <meta name="description" content="록펠러 가문의 도구를, 한 사람을 위해. 패밀리 오피스 구조를 개인이 가질 수 있게 합니다." />
-
-<!-- Open Graph (X / LinkedIn 카드용) -->
 <meta property="og:title" content="ARBITORIA Family Office" />
-<meta property="og:description" content="록펠러 가문의 도구를, 한 사람을 위해. 패밀리 오피스 구조를 개인이 가질 수 있게 합니다." />
+<meta property="og:description" content="록펠러 가문의 도구를, 한 사람을 위해." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://arbitoria.com/family-office" />
-<meta property="og:locale" content="ko_KR" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="ARBITORIA Family Office" />
-<meta name="twitter:description" content="록펠러 가문의 도구를, 한 사람을 위해." />
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
-
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #FAF7F2;
-  --surface: #FFFFFF;
-  --surface-2: #F4EFE7;
-  --ink: #1A1A2E;
-  --ink-2: #4B5563;
-  --ink-3: #9CA3AF;
-  --line: #E7E1D6;
-  --rose: #D88A91;
-  --rose-2: #E8B4B8;
-  --rose-soft: #F7E6E8;
-  --gold: #C9A961;
-  --gold-soft: #F2EAD3;
-  --sage: #4A7C59;
-  --sage-soft: #DCE8DE;
-  --navy: #2B3E5A;
-  --terra: #C97B5A;
+  --bg: #FAF7F2; --surface: #FFFFFF; --surface-2: #F4EFE7;
+  --ink: #1A1A2E; --ink-2: #4B5563; --ink-3: #9CA3AF; --line: #E7E1D6;
+  --rose: #D88A91; --rose-2: #E8B4B8; --rose-soft: #F7E6E8;
+  --gold: #C9A961; --gold-soft: #F2EAD3;
+  --sage: #4A7C59; --sage-soft: #DCE8DE;
+  --navy: #2B3E5A; --terra: #C97B5A;
   --shadow: 0 1px 3px rgba(26,26,46,0.06), 0 8px 24px rgba(26,26,46,0.04);
   --radius: 14px;
 }
-html, body {
-  background: var(--bg);
-  color: var(--ink);
+html, body { background: var(--bg); color: var(--ink);
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', system-ui, sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
+  font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-
-/* ───── 헤더 ───── */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(250, 247, 242, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-.header-inner {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 17px;
-  letter-spacing: -0.01em;
-}
-.brand-mark {
-  width: 28px; height: 28px;
-  background: var(--rose);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 14px;
-  font-weight: 800;
-}
-.brand-sub {
-  color: var(--ink-2);
-  font-weight: 500;
-  font-size: 14px;
-  margin-left: 2px;
-}
+.header { position: sticky; top: 0; z-index: 50; background: rgba(250,247,242,0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.header-inner { max-width: 1240px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; letter-spacing: -0.01em; }
+.brand-mark { width: 28px; height: 28px; background: var(--rose); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 800; }
+.brand-sub { color: var(--ink-2); font-weight: 500; font-size: 14px; margin-left: 2px; }
 .brand-sub::before { content: '·'; margin: 0 8px; color: var(--ink-3); }
-.header-cta {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.btn {
-  padding: 9px 16px;
-  border-radius: 10px;
-  font-size: 13.5px;
-  font-weight: 600;
-  transition: all 0.15s ease;
-  border: 1px solid transparent;
-  white-space: nowrap;
-}
+.header-cta { display: flex; gap: 8px; align-items: center; }
+#langSel { font-family: inherit; font-size: 13px; font-weight: 700; color: var(--ink-2); background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 99px; padding: 8px 12px; cursor: pointer; outline: none; }
+#langSel:hover { color: var(--ink); }
+.btn { padding: 9px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 600; transition: all 0.15s ease; border: 1px solid transparent; white-space: nowrap; }
 .btn-primary { background: var(--ink); color: white; }
 .btn-primary:hover { background: #2B2B40; }
 .btn-ghost { color: var(--ink-2); }
 .btn-ghost:hover { color: var(--ink); background: var(--surface-2); }
-
-/* ───── 히어로 ───── */
-.hero {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 80px 24px 56px;
-  text-align: center;
-}
-.hero-eyebrow {
-  display: inline-block;
-  background: var(--rose-soft);
-  color: var(--rose);
-  padding: 6px 14px;
-  border-radius: 99px;
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  margin-bottom: 24px;
-}
-.hero-title {
-  font-size: clamp(34px, 5.5vw, 56px);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
-  margin-bottom: 24px;
-}
-.hero-title em {
-  font-style: normal;
-  color: var(--rose);
-}
-.hero-sub {
-  font-size: clamp(16px, 2vw, 19px);
-  color: var(--ink-2);
-  max-width: 640px;
-  margin: 0 auto 36px;
-  line-height: 1.55;
-}
+.hero { max-width: 1240px; margin: 0 auto; padding: 80px 24px 56px; text-align: center; }
+.hero-eyebrow { display: inline-block; background: var(--rose-soft); color: var(--rose); padding: 6px 14px; border-radius: 99px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 24px; }
+.hero-title { font-size: clamp(34px, 5.5vw, 56px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 24px; }
+.hero-title em { font-style: normal; color: var(--rose); }
+.hero-sub { font-size: clamp(16px, 2vw, 19px); color: var(--ink-2); max-width: 640px; margin: 0 auto 36px; line-height: 1.55; }
 .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.hero-foot {
-  margin-top: 56px;
-  font-size: 13px;
-  color: var(--ink-3);
-}
+.hero-foot { margin-top: 56px; font-size: 13px; color: var(--ink-3); }
 .hero-foot strong { color: var(--ink-2); }
-
-/* ───── 탭 네비 ───── */
-.tabs-wrap {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.tabs {
-  display: flex;
-  gap: 4px;
-  background: var(--surface-2);
-  padding: 6px;
-  border-radius: 14px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
+.tabs-wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+.tabs { display: flex; gap: 4px; background: var(--surface-2); padding: 6px; border-radius: 14px; overflow-x: auto; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
-.tab {
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink-2);
-  white-space: nowrap;
-  transition: all 0.15s ease;
-}
+.tab { padding: 10px 16px; border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--ink-2); white-space: nowrap; transition: all 0.15s ease; }
 .tab:hover { color: var(--ink); }
-.tab.active {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06);
-}
-
-/* ───── 화면 컨테이너 ───── */
-.app-frame {
-  max-width: 1240px;
-  margin: 24px auto 80px;
-  padding: 0 24px;
-}
+.tab.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06); }
+.app-frame { max-width: 1240px; margin: 24px auto 80px; padding: 0 24px; }
 .screen { display: none; }
 .screen.active { display: block; animation: fadeIn 0.25s ease; }
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ───── 카드 / 그리드 ───── */
-.grid {
-  display: grid;
-  gap: 16px;
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.grid { display: grid; gap: 16px; }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-2 { grid-template-columns: repeat(2, 1fr); }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
-@media (max-width: 880px) {
-  .grid-3, .grid-4 { grid-template-columns: 1fr; }
-  .grid-2 { grid-template-columns: 1fr; }
-}
-.card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 22px;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-}
-.card-title {
-  font-size: 13px;
-  color: var(--ink-2);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.card-value {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-.card-delta {
-  margin-top: 6px;
-  font-size: 13px;
-  color: var(--sage);
-  font-weight: 600;
-}
+@media (max-width: 880px) { .grid-3, .grid-4 { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+.card { background: var(--surface); border-radius: var(--radius); padding: 22px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+.card-title { font-size: 13px; color: var(--ink-2); font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+.card-value { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+.card-delta { margin-top: 6px; font-size: 13px; color: var(--sage); font-weight: 600; }
 .card-delta.neg { color: var(--terra); }
-.card-foot {
-  margin-top: 12px;
-  font-size: 12.5px;
-  color: var(--ink-3);
-}
-
-/* ───── 섹션 헤더 ───── */
-.section-h {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin: 32px 4px 14px;
-}
-.section-h h2 {
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-}
-.section-h p {
-  font-size: 13px;
-  color: var(--ink-3);
-}
-
-/* ───── 자산 막대 / 진행률 ───── */
-.bar {
-  position: relative;
-  height: 8px;
-  border-radius: 99px;
-  background: var(--surface-2);
-  overflow: hidden;
-}
-.bar-fill {
-  position: absolute;
-  left: 0; top: 0;
-  height: 100%;
-  border-radius: 99px;
-  transition: width 0.6s cubic-bezier(.2,.7,.2,1);
-}
-
-/* ───── 자산 행 ───── */
-.asset-row {
-  display: grid;
-  grid-template-columns: 28px 1fr auto auto;
-  gap: 14px;
-  align-items: center;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-}
+.card-foot { margin-top: 12px; font-size: 12.5px; color: var(--ink-3); }
+.section-h { display: flex; align-items: baseline; justify-content: space-between; margin: 32px 4px 14px; }
+.section-h h2 { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
+.section-h p { font-size: 13px; color: var(--ink-3); }
+.bar { position: relative; height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.bar-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 99px; transition: width 0.6s cubic-bezier(.2,.7,.2,1); }
+.asset-row { display: grid; grid-template-columns: 28px 1fr auto auto; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); }
 .asset-row:last-child { border-bottom: none; }
 .asset-dot { width: 12px; height: 12px; border-radius: 50%; margin: 0 auto; }
 .asset-name { font-weight: 600; }
 .asset-name small { display: block; font-weight: 400; color: var(--ink-3); font-size: 12px; margin-top: 2px; }
 .asset-pct { font-size: 13px; color: var(--ink-2); font-weight: 600; }
 .asset-amt { font-weight: 700; text-align: right; }
-
-/* ───── 목표 카드 ───── */
-.goal-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 20px;
-}
-.goal-card .goal-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 14px;
-}
+.goal-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.goal-card .goal-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
 .goal-card h3 { font-size: 16px; font-weight: 700; }
 .goal-card .goal-meta { font-size: 12.5px; color: var(--ink-3); margin-top: 2px; }
-.goal-card .goal-badge {
-  padding: 4px 10px;
-  border-radius: 99px;
-  font-size: 11.5px;
-  font-weight: 700;
-  background: var(--sage-soft);
-  color: var(--sage);
-}
+.goal-card .goal-badge { padding: 4px 10px; border-radius: 99px; font-size: 11.5px; font-weight: 700; background: var(--sage-soft); color: var(--sage); }
 .goal-card .goal-badge.warn { background: var(--gold-soft); color: var(--gold); }
-.goal-card .goal-badge.late { background: #FCE3E3; color: var(--terra); }
-.goal-progress-text {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  margin: 12px 0 6px;
-  color: var(--ink-2);
-}
+.goal-progress-text { display: flex; justify-content: space-between; font-size: 13px; margin: 12px 0 6px; color: var(--ink-2); }
 .goal-progress-text strong { color: var(--ink); font-weight: 700; }
-
-/* ───── 세대 시뮬레이션 ───── */
-.gen-track {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 14px;
-}
+.gen-track { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
 @media (max-width: 880px) { .gen-track { grid-template-columns: 1fr; } }
-.gen-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 22px;
-  position: relative;
-}
-.gen-card .gen-tag {
-  font-size: 11.5px;
-  color: var(--rose);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
+.gen-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; position: relative; }
+.gen-card .gen-tag { font-size: 11.5px; color: var(--rose); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
 .gen-card h4 { font-size: 17px; font-weight: 800; }
 .gen-card .gen-when { color: var(--ink-3); font-size: 12.5px; margin-bottom: 16px; }
 .gen-card .gen-amt { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
 .gen-card .gen-note { color: var(--ink-2); font-size: 13px; margin-top: 10px; line-height: 1.5; }
-
-/* ───── AI 상담사 채팅 ───── */
-.chat-wrap {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  min-height: 560px;
-}
-.chat-head {
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--surface);
-}
-.chat-head .ai-avatar {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, var(--rose) 0%, var(--gold) 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 800;
-  font-size: 14px;
-}
+.chat-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; min-height: 560px; }
+.chat-head { padding: 18px 22px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; background: var(--surface); }
+.chat-head .ai-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--rose) 0%, var(--gold) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 14px; }
 .chat-head .ai-name { font-weight: 700; font-size: 15px; }
 .chat-head .ai-status { font-size: 12px; color: var(--sage); display: flex; align-items: center; gap: 5px; }
-.chat-head .ai-status::before {
-  content: ''; width: 7px; height: 7px; border-radius: 50%;
-  background: var(--sage);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-.chat-body {
-  padding: 22px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background: var(--surface-2);
-}
+.chat-head .ai-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--sage); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.chat-body { padding: 22px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; background: var(--surface-2); }
 .msg { max-width: 80%; padding: 12px 16px; border-radius: 14px; line-height: 1.55; font-size: 14.5px; }
-.msg.ai { background: var(--surface); align-self: flex-start; border: 1px solid var(--line); }
+.msg.ai { background: var(--surface); align-self: flex-start; border: 1px solid var(--line); border-bottom-left-radius: 4px; }
 .msg.me { background: var(--ink); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-.msg.ai { border-bottom-left-radius: 4px; }
 .msg.ai strong { color: var(--rose); }
-.chat-input {
-  padding: 16px 18px;
-  border-top: 1px solid var(--line);
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.chat-input input {
-  flex: 1;
-  border: 1px solid var(--line);
-  background: var(--surface-2);
-  padding: 12px 14px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-family: inherit;
-  outline: none;
-}
+.chat-input { padding: 16px 18px; border-top: 1px solid var(--line); display: flex; gap: 10px; align-items: center; }
+.chat-input input { flex: 1; border: 1px solid var(--line); background: var(--surface-2); padding: 12px 14px; border-radius: 10px; font-size: 14px; font-family: inherit; outline: none; }
 .chat-input input:focus { border-color: var(--rose); }
-.chat-input button {
-  background: var(--ink);
-  color: white;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-/* ───── 시뮬레이션 컨트롤 ───── */
-.sim-control {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 24px;
-}
-.sim-row {
-  display: grid;
-  grid-template-columns: 160px 1fr 90px;
-  gap: 18px;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px dashed var(--line);
-}
+.chat-input button { background: var(--ink); color: white; padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 14px; }
+.sim-control { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+.sim-row { display: grid; grid-template-columns: 160px 1fr 90px; gap: 18px; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--line); }
 .sim-row:last-child { border-bottom: none; }
 .sim-label { font-weight: 600; font-size: 14px; }
 .sim-label small { display: block; color: var(--ink-3); font-weight: 400; font-size: 12px; }
-.sim-slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 6px;
-  background: var(--surface-2);
-  border-radius: 99px;
-  outline: none;
-}
-.sim-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  background: var(--rose);
-  border-radius: 50%;
-  cursor: pointer;
-  border: 3px solid var(--surface);
-  box-shadow: 0 0 0 1px var(--rose);
-}
-.sim-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: var(--rose);
-  border-radius: 50%;
-  cursor: pointer;
-  border: 3px solid var(--surface);
-  box-shadow: 0 0 0 1px var(--rose);
-}
-.sim-value {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  font-size: 15px;
-}
+.sim-slider { -webkit-appearance: none; width: 100%; height: 6px; background: var(--surface-2); border-radius: 99px; outline: none; }
+.sim-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: var(--rose); border-radius: 50%; cursor: pointer; border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--rose); }
+.sim-slider::-moz-range-thumb { width: 20px; height: 20px; background: var(--rose); border-radius: 50%; cursor: pointer; border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--rose); }
+.sim-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 15px; }
 @media (max-width: 720px) { .sim-row { grid-template-columns: 1fr; } .sim-value { text-align: left; } }
-.sim-output {
-  margin-top: 22px;
-  padding: 20px;
-  background: var(--rose-soft);
-  border-radius: 12px;
-}
+.sim-output { margin-top: 22px; padding: 20px; background: var(--rose-soft); border-radius: 12px; }
 .sim-output h4 { font-size: 13px; color: var(--rose); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
 .sim-output .sim-out-val { font-size: 30px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
 .sim-output .sim-out-note { font-size: 13px; color: var(--ink-2); margin-top: 6px; }
-
-/* ───── 학습 카드 ───── */
-.know-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 24px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
+.know-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; transition: all 0.2s ease; cursor: pointer; }
 .know-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(26,26,46,0.08); }
-.know-card .know-tag {
-  display: inline-block;
-  font-size: 11px;
-  color: var(--ink-2);
-  background: var(--surface-2);
-  padding: 3px 9px;
-  border-radius: 99px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-}
+.know-card .know-tag { display: inline-block; font-size: 11px; color: var(--ink-2); background: var(--surface-2); padding: 3px 9px; border-radius: 99px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 12px; }
 .know-card h3 { font-size: 17px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
 .know-card p { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
 .know-card .know-meta { margin-top: 14px; font-size: 12.5px; color: var(--ink-3); display: flex; gap: 14px; }
-
-/* ───── 푸터 ───── */
-.footer {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 56px 24px 80px;
-  border-top: 1px solid var(--line);
-  margin-top: 56px;
-}
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 40px;
-}
+.footer { max-width: 1240px; margin: 56px auto 0; padding: 56px 24px 80px; border-top: 1px solid var(--line); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
 @media (max-width: 720px) { .footer-grid { grid-template-columns: 1fr; } }
-.footer-tagline {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-  max-width: 380px;
-}
+.footer-tagline { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.4; max-width: 380px; }
 .footer-tagline em { color: var(--rose); font-style: normal; }
 .footer h5 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
 .footer ul { list-style: none; }
 .footer li { font-size: 13.5px; color: var(--ink-2); padding: 4px 0; }
-.footer-bottom {
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
-  display: flex;
-  justify-content: space-between;
-  font-size: 12.5px;
-  color: var(--ink-3);
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-/* ───── 도넛 차트 ───── */
-.donut-wrap {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-}
+.footer-bottom { padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-size: 12.5px; color: var(--ink-3); flex-wrap: wrap; gap: 12px; }
+.donut-wrap { display: flex; align-items: center; gap: 28px; }
 @media (max-width: 720px) { .donut-wrap { flex-direction: column; align-items: flex-start; } }
-.donut {
-  flex-shrink: 0;
-}
-.donut-center {
-  font-size: 13px;
-  fill: var(--ink-2);
-  font-weight: 600;
-}
-.donut-center.big {
-  font-size: 22px;
-  font-weight: 800;
-  fill: var(--ink);
-}
+.donut { flex-shrink: 0; }
+.donut-center { font-size: 13px; fill: var(--ink-2); font-weight: 600; }
+.donut-center.big { font-size: 22px; font-weight: 800; fill: var(--ink); }
 .donut-legend { flex: 1; }
-
-/* ───── 라인 차트 ───── */
-.line-chart {
-  width: 100%;
-  height: 220px;
-}
+.line-chart { width: 100%; height: 220px; }
 .line-chart .area { fill: url(#areaGrad); opacity: 0.5; }
 .line-chart .line { fill: none; stroke: var(--rose); stroke-width: 2.5; }
 .line-chart .point { fill: var(--rose); }
 .line-chart .axis text { font-size: 11px; fill: var(--ink-3); }
 .line-chart .grid-line { stroke: var(--line); stroke-dasharray: 2 3; }
-
-/* ───── 인사이트 카드 ───── */
-.insight {
-  background: linear-gradient(135deg, var(--rose-soft) 0%, var(--gold-soft) 100%);
-  border-radius: var(--radius);
-  padding: 22px;
-  border: 1px solid rgba(216, 138, 145, 0.2);
-}
-.insight-eyebrow {
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--rose);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.insight-text {
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.45;
-  color: var(--ink);
-  letter-spacing: -0.01em;
-}
-.insight-cta {
-  margin-top: 14px;
-  font-size: 13.5px;
-  color: var(--ink-2);
-  font-weight: 600;
-}
+.insight { background: linear-gradient(135deg, var(--rose-soft) 0%, var(--gold-soft) 100%); border-radius: var(--radius); padding: 22px; border: 1px solid rgba(216, 138, 145, 0.2); }
+.insight-eyebrow { font-size: 11.5px; font-weight: 700; color: var(--rose); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.insight-text { font-size: 16px; font-weight: 700; line-height: 1.45; color: var(--ink); letter-spacing: -0.01em; }
+.insight-cta { margin-top: 14px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; }
 .insight-cta::after { content: ' →'; }
-
-/* ───── 헤더의 세대 토글 ───── */
-.gen-switcher {
-  display: flex;
-  gap: 4px;
-  background: var(--surface-2);
-  padding: 4px;
-  border-radius: 10px;
-  margin-bottom: 18px;
-  width: fit-content;
-}
-.gen-switcher button {
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-2);
-}
-.gen-switcher button.active {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-/* ───── 모바일 조정 ───── */
+.gen-switcher { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 10px; margin-bottom: 18px; width: fit-content; }
+.gen-switcher button { padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.gen-switcher button.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.todo-row { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--surface-2); border-radius: 8px; }
+.todo-dot { width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; }
 @media (max-width: 720px) {
   .hero { padding: 48px 20px 40px; }
   .header-inner { padding: 14px 18px; }
@@ -668,7 +178,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </head>
 <body>
 
-<!-- ───── 헤더 ───── -->
 <header class="header">
   <div class="header-inner">
     <div class="brand">
@@ -676,70 +185,68 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       ARBITORIA <span class="brand-sub">Family Office</span>
     </div>
     <div class="header-cta">
-      <button class="btn btn-ghost">로그인</button>
-      <button class="btn btn-primary">시작하기</button>
+      <select id="langSel" aria-label="Language">
+        <option value="ko">한국어</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+      <a class="btn btn-primary" href="/" data-i18n="nav.game">🌳 Dream Simulation</a>
     </div>
   </div>
 </header>
 
-<!-- ───── 히어로 ───── -->
 <section class="hero">
-  <div class="hero-eyebrow">한 사람을 위한 패밀리 오피스</div>
-  <h1 class="hero-title">록펠러 가문의 도구를,<br/><em>한 사람</em>을 위해.</h1>
-  <p class="hero-sub">100년간 부유층만 써온 패밀리 오피스 구조를 — 자산 배분, 세대 계획, 신탁 시뮬레이션, 리스크 헷지 — 한 사람이 직접 운영할 수 있게 옮겼습니다.</p>
+  <div class="hero-eyebrow" data-i18n="hero.eyebrow">한 사람을 위한 패밀리 오피스</div>
+  <h1 class="hero-title" data-i18n="hero.title">록펠러 가문의 도구를,<br/><em>한 사람</em>을 위해.</h1>
+  <p class="hero-sub" data-i18n="hero.sub">100년간 부유층만 써온 패밀리 오피스 구조를 — 자산 배분, 세대 계획, 신탁 시뮬레이션, 리스크 헷지 — 한 사람이 직접 운영할 수 있게 옮겼습니다.</p>
   <div class="hero-cta">
-    <button class="btn btn-primary" style="padding: 13px 24px; font-size: 15px;">데모 들어가기</button>
-    <button class="btn btn-ghost" style="padding: 13px 24px; font-size: 15px;">철학 읽기 →</button>
+    <button class="btn btn-primary" id="demoBtn" style="padding: 13px 24px; font-size: 15px;" data-i18n="hero.demo">데모 들어가기</button>
+    <a class="btn btn-ghost" style="padding: 13px 24px; font-size: 15px;" href="/insights" data-i18n="hero.insights">Dream Index 보기 →</a>
   </div>
-  <div class="hero-foot">
-    아래는 <strong>실제 사용 시나리오</strong> 데모입니다. 샘플 데이터로 미리 클릭해볼 수 있어요.
-  </div>
+  <div class="hero-foot" data-i18n="hero.foot">아래는 <strong>실제 사용 시나리오</strong> 데모입니다. 샘플 데이터로 미리 클릭해볼 수 있어요.</div>
 </section>
 
-<!-- ───── 탭 ───── -->
 <div class="tabs-wrap">
   <div class="tabs" role="tablist">
-    <button class="tab active" data-tab="dashboard">대시보드</button>
-    <button class="tab" data-tab="assets">자산 배분</button>
-    <button class="tab" data-tab="goals">목표 관리</button>
-    <button class="tab" data-tab="generations">세대 계획</button>
-    <button class="tab" data-tab="advisor">AI 상담사</button>
-    <button class="tab" data-tab="simulation">시뮬레이션</button>
-    <button class="tab" data-tab="learn">학습</button>
+    <button class="tab active" data-tab="dashboard" data-i18n="tab.dash">대시보드</button>
+    <button class="tab" data-tab="assets" data-i18n="tab.assets">자산 배분</button>
+    <button class="tab" data-tab="goals" data-i18n="tab.goals">목표 관리</button>
+    <button class="tab" data-tab="generations" data-i18n="tab.gen">세대 계획</button>
+    <button class="tab" data-tab="advisor" data-i18n="tab.ai">AI 상담사</button>
+    <button class="tab" data-tab="simulation" data-i18n="tab.sim">시뮬레이션</button>
+    <button class="tab" data-tab="learn" data-i18n="tab.learn">학습</button>
   </div>
 </div>
 
-<!-- ───── 앱 화면들 ───── -->
 <main class="app-frame">
 
-  <!-- 화면 1: 대시보드 -->
   <section class="screen active" id="screen-dashboard">
     <div class="grid grid-4">
       <div class="card">
-        <div class="card-title">순자산 <span style="color:var(--ink-3); font-weight:400; font-size:12px;">오늘</span></div>
+        <div class="card-title" data-i18n="d.networth">순자산 <span style="color:var(--ink-3); font-weight:400; font-size:12px;">오늘</span></div>
         <div class="card-value">₩5억 2,340만</div>
-        <div class="card-delta">▲ ₩186만 (이번 달)</div>
+        <div class="card-delta" data-i18n="d.networthD">▲ ₩186만 (이번 달)</div>
       </div>
       <div class="card">
-        <div class="card-title">월 현금 흐름</div>
+        <div class="card-title" data-i18n="d.cash">월 현금 흐름</div>
         <div class="card-value">+₩412만</div>
-        <div class="card-delta">▲ 3.2% (전월 대비)</div>
+        <div class="card-delta" data-i18n="d.cashD">▲ 3.2% (전월 대비)</div>
       </div>
       <div class="card">
-        <div class="card-title">유동성 비율</div>
+        <div class="card-title" data-i18n="d.liq">유동성 비율</div>
         <div class="card-value">18.4%</div>
-        <div class="card-delta neg">권장 25% 미달</div>
+        <div class="card-delta neg" data-i18n="d.liqD">권장 25% 미달</div>
       </div>
       <div class="card">
-        <div class="card-title">목표 달성률</div>
+        <div class="card-title" data-i18n="d.goal">목표 달성률</div>
         <div class="card-value">62%</div>
-        <div class="card-delta">4개 중 2개 순항</div>
+        <div class="card-delta" data-i18n="d.goalD">4개 중 2개 순항</div>
       </div>
     </div>
 
     <div class="section-h">
-      <h2>순자산 추이</h2>
-      <p>최근 12개월 · 월 마감 기준</p>
+      <h2 data-i18n="d.trendH">순자산 추이</h2>
+      <p data-i18n="d.trendP">최근 12개월 · 월 마감 기준</p>
     </div>
     <div class="card">
       <svg class="line-chart" viewBox="0 0 700 220" preserveAspectRatio="none">
@@ -749,25 +256,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
             <stop offset="100%" stop-color="#D88A91" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <!-- 그리드 -->
         <line class="grid-line" x1="40" y1="40" x2="680" y2="40"/>
         <line class="grid-line" x1="40" y1="90" x2="680" y2="90"/>
         <line class="grid-line" x1="40" y1="140" x2="680" y2="140"/>
         <line class="grid-line" x1="40" y1="190" x2="680" y2="190"/>
-        <!-- 영역 + 라인 (12개월) -->
         <path class="area" d="M40,160 L93,145 L146,150 L199,128 L252,135 L305,118 L358,108 L411,112 L464,95 L517,82 L570,75 L623,68 L680,52 L680,190 L40,190 Z"/>
         <path class="line" d="M40,160 L93,145 L146,150 L199,128 L252,135 L305,118 L358,108 L411,112 L464,95 L517,82 L570,75 L623,68 L680,52"/>
-        <!-- 점 -->
         <circle class="point" cx="40" cy="160" r="3"/>
         <circle class="point" cx="252" cy="135" r="3"/>
         <circle class="point" cx="464" cy="95" r="3"/>
         <circle class="point" cx="680" cy="52" r="4.5" stroke="white" stroke-width="2"/>
-        <!-- 축 -->
         <g class="axis">
-          <text x="40" y="210">6월</text>
-          <text x="252" y="210">10월</text>
-          <text x="464" y="210">2월</text>
-          <text x="640" y="210">오늘</text>
+          <text x="40" y="210" data-i18n="d.axJun">6월</text>
+          <text x="252" y="210" data-i18n="d.axOct">10월</text>
+          <text x="464" y="210" data-i18n="d.axFeb">2월</text>
+          <text x="640" y="210" data-i18n="d.axNow">오늘</text>
           <text x="0" y="44">5.5억</text>
           <text x="0" y="94">5.0억</text>
           <text x="0" y="144">4.5억</text>
@@ -777,57 +280,51 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     </div>
 
     <div class="section-h">
-      <h2>자산 배분 한눈에</h2>
-      <p>실시간 · 권장과의 편차 표시</p>
+      <h2 data-i18n="d.allocH">자산 배분 한눈에</h2>
+      <p data-i18n="d.allocP">실시간 · 권장과의 편차 표시</p>
     </div>
     <div class="grid grid-2">
       <div class="card">
         <div class="donut-wrap">
           <svg class="donut" width="180" height="180" viewBox="0 0 180 180">
-            <!-- 도넛 차트: 5개 segment -->
             <g transform="translate(90,90)">
-              <!-- 부동산 58% -->
               <circle r="65" fill="none" stroke="#2B3E5A" stroke-width="24" stroke-dasharray="237 408" transform="rotate(-90)"/>
-              <!-- 주식 18% -->
               <circle r="65" fill="none" stroke="#D88A91" stroke-width="24" stroke-dasharray="74 408" stroke-dashoffset="-237" transform="rotate(-90)"/>
-              <!-- 예적금 12% -->
               <circle r="65" fill="none" stroke="#C9A961" stroke-width="24" stroke-dasharray="49 408" stroke-dashoffset="-311" transform="rotate(-90)"/>
-              <!-- 가상자산 6% -->
               <circle r="65" fill="none" stroke="#4A7C59" stroke-width="24" stroke-dasharray="24 408" stroke-dashoffset="-360" transform="rotate(-90)"/>
-              <!-- 기타 6% -->
               <circle r="65" fill="none" stroke="#C97B5A" stroke-width="24" stroke-dasharray="24 408" stroke-dashoffset="-384" transform="rotate(-90)"/>
-              <text class="donut-center" x="0" y="-6" text-anchor="middle">총 자산</text>
+              <text class="donut-center" x="0" y="-6" text-anchor="middle" data-i18n="d.total">총 자산</text>
               <text class="donut-center big" x="0" y="18" text-anchor="middle">5.23억</text>
             </g>
           </svg>
           <div class="donut-legend" style="width:100%;">
             <div class="asset-row" style="padding:9px 0;">
               <div class="asset-dot" style="background:#2B3E5A;"></div>
-              <div class="asset-name">부동산</div>
+              <div class="asset-name" data-i18n="a.re">부동산</div>
               <div class="asset-pct">58%</div>
               <div class="asset-amt">3.03억</div>
             </div>
             <div class="asset-row" style="padding:9px 0;">
               <div class="asset-dot" style="background:#D88A91;"></div>
-              <div class="asset-name">주식·ETF</div>
+              <div class="asset-name" data-i18n="a.stock">주식·ETF</div>
               <div class="asset-pct">18%</div>
               <div class="asset-amt">94백만</div>
             </div>
             <div class="asset-row" style="padding:9px 0;">
               <div class="asset-dot" style="background:#C9A961;"></div>
-              <div class="asset-name">예적금</div>
+              <div class="asset-name" data-i18n="a.dep">예적금</div>
               <div class="asset-pct">12%</div>
               <div class="asset-amt">63백만</div>
             </div>
             <div class="asset-row" style="padding:9px 0;">
               <div class="asset-dot" style="background:#4A7C59;"></div>
-              <div class="asset-name">가상자산</div>
+              <div class="asset-name" data-i18n="a.crypto">가상자산</div>
               <div class="asset-pct">6%</div>
               <div class="asset-amt">31백만</div>
             </div>
             <div class="asset-row" style="padding:9px 0; border:none;">
               <div class="asset-dot" style="background:#C97B5A;"></div>
-              <div class="asset-name">기타</div>
+              <div class="asset-name" data-i18n="a.etc">기타</div>
               <div class="asset-pct">6%</div>
               <div class="asset-amt">31백만</div>
             </div>
@@ -837,407 +334,389 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
       <div class="card">
         <div class="insight" style="margin-bottom:18px;">
-          <div class="insight-eyebrow">AI 인사이트</div>
-          <div class="insight-text">부동산 비중 58%가 권장 범위(40~50%)를 초과합니다. 임대 수익률이 시장 평균보다 1.2%p 낮아, 일부 매각 후 인덱스 ETF 재배분 시 연 1.8%p 수익률 개선이 가능합니다.</div>
-          <div class="insight-cta">시나리오 보기</div>
+          <div class="insight-eyebrow" data-i18n="d.aiTag">AI 인사이트</div>
+          <div class="insight-text" data-i18n="d.aiText">부동산 비중 58%가 권장 범위(40~50%)를 초과합니다. 임대 수익률이 시장 평균보다 1.2%p 낮아, 일부 매각 후 인덱스 ETF 재배분 시 연 1.8%p 수익률 개선이 가능합니다.</div>
+          <div class="insight-cta" data-i18n="d.aiCta">시나리오 보기</div>
         </div>
-        <div class="card-title" style="margin-bottom:14px;">이번 주 해야 할 일</div>
+        <div class="card-title" style="margin-bottom:14px;" data-i18n="d.todoH">이번 주 해야 할 일</div>
         <div style="display:flex; flex-direction:column; gap:10px;">
-          <div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--surface-2); border-radius:8px;">
-            <span style="width:18px; height:18px; border-radius:5px; background:var(--rose); flex-shrink:0;"></span>
-            <span style="font-size:13.5px;">분기 리밸런싱 검토 (마감 5일)</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--surface-2); border-radius:8px;">
-            <span style="width:18px; height:18px; border-radius:5px; background:var(--gold); flex-shrink:0;"></span>
-            <span style="font-size:13.5px;">증여세 신고 검토 — 부친 사전증여 건</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--surface-2); border-radius:8px;">
-            <span style="width:18px; height:18px; border-radius:5px; background:var(--sage); flex-shrink:0;"></span>
-            <span style="font-size:13.5px;">긴급 자금 6개월치 확보 — 80% 진행</span>
-          </div>
+          <div class="todo-row"><span class="todo-dot" style="background:var(--rose);"></span><span style="font-size:13.5px;" data-i18n="d.todo1">분기 리밸런싱 검토 (마감 5일)</span></div>
+          <div class="todo-row"><span class="todo-dot" style="background:var(--gold);"></span><span style="font-size:13.5px;" data-i18n="d.todo2">증여세 신고 검토 — 부친 사전증여 건</span></div>
+          <div class="todo-row"><span class="todo-dot" style="background:var(--sage);"></span><span style="font-size:13.5px;" data-i18n="d.todo3">긴급 자금 6개월치 확보 — 80% 진행</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 화면 2: 자산 배분 -->
   <section class="screen" id="screen-assets">
     <div class="section-h">
-      <h2>자산 상세</h2>
-      <p>현재 vs 권장 · 리밸런싱 제안 포함</p>
+      <h2 data-i18n="as.h">자산 상세</h2>
+      <p data-i18n="as.p">현재 vs 권장 · 리밸런싱 제안 포함</p>
     </div>
     <div class="grid grid-2">
       <div class="card">
-        <div class="card-title">현재 배분</div>
+        <div class="card-title" data-i18n="as.now">현재 배분</div>
         <div style="margin-top:14px;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>부동산</span><strong>58%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span data-i18n="a.re2">부동산</span><strong>58%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:58%; background:#2B3E5A;"></div></div>
-          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span>주식·ETF</span><strong>18%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span data-i18n="a.stock2">주식·ETF</span><strong>18%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:18%; background:#D88A91;"></div></div>
-          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span>예적금</span><strong>12%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span data-i18n="a.dep2">예적금</span><strong>12%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:12%; background:#C9A961;"></div></div>
-          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span>가상자산</span><strong>6%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span data-i18n="a.crypto2">가상자산</span><strong>6%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:6%; background:#4A7C59;"></div></div>
-          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span>기타</span><strong>6%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span data-i18n="a.etc2">기타</span><strong>6%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:6%; background:#C97B5A;"></div></div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title">권장 배분 <span style="color:var(--rose); font-size:11px; font-weight:700;">35세 · 중기 시계</span></div>
+        <div class="card-title" data-i18n="as.rec">권장 배분 <span style="color:var(--rose); font-size:11px; font-weight:700;">35세 · 중기 시계</span></div>
         <div style="margin-top:14px;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>부동산</span><strong>45%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span data-i18n="a.re3">부동산</span><strong>45%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:45%; background:#2B3E5A; opacity:0.6;"></div></div>
-          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span>주식·ETF</span><strong>28%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span data-i18n="a.stock3">주식·ETF</span><strong>28%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:28%; background:#D88A91; opacity:0.6;"></div></div>
-          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span>예적금</span><strong>15%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span data-i18n="a.dep3">예적금</span><strong>15%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:15%; background:#C9A961; opacity:0.6;"></div></div>
-          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span>가상자산</span><strong>5%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span data-i18n="a.crypto3">가상자산</span><strong>5%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:5%; background:#4A7C59; opacity:0.6;"></div></div>
-          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span>기타·헷지</span><strong>7%</strong></div>
+          <div style="display:flex; justify-content:space-between; margin:14px 0 6px;"><span data-i18n="a.hedge">기타·헷지</span><strong>7%</strong></div>
           <div class="bar"><div class="bar-fill" style="width:7%; background:#C97B5A; opacity:0.6;"></div></div>
         </div>
       </div>
     </div>
 
     <div class="section-h">
-      <h2>리밸런싱 제안</h2>
-      <p>최소 거래로 권장 배분에 가장 가까이 도달하는 경로</p>
+      <h2 data-i18n="as.rbH">리밸런싱 제안</h2>
+      <p data-i18n="as.rbP">최소 거래로 권장 배분에 가장 가까이 도달하는 경로</p>
     </div>
     <div class="card">
       <div class="asset-row">
         <div class="asset-dot" style="background:var(--terra);"></div>
-        <div class="asset-name">부동산 일부 매각 <small>임대수익 낮은 비주력 1건</small></div>
+        <div class="asset-name" data-i18n="as.rb1">부동산 일부 매각 <small>임대수익 낮은 비주력 1건</small></div>
         <div class="asset-pct">−6,800만</div>
         <div class="asset-amt" style="color:var(--terra);">−13%</div>
       </div>
       <div class="asset-row">
         <div class="asset-dot" style="background:var(--sage);"></div>
-        <div class="asset-name">글로벌 인덱스 ETF 매수 <small>VT · QQQ · KODEX 200 분산</small></div>
+        <div class="asset-name" data-i18n="as.rb2">글로벌 인덱스 ETF 매수 <small>VT · QQQ · KODEX 200 분산</small></div>
         <div class="asset-pct">+5,200만</div>
         <div class="asset-amt" style="color:var(--sage);">+10%</div>
       </div>
       <div class="asset-row">
         <div class="asset-dot" style="background:var(--sage);"></div>
-        <div class="asset-name">단기 채권형 추가 <small>유동성 + 이자 수익</small></div>
+        <div class="asset-name" data-i18n="as.rb3">단기 채권형 추가 <small>유동성 + 이자 수익</small></div>
         <div class="asset-pct">+1,600만</div>
         <div class="asset-amt" style="color:var(--sage);">+3%</div>
       </div>
     </div>
 
     <div class="section-h">
-      <h2>예상 효과</h2>
-      <p>리밸런싱 시뮬레이션 결과</p>
+      <h2 data-i18n="as.fxH">예상 효과</h2>
+      <p data-i18n="as.fxP">리밸런싱 시뮬레이션 결과</p>
     </div>
     <div class="grid grid-3">
       <div class="card">
-        <div class="card-title">예상 연 수익률</div>
+        <div class="card-title" data-i18n="as.fx1">예상 연 수익률</div>
         <div class="card-value">+1.8<span style="font-size:18px;">%p</span></div>
-        <div class="card-foot">현재 4.6% → 권장 6.4%</div>
+        <div class="card-foot" data-i18n="as.fx1f">현재 4.6% → 권장 6.4%</div>
       </div>
       <div class="card">
-        <div class="card-title">변동성 (표준편차)</div>
+        <div class="card-title" data-i18n="as.fx2">변동성 (표준편차)</div>
         <div class="card-value">−2.1<span style="font-size:18px;">%p</span></div>
-        <div class="card-foot">분산 효과로 리스크 감소</div>
+        <div class="card-foot" data-i18n="as.fx2f">분산 효과로 리스크 감소</div>
       </div>
       <div class="card">
-        <div class="card-title">10년 누적 차이</div>
+        <div class="card-title" data-i18n="as.fx3">10년 누적 차이</div>
         <div class="card-value">+1.4억</div>
-        <div class="card-foot">복리 가정 기준</div>
+        <div class="card-foot" data-i18n="as.fx3f">복리 가정 기준</div>
       </div>
     </div>
   </section>
 
-  <!-- 화면 3: 목표 관리 -->
   <section class="screen" id="screen-goals">
     <div class="section-h">
-      <h2>당신의 목표</h2>
-      <p>4개 진행 중 · 자산-목표 자동 매핑</p>
+      <h2 data-i18n="g.h">당신의 목표</h2>
+      <p data-i18n="g.p">4개 진행 중 · 자산-목표 자동 매핑</p>
     </div>
     <div class="grid grid-2">
       <div class="goal-card">
         <div class="goal-head">
           <div>
-            <h3>은퇴 자금</h3>
-            <div class="goal-meta">목표 ₩8억 · 18년 후 (2044년)</div>
+            <h3 data-i18n="g.1">은퇴 자금</h3>
+            <div class="goal-meta" data-i18n="g.1m">목표 ₩8억 · 18년 후 (2044년)</div>
           </div>
-          <div class="goal-badge">순항</div>
+          <div class="goal-badge" data-i18n="g.ok">순항</div>
         </div>
-        <div class="goal-progress-text"><span>현재 진행</span><strong>3.6억 / 8억</strong></div>
+        <div class="goal-progress-text"><span data-i18n="g.prog">현재 진행</span><strong>3.6억 / 8억</strong></div>
         <div class="bar"><div class="bar-fill" style="width:45%; background:var(--sage);"></div></div>
-        <div class="card-foot">월 75만 추가 적립 시 19년 6개월에 달성. 연 4%p 수익률 가정.</div>
+        <div class="card-foot" data-i18n="g.1f">월 75만 추가 적립 시 19년 6개월에 달성. 연 4%p 수익률 가정.</div>
       </div>
 
       <div class="goal-card">
         <div class="goal-head">
           <div>
-            <h3>자녀 교육 자금</h3>
-            <div class="goal-meta">목표 ₩1억 5,000 · 12년 후</div>
+            <h3 data-i18n="g.2">자녀 교육 자금</h3>
+            <div class="goal-meta" data-i18n="g.2m">목표 ₩1억 5,000 · 12년 후</div>
           </div>
-          <div class="goal-badge">순항</div>
+          <div class="goal-badge" data-i18n="g.ok2">순항</div>
         </div>
-        <div class="goal-progress-text"><span>현재 진행</span><strong>4,200만 / 1.5억</strong></div>
+        <div class="goal-progress-text"><span data-i18n="g.prog2">현재 진행</span><strong>4,200만 / 1.5억</strong></div>
         <div class="bar"><div class="bar-fill" style="width:28%; background:var(--sage);"></div></div>
-        <div class="card-foot">교육 전용 ISA 계좌로 분리 운용 중. 비과세 한도 활용.</div>
+        <div class="card-foot" data-i18n="g.2f">교육 전용 계좌로 분리 운용 중. 비과세 한도 활용.</div>
       </div>
 
       <div class="goal-card">
         <div class="goal-head">
           <div>
-            <h3>주거 업그레이드</h3>
-            <div class="goal-meta">목표 ₩3억 (추가) · 5년 후</div>
+            <h3 data-i18n="g.3">주거 업그레이드</h3>
+            <div class="goal-meta" data-i18n="g.3m">목표 ₩3억 (추가) · 5년 후</div>
           </div>
-          <div class="goal-badge warn">주의</div>
+          <div class="goal-badge warn" data-i18n="g.warn">주의</div>
         </div>
-        <div class="goal-progress-text"><span>현재 진행</span><strong>5,800만 / 3억</strong></div>
+        <div class="goal-progress-text"><span data-i18n="g.prog3">현재 진행</span><strong>5,800만 / 3억</strong></div>
         <div class="bar"><div class="bar-fill" style="width:19%; background:var(--gold);"></div></div>
-        <div class="card-foot">현재 속도로는 7년 8개월. 시계 조정 또는 월 적립액 +60% 필요.</div>
+        <div class="card-foot" data-i18n="g.3f">현재 속도로는 7년 8개월. 시계 조정 또는 월 적립액 +60% 필요.</div>
       </div>
 
       <div class="goal-card">
         <div class="goal-head">
           <div>
-            <h3>사업 시드머니</h3>
-            <div class="goal-meta">목표 ₩1억 · 즉시 가용</div>
+            <h3 data-i18n="g.4">사업 시드머니</h3>
+            <div class="goal-meta" data-i18n="g.4m">목표 ₩1억 · 즉시 가용</div>
           </div>
-          <div class="goal-badge">완료 임박</div>
+          <div class="goal-badge" data-i18n="g.soon">완료 임박</div>
         </div>
-        <div class="goal-progress-text"><span>현재 진행</span><strong>8,800만 / 1억</strong></div>
+        <div class="goal-progress-text"><span data-i18n="g.prog4">현재 진행</span><strong>8,800만 / 1억</strong></div>
         <div class="bar"><div class="bar-fill" style="width:88%; background:var(--sage);"></div></div>
-        <div class="card-foot">유동성 자산으로 분리 보관. 12% 남음.</div>
+        <div class="card-foot" data-i18n="g.4f">유동성 자산으로 분리 보관. 12% 남음.</div>
       </div>
     </div>
 
     <div class="section-h">
-      <h2>한 단계 더</h2>
-      <p>록펠러식 목표 설계 — 목표를 *세대*로 묶기</p>
+      <h2 data-i18n="g.moreH">한 단계 더</h2>
+      <p data-i18n="g.moreP">록펠러식 목표 설계 — 목표를 *세대*로 묶기</p>
     </div>
     <div class="insight">
-      <div class="insight-eyebrow">제안</div>
-      <div class="insight-text">위 4개 목표를 하나의 *가족 펀드*로 묶어 운용하면 — 개별 운용 대비 연 0.7%p 수익률 개선 + 세금 효율 +14%. 록펠러 가문이 100년간 써온 구조를 단일 인격에 적용한 형태입니다.</div>
-      <div class="insight-cta">가족 펀드 만들기</div>
+      <div class="insight-eyebrow" data-i18n="g.insTag">제안</div>
+      <div class="insight-text" data-i18n="g.insText">위 4개 목표를 하나의 *가족 펀드*로 묶어 운용하면 — 개별 운용 대비 연 0.7%p 수익률 개선 + 세금 효율 +14%. 록펠러 가문이 100년간 써온 구조를 단일 인격에 적용한 형태입니다.</div>
+      <div class="insight-cta" data-i18n="g.insCta">가족 펀드 만들기</div>
     </div>
   </section>
 
-  <!-- 화면 4: 세대 계획 -->
   <section class="screen" id="screen-generations">
     <div class="section-h">
-      <h2>3세대 시뮬레이션</h2>
-      <p>지금의 결정이 60년 뒤까지 만드는 곡선</p>
+      <h2 data-i18n="gn.h">3세대 시뮬레이션</h2>
+      <p data-i18n="gn.p">지금의 결정이 60년 뒤까지 만드는 곡선</p>
     </div>
     <div class="gen-switcher">
-      <button class="active">보수형 (연 3%)</button>
-      <button>중립형 (연 5%)</button>
-      <button>적극형 (연 7%)</button>
+      <button class="active" data-i18n="gn.cons">보수형 (연 3%)</button>
+      <button data-i18n="gn.mid">중립형 (연 5%)</button>
+      <button data-i18n="gn.agg">적극형 (연 7%)</button>
     </div>
 
     <div class="gen-track">
       <div class="gen-card">
-        <div class="gen-tag">제 1세대</div>
-        <h4>본인</h4>
-        <div class="gen-when">2026 · 오늘</div>
+        <div class="gen-tag" data-i18n="gn.g1t">제 1세대</div>
+        <h4 data-i18n="gn.g1">본인</h4>
+        <div class="gen-when" data-i18n="gn.g1w">2026 · 오늘</div>
         <div class="gen-amt">₩5.23억</div>
-        <div class="gen-note">현재 순자산. 연 4.6% 수익률, 월 412만 현금 흐름 가정.</div>
+        <div class="gen-note" data-i18n="gn.g1n">현재 순자산. 연 4.6% 수익률, 월 412만 현금 흐름 가정.</div>
       </div>
       <div class="gen-card" style="border-color: var(--rose); background: linear-gradient(180deg, var(--surface) 0%, var(--rose-soft) 100%);">
-        <div class="gen-tag">제 2세대</div>
-        <h4>자녀 (35세)</h4>
-        <div class="gen-when">2056 · 30년 후</div>
+        <div class="gen-tag" data-i18n="gn.g2t">제 2세대</div>
+        <h4 data-i18n="gn.g2">자녀 (35세)</h4>
+        <div class="gen-when" data-i18n="gn.g2w">2056 · 30년 후</div>
         <div class="gen-amt">₩18.6억</div>
-        <div class="gen-note">신탁 구조로 자녀에게 이전. 상속세 최소화 시 + 가족 펀드 복리 효과.</div>
+        <div class="gen-note" data-i18n="gn.g2n">신탁 구조로 자녀에게 이전. 상속세 최소화 시 + 가족 펀드 복리 효과.</div>
       </div>
       <div class="gen-card">
-        <div class="gen-tag">제 3세대</div>
-        <h4>손자녀 (35세)</h4>
-        <div class="gen-when">2086 · 60년 후</div>
+        <div class="gen-tag" data-i18n="gn.g3t">제 3세대</div>
+        <h4 data-i18n="gn.g3">손자녀 (35세)</h4>
+        <div class="gen-when" data-i18n="gn.g3w">2086 · 60년 후</div>
         <div class="gen-amt">₩68.2억</div>
-        <div class="gen-note">3세대 분산 + 복리 + 인플레이션 조정. 록펠러 모델과 동일한 구조.</div>
+        <div class="gen-note" data-i18n="gn.g3n">3세대 분산 + 복리 + 인플레이션 조정. 록펠러 모델과 동일한 구조.</div>
       </div>
     </div>
 
     <div class="section-h">
-      <h2>한 결정의 무게</h2>
-      <p>오늘의 작은 선택이 만드는 60년 뒤의 차이</p>
+      <h2 data-i18n="gn.wH">한 결정의 무게</h2>
+      <p data-i18n="gn.wP">오늘의 작은 선택이 만드는 60년 뒤의 차이</p>
     </div>
     <div class="grid grid-3">
       <div class="card">
-        <div class="card-title">월 30만 추가 적립 시</div>
+        <div class="card-title" data-i18n="gn.w1">월 30만 추가 적립 시</div>
         <div class="card-value">+₩4.8억</div>
-        <div class="card-foot">60년 뒤 손자녀 세대 자산 증가분</div>
+        <div class="card-foot" data-i18n="gn.w1f">60년 뒤 손자녀 세대 자산 증가분</div>
       </div>
       <div class="card">
-        <div class="card-title">세금 최적화 구조 적용 시</div>
+        <div class="card-title" data-i18n="gn.w2">세금 최적화 구조 적용 시</div>
         <div class="card-value">+₩12.4억</div>
-        <div class="card-foot">상속세·증여세 최소화 전략 — 합법 범위 내</div>
+        <div class="card-foot" data-i18n="gn.w2f">상속세·증여세 최소화 전략 — 합법 범위 내</div>
       </div>
       <div class="card">
-        <div class="card-title">아무것도 안 할 때</div>
+        <div class="card-title" data-i18n="gn.w3">아무것도 안 할 때</div>
         <div class="card-value" style="color:var(--terra);">−₩31억</div>
-        <div class="card-foot">인플레이션 4%/년 · 세금 비최적화 가정</div>
+        <div class="card-foot" data-i18n="gn.w3f">인플레이션 4%/년 · 세금 비최적화 가정</div>
       </div>
     </div>
 
     <div class="insight" style="margin-top:24px;">
-      <div class="insight-eyebrow">철학</div>
-      <div class="insight-text">한 사람의 일생만으로는 보이지 않는 곡선이 있습니다. 록펠러 가문이 100년간 작동시킨 구조 — *가족을 단위로, 시간을 자산으로* — 를 한 사람의 결정에 옮긴 것이 이 시뮬레이션입니다.</div>
+      <div class="insight-eyebrow" data-i18n="gn.phTag">철학</div>
+      <div class="insight-text" data-i18n="gn.phText">한 사람의 일생만으로는 보이지 않는 곡선이 있습니다. 록펠러 가문이 100년간 작동시킨 구조 — *가족을 단위로, 시간을 자산으로* — 를 한 사람의 결정에 옮긴 것이 이 시뮬레이션입니다.</div>
     </div>
   </section>
 
-  <!-- 화면 5: AI 상담사 -->
   <section class="screen" id="screen-advisor">
     <div class="section-h">
-      <h2>AI 상담사</h2>
-      <p>당신의 자산 데이터를 기반으로 답하는 패밀리 오피스 전속 어드바이저</p>
+      <h2 data-i18n="ai.h">AI 상담사</h2>
+      <p data-i18n="ai.p">당신의 자산 데이터를 기반으로 답하는 패밀리 오피스 전속 어드바이저</p>
     </div>
     <div class="chat-wrap">
       <div class="chat-head">
         <div class="ai-avatar">AR</div>
         <div>
           <div class="ai-name">Arbitoria Advisor</div>
-          <div class="ai-status">활성 · 당신의 자산 데이터 연결됨</div>
+          <div class="ai-status" data-i18n="ai.status">활성 · 당신의 자산 데이터 연결됨</div>
         </div>
       </div>
       <div class="chat-body" id="chatBody">
-        <div class="msg ai">안녕하세요. 오늘 자산 현황 기준으로 두 가지가 눈에 띕니다 — <strong>부동산 비중 58%</strong>가 권장 범위를 초과하고, <strong>유동성 비율 18%</strong>가 6개월 비상금 권장선보다 낮습니다. 어떤 쪽부터 같이 볼까요?</div>
-        <div class="msg me">유동성부터요. 지금 어떻게 늘려요?</div>
-        <div class="msg ai">현금 흐름 분석상 월 +412만의 잉여가 있습니다. 향후 3개월간 이 중 <strong>월 300만을 단기 채권형 ETF</strong>(예: TIGER 단기채권액티브)로 옮기면 6개월차에 유동성 비율이 24.8%로 회복되어 권장선에 진입합니다. 동시에 부동산 일부 매각 시점을 6개월 뒤로 조정하면 — 그 매각 자금이 자연스럽게 인덱스 ETF로 흘러들어가 리밸런싱이 한 사이클에 끝납니다.</div>
-        <div class="msg ai">이 시나리오 적용 시 <strong>10년 후 누적 차이가 +1.4억</strong>입니다. 시나리오를 저장하고 진행할까요?</div>
-        <div class="msg me">증여세 신고 건은요?</div>
-        <div class="msg ai">부친 사전증여 5,000만원 건은 <strong>5년 누적 면세 한도(5천만원) 안</strong>입니다. 신고 후 자녀 명의 ISA 계좌로 입금하면 — 향후 운용 수익도 비과세 한도 안에서 보호됩니다. 12분이면 끝나는 작업이고, 가이드 보여드릴까요?</div>
+        <div class="msg ai" data-i18n="ai.m1">안녕하세요. 오늘 자산 현황 기준으로 두 가지가 눈에 띕니다 — <strong>부동산 비중 58%</strong>가 권장 범위를 초과하고, <strong>유동성 비율 18%</strong>가 6개월 비상금 권장선보다 낮습니다. 어떤 쪽부터 같이 볼까요?</div>
+        <div class="msg me" data-i18n="ai.m2">유동성부터요. 지금 어떻게 늘려요?</div>
+        <div class="msg ai" data-i18n="ai.m3">현금 흐름 분석상 월 +412만의 잉여가 있습니다. 향후 3개월간 이 중 <strong>월 300만을 단기 채권형 ETF</strong>로 옮기면 6개월차에 유동성 비율이 24.8%로 회복되어 권장선에 진입합니다. 동시에 부동산 일부 매각 시점을 6개월 뒤로 조정하면 — 그 매각 자금이 자연스럽게 인덱스 ETF로 흘러들어가 리밸런싱이 한 사이클에 끝납니다.</div>
+        <div class="msg ai" data-i18n="ai.m4">이 시나리오 적용 시 <strong>10년 후 누적 차이가 +1.4억</strong>입니다. 시나리오를 저장하고 진행할까요?</div>
+        <div class="msg me" data-i18n="ai.m5">증여세 신고 건은요?</div>
+        <div class="msg ai" data-i18n="ai.m6">부친 사전증여 5,000만원 건은 <strong>5년 누적 면세 한도 안</strong>입니다. 신고 후 자녀 명의 계좌로 입금하면 — 향후 운용 수익도 비과세 한도 안에서 보호됩니다. 12분이면 끝나는 작업이고, 가이드 보여드릴까요?</div>
       </div>
       <div class="chat-input">
-        <input type="text" placeholder="자산·세금·은퇴 — 무엇이든 물어보세요" />
-        <button>보내기</button>
+        <input type="text" id="chatInput" placeholder="자산·세금·은퇴 — 무엇이든 물어보세요" />
+        <button data-i18n="ai.send">보내기</button>
       </div>
     </div>
   </section>
 
-  <!-- 화면 6: 시뮬레이션 -->
   <section class="screen" id="screen-simulation">
     <div class="section-h">
-      <h2>시나리오 시뮬레이션</h2>
-      <p>변수 한두 개만 바꿔 60년 곡선을 다시 그려봅니다</p>
+      <h2 data-i18n="s.h">시나리오 시뮬레이션</h2>
+      <p data-i18n="s.p">변수 한두 개만 바꿔 60년 곡선을 다시 그려봅니다</p>
     </div>
     <div class="sim-control">
       <div class="sim-row">
-        <div class="sim-label">월 적립액<small>현재 +200만</small></div>
+        <div class="sim-label" data-i18n="s.contrib">월 적립액<small>현재 +200만</small></div>
         <input type="range" class="sim-slider" min="0" max="1000" value="200" data-sim="contrib"/>
         <div class="sim-value" data-out="contrib">200만</div>
       </div>
       <div class="sim-row">
-        <div class="sim-label">목표 수익률<small>연평균</small></div>
+        <div class="sim-label" data-i18n="s.return">목표 수익률<small>연평균</small></div>
         <input type="range" class="sim-slider" min="2" max="12" value="5" step="0.5" data-sim="return"/>
         <div class="sim-value" data-out="return">5.0%</div>
       </div>
       <div class="sim-row">
-        <div class="sim-label">시간 시계<small>년</small></div>
+        <div class="sim-label" data-i18n="s.years">시간 시계<small>년</small></div>
         <input type="range" class="sim-slider" min="5" max="60" value="30" data-sim="years"/>
         <div class="sim-value" data-out="years">30년</div>
       </div>
       <div class="sim-row">
-        <div class="sim-label">세금 효율<small>구조 최적화 시</small></div>
+        <div class="sim-label" data-i18n="s.tax">세금 효율<small>구조 최적화 시</small></div>
         <input type="range" class="sim-slider" min="0" max="30" value="14" data-sim="tax"/>
         <div class="sim-value" data-out="tax">+14%</div>
       </div>
 
       <div class="sim-output">
-        <h4>예상 자산 (시뮬레이션)</h4>
-        <div class="sim-out-val" id="simResult">₩31억 4,820만</div>
-        <div class="sim-out-note" id="simNote">기준 시나리오 대비 +₩12.8억. 슬라이더를 움직여 결과를 다시 계산해보세요.</div>
+        <h4 data-i18n="s.outH">예상 자산 (시뮬레이션)</h4>
+        <div class="sim-out-val" id="simResult">₩31.4억</div>
+        <div class="sim-out-note" id="simNote"></div>
       </div>
     </div>
 
     <div class="section-h">
-      <h2>리스크 스트레스 테스트</h2>
-      <p>역사적 충격 시나리오에서 포트폴리오가 어떻게 견디는지</p>
+      <h2 data-i18n="s.stH">리스크 스트레스 테스트</h2>
+      <p data-i18n="s.stP">역사적 충격 시나리오에서 포트폴리오가 어떻게 견디는지</p>
     </div>
     <div class="grid grid-3">
       <div class="card">
-        <div class="card-title">코로나 충격 (2020.3)</div>
+        <div class="card-title" data-i18n="s.st1">코로나 충격 (2020.3)</div>
         <div class="card-value" style="color:var(--terra);">−13.4%</div>
-        <div class="card-foot">실제 시장 −34% 대비 양호. 부동산·예적금 비중이 완충.</div>
+        <div class="card-foot" data-i18n="s.st1f">실제 시장 −34% 대비 양호. 부동산·예적금 비중이 완충.</div>
       </div>
       <div class="card">
-        <div class="card-title">금융위기 (2008)</div>
+        <div class="card-title" data-i18n="s.st2">금융위기 (2008)</div>
         <div class="card-value" style="color:var(--terra);">−18.7%</div>
-        <div class="card-foot">12개월 회복 예상. 비상금 6개월치 확보가 핵심.</div>
+        <div class="card-foot" data-i18n="s.st2f">12개월 회복 예상. 비상금 6개월치 확보가 핵심.</div>
       </div>
       <div class="card">
-        <div class="card-title">고인플레이션 (1970s)</div>
+        <div class="card-title" data-i18n="s.st3">고인플레이션 (1970s)</div>
         <div class="card-value" style="color:var(--terra);">−9.1%</div>
-        <div class="card-foot">실물자산·인덱스 비중이 명목가치 보존. 채권 비중 줄여야.</div>
+        <div class="card-foot" data-i18n="s.st3f">실물자산·인덱스 비중이 명목가치 보존. 채권 비중 줄여야.</div>
       </div>
     </div>
   </section>
 
-  <!-- 화면 7: 학습 -->
   <section class="screen" id="screen-learn">
     <div class="section-h">
-      <h2>학습 — 패밀리 오피스 원리</h2>
-      <p>록펠러 가문이 100년간 작동시킨 구조를 한 사람의 언어로</p>
+      <h2 data-i18n="l.h">학습 — 패밀리 오피스 원리</h2>
+      <p data-i18n="l.p">록펠러 가문이 100년간 작동시킨 구조를 한 사람의 언어로</p>
     </div>
     <div class="grid grid-3">
       <div class="know-card">
-        <div class="know-tag">원리 #1</div>
-        <h3>가족을 단위로 본다</h3>
-        <p>개인이 아니라 *가족*이 자산의 주체. 결정도, 위험도, 수익도 가족 단위로 흐릅니다. 한 사람의 일생만으로는 보이지 않는 구조.</p>
-        <div class="know-meta"><span>읽기 4분</span><span>·</span><span>록펠러 케이스</span></div>
+        <div class="know-tag" data-i18n="l.t1">원리 #1</div>
+        <h3 data-i18n="l.k1">가족을 단위로 본다</h3>
+        <p data-i18n="l.k1p">개인이 아니라 *가족*이 자산의 주체. 결정도, 위험도, 수익도 가족 단위로 흐릅니다. 한 사람의 일생만으로는 보이지 않는 구조.</p>
+        <div class="know-meta"><span data-i18n="l.k1m">읽기 4분 · 록펠러 케이스</span></div>
       </div>
       <div class="know-card">
-        <div class="know-tag">원리 #2</div>
-        <h3>시간을 자산으로 본다</h3>
-        <p>수익률보다 *시계*가 중요합니다. 30년 시계는 5년 시계와 다른 도구를 씁니다. 패밀리 오피스가 단기 트레이딩을 하지 않는 이유.</p>
-        <div class="know-meta"><span>읽기 6분</span><span>·</span><span>시간 역전 원리</span></div>
+        <div class="know-tag" data-i18n="l.t2">원리 #2</div>
+        <h3 data-i18n="l.k2">시간을 자산으로 본다</h3>
+        <p data-i18n="l.k2p">수익률보다 *시계*가 중요합니다. 30년 시계는 5년 시계와 다른 도구를 씁니다. 패밀리 오피스가 단기 트레이딩을 하지 않는 이유.</p>
+        <div class="know-meta"><span data-i18n="l.k2m">읽기 6분 · 시간 역전 원리</span></div>
       </div>
       <div class="know-card">
-        <div class="know-tag">원리 #3</div>
-        <h3>구조가 의지보다 강하다</h3>
-        <p>의지에 의존하면 무너집니다. 신탁·계좌 분리·자동화 같은 *구조*가 무의식의 영역에서 결정을 대신해줍니다.</p>
-        <div class="know-meta"><span>읽기 5분</span><span>·</span><span>주권적 필터</span></div>
+        <div class="know-tag" data-i18n="l.t3">원리 #3</div>
+        <h3 data-i18n="l.k3">구조가 의지보다 강하다</h3>
+        <p data-i18n="l.k3p">의지에 의존하면 무너집니다. 신탁·계좌 분리·자동화 같은 *구조*가 무의식의 영역에서 결정을 대신해줍니다.</p>
+        <div class="know-meta"><span data-i18n="l.k3m">읽기 5분 · 주권적 필터</span></div>
       </div>
       <div class="know-card">
-        <div class="know-tag">원리 #4</div>
-        <h3>세금은 설계의 일부</h3>
-        <p>세금을 *내고 남은 것*이 아니라 *세금을 어떻게 흐르게 할지*가 자산의 일부. 합법 범위 내 최적화는 자산 자체의 일부입니다.</p>
-        <div class="know-meta"><span>읽기 8분</span><span>·</span><span>상속·증여 가이드</span></div>
+        <div class="know-tag" data-i18n="l.t4">원리 #4</div>
+        <h3 data-i18n="l.k4">세금은 설계의 일부</h3>
+        <p data-i18n="l.k4p">세금을 *내고 남은 것*이 아니라 *세금을 어떻게 흐르게 할지*가 자산의 일부. 합법 범위 내 최적화는 자산 자체의 일부입니다.</p>
+        <div class="know-meta"><span data-i18n="l.k4m">읽기 8분 · 상속·증여 가이드</span></div>
       </div>
       <div class="know-card">
-        <div class="know-tag">원리 #5</div>
-        <h3>분산은 자산군이 아니라 결정 주체에서 온다</h3>
-        <p>같은 사람이 모든 결정을 내리면 분산이 아닙니다. AI·자문가·시스템으로 *결정의 주체*를 분산시키는 것이 진짜 분산.</p>
-        <div class="know-meta"><span>읽기 5분</span><span>·</span><span>또 다른 하나</span></div>
+        <div class="know-tag" data-i18n="l.t5">원리 #5</div>
+        <h3 data-i18n="l.k5">분산은 결정 주체에서 온다</h3>
+        <p data-i18n="l.k5p">같은 사람이 모든 결정을 내리면 분산이 아닙니다. AI·자문가·시스템으로 *결정의 주체*를 분산시키는 것이 진짜 분산.</p>
+        <div class="know-meta"><span data-i18n="l.k5m">읽기 5분 · 또 다른 하나</span></div>
       </div>
       <div class="know-card">
-        <div class="know-tag">원리 #6</div>
-        <h3>리스크는 피하는 게 아니라 *위치시키는* 것</h3>
-        <p>리스크 자체를 없애려 하지 마세요. 어디에 둘지, 누가 질지, 언제 받을지 — 그 *자리*만 정확하면 리스크는 기회가 됩니다.</p>
-        <div class="know-meta"><span>읽기 6분</span><span>·</span><span>각득기소</span></div>
+        <div class="know-tag" data-i18n="l.t6">원리 #6</div>
+        <h3 data-i18n="l.k6">리스크는 위치시키는 것</h3>
+        <p data-i18n="l.k6p">리스크 자체를 없애려 하지 마세요. 어디에 둘지, 누가 질지, 언제 받을지 — 그 *자리*만 정확하면 리스크는 기회가 됩니다.</p>
+        <div class="know-meta"><span data-i18n="l.k6m">읽기 6분 · 각득기소</span></div>
       </div>
     </div>
 
     <div class="section-h">
-      <h2>케이스 스터디</h2>
-      <p>실제 가문이 작동시킨 방식</p>
+      <h2 data-i18n="l.csH">케이스 스터디</h2>
+      <p data-i18n="l.csP">실제 가문이 작동시킨 방식</p>
     </div>
     <div class="grid grid-2">
       <div class="know-card">
-        <div class="know-tag">록펠러 가문 · 1882~</div>
-        <h3>3.5달러에서 시작해 6세대를 건너간 구조</h3>
-        <p>존 D. 록펠러가 1882년에 만든 첫 패밀리 오피스의 핵심은 *재산의 운용*이 아니라 *재산의 자리*를 설계한 것이었습니다. 신탁·재단·세대 분배의 원형.</p>
-        <div class="know-meta"><span>읽기 12분</span></div>
+        <div class="know-tag" data-i18n="l.c1t">록펠러 가문 · 1882~</div>
+        <h3 data-i18n="l.c1">3.5달러에서 시작해 6세대를 건너간 구조</h3>
+        <p data-i18n="l.c1p">존 D. 록펠러가 1882년에 만든 첫 패밀리 오피스의 핵심은 *재산의 운용*이 아니라 *재산의 자리*를 설계한 것이었습니다. 신탁·재단·세대 분배의 원형.</p>
       </div>
       <div class="know-card">
-        <div class="know-tag">월튼 가문 · 1962~</div>
-        <h3>월마트 지분을 *가족 단위*로 묶은 결정</h3>
-        <p>샘 월튼이 사망 전 가족 합의로 만든 지주 구조. 한 가족이 미국 최대 부호 가문이 된 메커니즘은 *수익*이 아니라 *구조*에서 왔습니다.</p>
-        <div class="know-meta"><span>읽기 9분</span></div>
+        <div class="know-tag" data-i18n="l.c2t">월튼 가문 · 1962~</div>
+        <h3 data-i18n="l.c2">월마트 지분을 *가족 단위*로 묶은 결정</h3>
+        <p data-i18n="l.c2p">샘 월튼이 사망 전 가족 합의로 만든 지주 구조. 한 가족이 미국 최대 부호 가문이 된 메커니즘은 *수익*이 아니라 *구조*에서 왔습니다.</p>
       </div>
     </div>
   </section>
 
 </main>
 
-<!-- ───── 푸터 ───── -->
 <footer class="footer">
   <div class="footer-grid">
     <div>
@@ -1245,92 +724,335 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <div class="brand-mark">A</div>
         ARBITORIA <span class="brand-sub">Family Office</span>
       </div>
-      <div class="footer-tagline">
+      <div class="footer-tagline" data-i18n="f.tag">
         <em>"이용도 또 다른 의미의 바꿈이다."</em><br/>
         록펠러 가문의 도구를 한 사람을 위해 옮기는 일.
       </div>
     </div>
     <div>
-      <h5>제품</h5>
+      <h5 data-i18n="f.prodH">제품</h5>
       <ul>
-        <li>대시보드</li>
-        <li>자산 배분</li>
-        <li>세대 시뮬레이션</li>
-        <li>AI 상담사</li>
+        <li data-i18n="f.p1">대시보드</li>
+        <li data-i18n="f.p2">자산 배분</li>
+        <li data-i18n="f.p3">세대 시뮬레이션</li>
+        <li data-i18n="f.p4">AI 상담사</li>
       </ul>
     </div>
     <div>
-      <h5>철학</h5>
+      <h5 data-i18n="f.ecoH">함께 보기</h5>
       <ul>
-        <li>매니페스토 — 피라미드 재구성</li>
-        <li>30일 공개 일지</li>
-        <li>GitHub: Arbitoria/LifeBite</li>
+        <li><a href="/" data-i18n="f.e1">🌳 Dream Simulation — 꿈 그리기</a></li>
+        <li><a href="/insights" data-i18n="f.e2">🌍 Dream Index — 모두의 꿈</a></li>
         <li>X: @Arbitoria</li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div>© 2026 ARBITORIA · 매니페스토 + 도구</div>
-    <div>arbitoria.com · 한 사람을 위한 패밀리 오피스</div>
+    <div data-i18n="f.b1">© 2026 ARBITORIA · 매니페스토 + 도구</div>
+    <div data-i18n="f.b2">arbitoria.com · 한 사람을 위한 패밀리 오피스</div>
   </div>
 </footer>
 
 <script>
-// 탭 전환
+'use strict';
+/* ═══ i18n — 한국어는 마크업 원문을 런타임 캡처, en/fr 사전만 정의 ═══ */
+const EN = {
+  'nav.game': '🌳 Dream Simulation',
+  'hero.eyebrow': 'A family office for one person',
+  'hero.title': 'The Rockefellers’ tools,<br/>for <em>one person</em>.',
+  'hero.sub': 'For a century, only the wealthy ran family offices — asset allocation, generational planning, trust simulation, risk hedging. We moved that structure into one person’s hands.',
+  'hero.demo': 'Enter the demo', 'hero.insights': 'See the Dream Index →',
+  'hero.foot': 'Below is a <strong>real usage scenario</strong> demo with sample data — click around freely.',
+  'tab.dash': 'Dashboard', 'tab.assets': 'Allocation', 'tab.goals': 'Goals', 'tab.gen': 'Generations', 'tab.ai': 'AI Advisor', 'tab.sim': 'Simulation', 'tab.learn': 'Learn',
+  'd.networth': 'Net worth <span style="color:var(--ink-3); font-weight:400; font-size:12px;">today</span>', 'd.networthD': '▲ ₩1.86M (this month)',
+  'd.cash': 'Monthly cash flow', 'd.cashD': '▲ 3.2% (vs last month)',
+  'd.liq': 'Liquidity ratio', 'd.liqD': 'Below the 25% guideline',
+  'd.goal': 'Goal progress', 'd.goalD': '2 of 4 on track',
+  'd.trendH': 'Net worth trend', 'd.trendP': 'Last 12 months · month-end',
+  'd.axJun': 'Jun', 'd.axOct': 'Oct', 'd.axFeb': 'Feb', 'd.axNow': 'Today',
+  'd.allocH': 'Allocation at a glance', 'd.allocP': 'Live · deviation vs recommended',
+  'd.total': 'Total assets',
+  'a.re': 'Real estate', 'a.stock': 'Stocks·ETF', 'a.dep': 'Deposits', 'a.crypto': 'Crypto', 'a.etc': 'Other',
+  'a.re2': 'Real estate', 'a.stock2': 'Stocks·ETF', 'a.dep2': 'Deposits', 'a.crypto2': 'Crypto', 'a.etc2': 'Other',
+  'a.re3': 'Real estate', 'a.stock3': 'Stocks·ETF', 'a.dep3': 'Deposits', 'a.crypto3': 'Crypto', 'a.hedge': 'Other·hedge',
+  'd.aiTag': 'AI insight',
+  'd.aiText': 'Real estate at 58% exceeds the recommended 40–50%. Rental yield trails the market by 1.2%p — selling part and reallocating to index ETFs could improve returns by 1.8%p a year.',
+  'd.aiCta': 'View scenario', 'd.todoH': 'This week',
+  'd.todo1': 'Quarterly rebalancing review (due in 5 days)', 'd.todo2': 'Gift-tax filing review — father’s advance gift', 'd.todo3': 'Secure 6 months of emergency funds — 80% done',
+  'as.h': 'Asset detail', 'as.p': 'Current vs recommended · with rebalancing proposal',
+  'as.now': 'Current allocation', 'as.rec': 'Recommended <span style="color:var(--rose); font-size:11px; font-weight:700;">age 35 · mid horizon</span>',
+  'as.rbH': 'Rebalancing proposal', 'as.rbP': 'The path closest to target with minimal trades',
+  'as.rb1': 'Sell part of real estate <small>one low-yield non-core property</small>',
+  'as.rb2': 'Buy global index ETFs <small>VT · QQQ · KODEX 200 spread</small>',
+  'as.rb3': 'Add short-term bonds <small>liquidity + interest income</small>',
+  'as.fxH': 'Expected effect', 'as.fxP': 'Rebalancing simulation results',
+  'as.fx1': 'Expected annual return', 'as.fx1f': 'Now 4.6% → recommended 6.4%',
+  'as.fx2': 'Volatility (std dev)', 'as.fx2f': 'Risk reduced via diversification',
+  'as.fx3': '10-year cumulative gap', 'as.fx3f': 'Compound assumption',
+  'g.h': 'Your goals', 'g.p': '4 in progress · assets auto-mapped to goals',
+  'g.1': 'Retirement fund', 'g.1m': 'Target ₩800M · in 18 years (2044)', 'g.ok': 'On track', 'g.prog': 'Progress',
+  'g.1f': 'Adding ₩750K/mo reaches it in 19y 6m. Assumes 4%p annual return.',
+  'g.2': 'Children’s education', 'g.2m': 'Target ₩150M · in 12 years', 'g.ok2': 'On track', 'g.prog2': 'Progress',
+  'g.2f': 'Run separately in an education account. Tax-free allowance in use.',
+  'g.3': 'Housing upgrade', 'g.3m': 'Target ₩300M (extra) · in 5 years', 'g.warn': 'Watch', 'g.prog3': 'Progress',
+  'g.3f': 'At current pace: 7y 8m. Adjust the horizon or add +60% monthly.',
+  'g.4': 'Business seed money', 'g.4m': 'Target ₩100M · liquid', 'g.soon': 'Almost done', 'g.prog4': 'Progress',
+  'g.4f': 'Held separately in liquid assets. 12% to go.',
+  'g.moreH': 'One step further', 'g.moreP': 'Rockefeller-style design — bundle goals by *generation*',
+  'g.insTag': 'Proposal',
+  'g.insText': 'Bundle the 4 goals into one *family fund* — +0.7%p annual return vs separate management, +14% tax efficiency. The structure the Rockefellers ran for a century, applied to a single person.',
+  'g.insCta': 'Create a family fund',
+  'gn.h': '3-generation simulation', 'gn.p': 'The curve today’s decisions draw 60 years out',
+  'gn.cons': 'Conservative (3%/yr)', 'gn.mid': 'Neutral (5%/yr)', 'gn.agg': 'Aggressive (7%/yr)',
+  'gn.g1t': '1st generation', 'gn.g1': 'You', 'gn.g1w': '2026 · today',
+  'gn.g1n': 'Current net worth. Assumes 4.6% return, ₩4.12M monthly cash flow.',
+  'gn.g2t': '2nd generation', 'gn.g2': 'Child (35)', 'gn.g2w': '2056 · in 30 years',
+  'gn.g2n': 'Transferred via trust. With inheritance tax minimized + family-fund compounding.',
+  'gn.g3t': '3rd generation', 'gn.g3': 'Grandchild (35)', 'gn.g3w': '2086 · in 60 years',
+  'gn.g3n': '3-generation spread + compounding + inflation-adjusted. Same structure as the Rockefeller model.',
+  'gn.wH': 'The weight of one decision', 'gn.wP': 'What a small choice today becomes in 60 years',
+  'gn.w1': 'Add ₩300K a month', 'gn.w1f': 'Added grandchild-generation assets in 60 years',
+  'gn.w2': 'Apply tax-optimized structure', 'gn.w2f': 'Inheritance & gift tax minimized — fully legal',
+  'gn.w3': 'Do nothing', 'gn.w3f': 'Assumes 4%/yr inflation · no tax optimization',
+  'gn.phTag': 'Philosophy',
+  'gn.phText': 'Some curves are invisible within one lifetime. This simulation moves the structure the Rockefellers ran for a century — *family as the unit, time as the asset* — into one person’s decisions.',
+  'ai.h': 'AI Advisor', 'ai.p': 'A dedicated family-office advisor that answers from your own data',
+  'ai.status': 'Active · connected to your asset data',
+  'ai.m1': 'Hello. Two things stand out today — <strong>real estate at 58%</strong> exceeds the recommended range, and <strong>liquidity at 18%</strong> is below the 6-month emergency guideline. Which shall we look at first?',
+  'ai.m2': 'Liquidity first. How do I raise it?',
+  'ai.m3': 'Your cash flow shows a +₩4.12M monthly surplus. Moving <strong>₩3M/mo into short-term bond ETFs</strong> for 3 months lifts liquidity to 24.8% by month 6 — back inside the guideline. Delay the property sale by 6 months and the proceeds flow straight into index ETFs, completing the rebalance in one cycle.',
+  'ai.m4': 'This scenario adds <strong>+₩140M over 10 years</strong>. Save it and proceed?',
+  'ai.m5': 'What about the gift-tax filing?',
+  'ai.m6': 'Your father’s ₩50M advance gift is <strong>within the 5-year exemption</strong>. File it, deposit into the child’s account, and future returns stay protected within the tax-free allowance. A 12-minute task — want the guide?',
+  'ai.send': 'Send',
+  's.h': 'Scenario simulation', 's.p': 'Change one or two variables and redraw the 60-year curve',
+  's.contrib': 'Monthly contribution<small>now +₩2M</small>', 's.return': 'Target return<small>annual avg</small>',
+  's.years': 'Time horizon<small>years</small>', 's.tax': 'Tax efficiency<small>with structure</small>',
+  's.outH': 'Projected assets (simulation)',
+  's.stH': 'Risk stress test', 's.stP': 'How the portfolio holds up under historical shocks',
+  's.st1': 'COVID shock (2020.3)', 's.st1f': 'Better than the market’s −34%. Real estate & deposits cushioned.',
+  's.st2': 'Financial crisis (2008)', 's.st2f': '12-month recovery expected. 6 months of emergency funds is key.',
+  's.st3': 'High inflation (1970s)', 's.st3f': 'Real assets & index preserve nominal value. Trim bonds.',
+  'l.h': 'Learn — family office principles', 'l.p': 'A century of Rockefeller structure, in one person’s language',
+  'l.t1': 'Principle #1', 'l.k1': 'See the family as the unit',
+  'l.k1p': 'Not the individual — the *family* owns the assets. Decisions, risk, and returns flow at the family level. A structure invisible within one lifetime.',
+  'l.k1m': '4 min read · Rockefeller case',
+  'l.t2': 'Principle #2', 'l.k2': 'See time as an asset',
+  'l.k2p': 'The *horizon* matters more than the return. A 30-year clock uses different tools than a 5-year one. Why family offices don’t day-trade.',
+  'l.k2m': '6 min read · time inversion',
+  'l.t3': 'Principle #3', 'l.k3': 'Structure beats willpower',
+  'l.k3p': 'Willpower collapses. Trusts, separated accounts, automation — *structure* makes the decision for you, below consciousness.',
+  'l.k3m': '5 min read · the sovereign filter',
+  'l.t4': 'Principle #4', 'l.k4': 'Tax is part of the design',
+  'l.k4p': 'Not *what’s left after tax* but *how tax flows* is part of the asset. Legal optimization is part of the asset itself.',
+  'l.k4m': '8 min read · inheritance & gifting',
+  'l.t5': 'Principle #5', 'l.k5': 'Diversify the decision-maker',
+  'l.k5p': 'If one person makes every decision, that isn’t diversification. Spreading the *decision-maker* — AI, advisors, systems — is the real spread.',
+  'l.k5m': '5 min read · the other one',
+  'l.t6': 'Principle #6', 'l.k6': 'Risk is to be positioned',
+  'l.k6p': 'Don’t try to eliminate risk. Where it sits, who bears it, when it pays — get the *position* right and risk becomes opportunity.',
+  'l.k6m': '6 min read · each in its place',
+  'l.csH': 'Case studies', 'l.csP': 'How real families ran it',
+  'l.c1t': 'Rockefeller family · 1882~', 'l.c1': 'From $3.50 to a structure crossing six generations',
+  'l.c1p': 'The heart of John D. Rockefeller’s first family office (1882) wasn’t *managing* the fortune but designing its *place*. The prototype of trusts, foundations, and generational distribution.',
+  'l.c2t': 'Walton family · 1962~', 'l.c2': 'Binding the Walmart stake at the *family* level',
+  'l.c2p': 'The holding structure Sam Walton agreed with his family before his death. The mechanism that made one family America’s richest came from *structure*, not returns.',
+  'f.tag': '<em>"To use is also to change."</em><br/>Moving the Rockefellers’ tools to one person.',
+  'f.prodH': 'Product', 'f.p1': 'Dashboard', 'f.p2': 'Asset allocation', 'f.p3': 'Generational simulation', 'f.p4': 'AI advisor',
+  'f.ecoH': 'Explore', 'f.e1': '🌳 Dream Simulation — draw your dream', 'f.e2': '🌍 Dream Index — everyone’s dreams',
+  'f.b1': '© 2026 ARBITORIA · manifesto + tools', 'f.b2': 'arbitoria.com · a family office for one person',
+};
+const FR = {
+  'nav.game': '🌳 Dream Simulation',
+  'hero.eyebrow': 'Un family office pour une seule personne',
+  'hero.title': 'Les outils des Rockefeller,<br/>pour <em>une personne</em>.',
+  'hero.sub': 'Pendant un siècle, seuls les plus fortunés avaient un family office — allocation d’actifs, plan générationnel, simulation de trust, couverture du risque. Nous avons mis cette structure entre les mains d’une seule personne.',
+  'hero.demo': 'Entrer dans la démo', 'hero.insights': 'Voir le Dream Index →',
+  'hero.foot': 'Ci-dessous : une démo de <strong>scénario réel</strong> avec des données d’exemple — cliquez librement.',
+  'tab.dash': 'Tableau de bord', 'tab.assets': 'Allocation', 'tab.goals': 'Objectifs', 'tab.gen': 'Générations', 'tab.ai': 'Conseiller IA', 'tab.sim': 'Simulation', 'tab.learn': 'Apprendre',
+  'd.networth': 'Patrimoine net <span style="color:var(--ink-3); font-weight:400; font-size:12px;">aujourd’hui</span>', 'd.networthD': '▲ ₩1,86M (ce mois)',
+  'd.cash': 'Flux mensuel', 'd.cashD': '▲ 3,2% (vs mois dernier)',
+  'd.liq': 'Ratio de liquidité', 'd.liqD': 'Sous la recommandation de 25%',
+  'd.goal': 'Avancement des objectifs', 'd.goalD': '2 sur 4 en bonne voie',
+  'd.trendH': 'Évolution du patrimoine', 'd.trendP': '12 derniers mois · fin de mois',
+  'd.axJun': 'Juin', 'd.axOct': 'Oct', 'd.axFeb': 'Fév', 'd.axNow': 'Auj.',
+  'd.allocH': 'Allocation en un coup d’œil', 'd.allocP': 'En direct · écart vs recommandé',
+  'd.total': 'Actifs totaux',
+  'a.re': 'Immobilier', 'a.stock': 'Actions·ETF', 'a.dep': 'Dépôts', 'a.crypto': 'Crypto', 'a.etc': 'Autres',
+  'a.re2': 'Immobilier', 'a.stock2': 'Actions·ETF', 'a.dep2': 'Dépôts', 'a.crypto2': 'Crypto', 'a.etc2': 'Autres',
+  'a.re3': 'Immobilier', 'a.stock3': 'Actions·ETF', 'a.dep3': 'Dépôts', 'a.crypto3': 'Crypto', 'a.hedge': 'Autres·couverture',
+  'd.aiTag': 'Analyse IA',
+  'd.aiText': 'L’immobilier à 58% dépasse la fourchette recommandée (40–50%). Le rendement locatif est 1,2 pt sous le marché — vendre une partie et réallouer en ETF indiciels pourrait améliorer le rendement de 1,8 pt/an.',
+  'd.aiCta': 'Voir le scénario', 'd.todoH': 'Cette semaine',
+  'd.todo1': 'Revue du rééquilibrage trimestriel (dans 5 jours)', 'd.todo2': 'Déclaration de donation — don anticipé du père', 'd.todo3': 'Constituer 6 mois de fonds d’urgence — 80% fait',
+  'as.h': 'Détail des actifs', 'as.p': 'Actuel vs recommandé · avec proposition de rééquilibrage',
+  'as.now': 'Allocation actuelle', 'as.rec': 'Recommandée <span style="color:var(--rose); font-size:11px; font-weight:700;">35 ans · horizon moyen</span>',
+  'as.rbH': 'Proposition de rééquilibrage', 'as.rbP': 'Le chemin le plus proche de la cible avec un minimum d’ordres',
+  'as.rb1': 'Vendre une partie de l’immobilier <small>un bien secondaire à faible rendement</small>',
+  'as.rb2': 'Acheter des ETF indiciels mondiaux <small>VT · QQQ · KODEX 200</small>',
+  'as.rb3': 'Ajouter des obligations courtes <small>liquidité + intérêts</small>',
+  'as.fxH': 'Effet attendu', 'as.fxP': 'Résultats de la simulation de rééquilibrage',
+  'as.fx1': 'Rendement annuel attendu', 'as.fx1f': 'Actuel 4,6% → recommandé 6,4%',
+  'as.fx2': 'Volatilité (écart-type)', 'as.fx2f': 'Risque réduit par diversification',
+  'as.fx3': 'Écart cumulé sur 10 ans', 'as.fx3f': 'Hypothèse d’intérêts composés',
+  'g.h': 'Vos objectifs', 'g.p': '4 en cours · actifs liés automatiquement',
+  'g.1': 'Fonds de retraite', 'g.1m': 'Cible ₩800M · dans 18 ans (2044)', 'g.ok': 'En bonne voie', 'g.prog': 'Avancement',
+  'g.1f': '+₩750K/mois : atteint en 19 ans 6 mois. Hypothèse 4 pt/an.',
+  'g.2': 'Éducation des enfants', 'g.2m': 'Cible ₩150M · dans 12 ans', 'g.ok2': 'En bonne voie', 'g.prog2': 'Avancement',
+  'g.2f': 'Géré à part sur un compte dédié. Plafond défiscalisé utilisé.',
+  'g.3': 'Amélioration du logement', 'g.3m': 'Cible ₩300M (en plus) · dans 5 ans', 'g.warn': 'Attention', 'g.prog3': 'Avancement',
+  'g.3f': 'Au rythme actuel : 7 ans 8 mois. Ajuster l’horizon ou +60% par mois.',
+  'g.4': 'Capital d’amorçage', 'g.4m': 'Cible ₩100M · liquide', 'g.soon': 'Presque atteint', 'g.prog4': 'Avancement',
+  'g.4f': 'Conservé à part en actifs liquides. Reste 12%.',
+  'g.moreH': 'Un cran plus loin', 'g.moreP': 'Design à la Rockefeller — grouper les objectifs par *génération*',
+  'g.insTag': 'Proposition',
+  'g.insText': 'Groupez les 4 objectifs en un *fonds familial* — +0,7 pt/an vs gestion séparée, +14% d’efficacité fiscale. La structure centenaire des Rockefeller, appliquée à une seule personne.',
+  'g.insCta': 'Créer le fonds familial',
+  'gn.h': 'Simulation sur 3 générations', 'gn.p': 'La courbe que vos décisions d’aujourd’hui tracent sur 60 ans',
+  'gn.cons': 'Prudent (3%/an)', 'gn.mid': 'Neutre (5%/an)', 'gn.agg': 'Dynamique (7%/an)',
+  'gn.g1t': '1re génération', 'gn.g1': 'Vous', 'gn.g1w': '2026 · aujourd’hui',
+  'gn.g1n': 'Patrimoine actuel. Hypothèses : 4,6% de rendement, ₩4,12M de flux mensuel.',
+  'gn.g2t': '2e génération', 'gn.g2': 'Enfant (35 ans)', 'gn.g2w': '2056 · dans 30 ans',
+  'gn.g2n': 'Transmis via trust. Droits de succession minimisés + capitalisation du fonds familial.',
+  'gn.g3t': '3e génération', 'gn.g3': 'Petit-enfant (35 ans)', 'gn.g3w': '2086 · dans 60 ans',
+  'gn.g3n': 'Répartition sur 3 générations + capitalisation + inflation. La structure du modèle Rockefeller.',
+  'gn.wH': 'Le poids d’une décision', 'gn.wP': 'Ce qu’un petit choix d’aujourd’hui devient dans 60 ans',
+  'gn.w1': '+₩300K par mois', 'gn.w1f': 'Actifs supplémentaires de la 3e génération dans 60 ans',
+  'gn.w2': 'Structure fiscalement optimisée', 'gn.w2f': 'Succession & donations minimisées — cadre légal',
+  'gn.w3': 'Ne rien faire', 'gn.w3f': 'Inflation 4%/an · sans optimisation fiscale',
+  'gn.phTag': 'Philosophie',
+  'gn.phText': 'Certaines courbes sont invisibles en une seule vie. Cette simulation transpose la structure centenaire des Rockefeller — *la famille comme unité, le temps comme actif* — dans les décisions d’une seule personne.',
+  'ai.h': 'Conseiller IA', 'ai.p': 'Un conseiller de family office dédié qui répond à partir de vos données',
+  'ai.status': 'Actif · connecté à vos données',
+  'ai.m1': 'Bonjour. Deux points ressortent aujourd’hui — <strong>l’immobilier à 58%</strong> dépasse la fourchette recommandée, et <strong>la liquidité à 18%</strong> est sous la réserve de 6 mois. Par lequel commençons-nous ?',
+  'ai.m2': 'La liquidité d’abord. Comment l’augmenter ?',
+  'ai.m3': 'Vos flux montrent un excédent de +₩4,12M/mois. En déplaçant <strong>₩3M/mois vers des ETF obligataires courts</strong> pendant 3 mois, la liquidité remonte à 24,8% au 6e mois — dans la fourchette. Décalez la vente immobilière de 6 mois et le produit alimente directement les ETF indiciels : le rééquilibrage se boucle en un cycle.',
+  'ai.m4': 'Ce scénario ajoute <strong>+₩140M sur 10 ans</strong>. On l’enregistre et on avance ?',
+  'ai.m5': 'Et la déclaration de donation ?',
+  'ai.m6': 'Le don anticipé de ₩50M reste <strong>dans l’abattement de 5 ans</strong>. Déclarez, versez sur le compte de l’enfant, et les gains futurs restent protégés dans le plafond défiscalisé. 12 minutes de travail — je vous montre le guide ?',
+  'ai.send': 'Envoyer',
+  's.h': 'Simulation de scénarios', 's.p': 'Changez une ou deux variables et retracez la courbe sur 60 ans',
+  's.contrib': 'Versement mensuel<small>actuel +₩2M</small>', 's.return': 'Rendement cible<small>moyenne annuelle</small>',
+  's.years': 'Horizon<small>années</small>', 's.tax': 'Efficacité fiscale<small>avec structure</small>',
+  's.outH': 'Actifs projetés (simulation)',
+  's.stH': 'Test de résistance', 's.stP': 'Comment le portefeuille tient sous des chocs historiques',
+  's.st1': 'Choc COVID (2020.3)', 's.st1f': 'Mieux que les −34% du marché. Immobilier & dépôts ont amorti.',
+  's.st2': 'Crise financière (2008)', 's.st2f': 'Récupération en 12 mois attendue. Les 6 mois de réserve sont la clé.',
+  's.st3': 'Forte inflation (1970s)', 's.st3f': 'Actifs réels & indices préservent la valeur. Réduire les obligations.',
+  'l.h': 'Apprendre — principes du family office', 'l.p': 'Un siècle de structure Rockefeller, dans la langue d’une personne',
+  'l.t1': 'Principe #1', 'l.k1': 'La famille comme unité',
+  'l.k1p': 'Ce n’est pas l’individu mais la *famille* qui détient les actifs. Décisions, risques et rendements circulent au niveau familial.',
+  'l.k1m': '4 min · cas Rockefeller',
+  'l.t2': 'Principe #2', 'l.k2': 'Le temps comme actif',
+  'l.k2p': 'L’*horizon* compte plus que le rendement. Une horloge de 30 ans n’utilise pas les outils d’une horloge de 5 ans.',
+  'l.k2m': '6 min · l’inversion du temps',
+  'l.t3': 'Principe #3', 'l.k3': 'La structure bat la volonté',
+  'l.k3p': 'La volonté s’effondre. Trusts, comptes séparés, automatisation — la *structure* décide à votre place, sous la conscience.',
+  'l.k3m': '5 min · le filtre souverain',
+  'l.t4': 'Principe #4', 'l.k4': 'L’impôt fait partie du design',
+  'l.k4p': 'Pas *ce qui reste après l’impôt* mais *comment l’impôt circule* fait partie de l’actif. L’optimisation légale est un actif en soi.',
+  'l.k4m': '8 min · succession & donation',
+  'l.t5': 'Principe #5', 'l.k5': 'Diversifier le décideur',
+  'l.k5p': 'Si une seule personne décide de tout, ce n’est pas de la diversification. Répartir le *décideur* — IA, conseillers, systèmes — voilà la vraie répartition.',
+  'l.k5m': '5 min · l’autre',
+  'l.t6': 'Principe #6', 'l.k6': 'Le risque se positionne',
+  'l.k6p': 'N’essayez pas d’éliminer le risque. Où il se place, qui le porte, quand il paie — la bonne *position* transforme le risque en opportunité.',
+  'l.k6m': '6 min · chacun à sa place',
+  'l.csH': 'Études de cas', 'l.csP': 'Comment de vraies familles l’ont fait',
+  'l.c1t': 'Famille Rockefeller · 1882~', 'l.c1': 'De 3,50 $ à une structure traversant six générations',
+  'l.c1p': 'Le cœur du premier family office de John D. Rockefeller (1882) n’était pas la *gestion* de la fortune mais le design de sa *place*. Le prototype des trusts, fondations et distributions générationnelles.',
+  'l.c2t': 'Famille Walton · 1962~', 'l.c2': 'Lier la participation Walmart au niveau *familial*',
+  'l.c2p': 'La holding conclue par Sam Walton avec sa famille avant sa mort. Le mécanisme qui a fait d’une famille la plus riche d’Amérique venait de la *structure*, pas des rendements.',
+  'f.tag': '<em>« Utiliser, c’est aussi transformer. »</em><br/>Transposer les outils des Rockefeller pour une seule personne.',
+  'f.prodH': 'Produit', 'f.p1': 'Tableau de bord', 'f.p2': 'Allocation d’actifs', 'f.p3': 'Simulation générationnelle', 'f.p4': 'Conseiller IA',
+  'f.ecoH': 'Explorer', 'f.e1': '🌳 Dream Simulation — dessinez votre rêve', 'f.e2': '🌍 Dream Index — les rêves de tous',
+  'f.b1': '© 2026 ARBITORIA · manifeste + outils', 'f.b2': 'arbitoria.com · un family office pour une personne',
+};
+const SIM_NOTE = {
+  ko: (sign, v) => `기준 시나리오 대비 ${sign}₩${v}억. 슬라이더를 움직여 결과를 다시 계산해보세요.`,
+  en: (sign, v) => `${sign}₩${Math.round(v * 100)}M vs the base scenario. Move the sliders to recalculate.`,
+  fr: (sign, v) => `${sign}₩${Math.round(v * 100)}M vs le scénario de base. Bougez les curseurs pour recalculer.`,
+};
+const SIM_UNIT = {
+  ko: { man: (v) => v + '만', yr: (v) => v + '년', eok: (v) => '₩' + v + '억' },
+  en: { man: (v) => '₩' + (v / 100).toFixed(1) + 'M', yr: (v) => v + 'y', eok: (v) => '₩' + Math.round(v * 100) + 'M' },
+  fr: { man: (v) => '₩' + (v / 100).toFixed(1) + 'M', yr: (v) => v + ' ans', eok: (v) => '₩' + Math.round(v * 100) + 'M' },
+};
+const CHAT_PH = {
+  ko: '자산·세금·은퇴 — 무엇이든 물어보세요',
+  en: 'Assets · tax · retirement — ask anything',
+  fr: 'Actifs · impôts · retraite — demandez tout',
+};
+
+let lang = localStorage.getItem('dreamLang')
+  || ({ ko: 'ko', fr: 'fr' }[(navigator.language || 'en').slice(0, 2)] || 'en');
+let KO = null;
+function applyLang(l) {
+  if (!KO) { KO = {}; document.querySelectorAll('[data-i18n]').forEach((e) => { KO[e.dataset.i18n] = e.innerHTML; }); }
+  lang = l;
+  const d = l === 'en' ? EN : l === 'fr' ? FR : KO;
+  document.querySelectorAll('[data-i18n]').forEach((e) => {
+    const v = d[e.dataset.i18n]; if (v != null) e.innerHTML = v;
+  });
+  document.documentElement.lang = l;
+  document.getElementById('langSel').value = l;
+  document.getElementById('chatInput').placeholder = CHAT_PH[l] || CHAT_PH.ko;
+  try { localStorage.setItem('dreamLang', l); } catch (_) {}
+  updateSim();
+}
+document.getElementById('langSel').addEventListener('change', (e) => applyLang(e.target.value));
+
+/* 탭 전환 */
 const tabs = document.querySelectorAll('.tab');
 const screens = document.querySelectorAll('.screen');
-tabs.forEach(tab => {
+tabs.forEach((tab) => {
   tab.addEventListener('click', () => {
-    const target = tab.dataset.tab;
-    tabs.forEach(t => t.classList.remove('active'));
-    screens.forEach(s => s.classList.remove('active'));
+    tabs.forEach((t) => t.classList.remove('active'));
+    screens.forEach((s) => s.classList.remove('active'));
     tab.classList.add('active');
-    document.getElementById('screen-' + target).classList.add('active');
+    document.getElementById('screen-' + tab.dataset.tab).classList.add('active');
     window.scrollTo({ top: document.querySelector('.tabs-wrap').offsetTop - 80, behavior: 'smooth' });
   });
 });
+document.getElementById('demoBtn').addEventListener('click', () => {
+  window.scrollTo({ top: document.querySelector('.tabs-wrap').offsetTop - 80, behavior: 'smooth' });
+});
 
-// 세대 시뮬 토글
-document.querySelectorAll('.gen-switcher button').forEach(btn => {
+/* 세대 시뮬 토글 */
+document.querySelectorAll('.gen-switcher button').forEach((btn) => {
   btn.addEventListener('click', () => {
-    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.parentElement.querySelectorAll('button').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
   });
 });
 
-// 시뮬레이션 슬라이더
+/* 시뮬레이션 슬라이더 */
 const sliders = document.querySelectorAll('.sim-slider');
 function updateSim() {
+  const U = SIM_UNIT[lang] || SIM_UNIT.ko;
   const contrib = parseFloat(document.querySelector('[data-sim="contrib"]').value);
   const returnRate = parseFloat(document.querySelector('[data-sim="return"]').value) / 100;
   const years = parseInt(document.querySelector('[data-sim="years"]').value);
   const taxEff = parseFloat(document.querySelector('[data-sim="tax"]').value) / 100;
-
-  document.querySelector('[data-out="contrib"]').textContent = contrib + '만';
+  document.querySelector('[data-out="contrib"]').textContent = U.man(contrib);
   document.querySelector('[data-out="return"]').textContent = (returnRate * 100).toFixed(1) + '%';
-  document.querySelector('[data-out="years"]').textContent = years + '년';
+  document.querySelector('[data-out="years"]').textContent = U.yr(years);
   document.querySelector('[data-out="tax"]').textContent = '+' + (taxEff * 100).toFixed(0) + '%';
-
-  // 단순 복리 계산 (현재 5.23억 + 월 적립 누적, 연 환산)
-  const principal = 5.23; // 억
-  const monthlyContrib = contrib * 12 / 10000; // 억/년
-  // FV of principal + FV of annuity, with tax efficiency multiplier
-  const r = returnRate;
-  const n = years;
+  const principal = 5.23;
+  const monthlyContrib = contrib * 12 / 10000;
+  const r = returnRate, n = years;
   const fvPrincipal = principal * Math.pow(1 + r, n);
-  const fvAnnuity = monthlyContrib * ((Math.pow(1 + r, n) - 1) / r);
+  const fvAnnuity = r === 0 ? monthlyContrib * n : monthlyContrib * ((Math.pow(1 + r, n) - 1) / r);
   const total = (fvPrincipal + fvAnnuity) * (1 + taxEff);
-
-  document.getElementById('simResult').textContent = '₩' + total.toFixed(1) + '억';
-
-  // baseline (현재 슬라이더 기준): contrib=200, return=5%, years=30, tax=14
+  document.getElementById('simResult').textContent = U.eok(total.toFixed(1));
   const base = (principal * Math.pow(1.05, 30) + (200 * 12 / 10000) * ((Math.pow(1.05, 30) - 1) / 0.05)) * 1.14;
   const diff = total - base;
-  const sign = diff >= 0 ? '+' : '';
-  document.getElementById('simNote').textContent = '기준 시나리오 대비 ' + sign + '₩' + diff.toFixed(1) + '억. 슬라이더를 움직여 결과를 다시 계산해보세요.';
+  const sign = diff >= 0 ? '+' : '−';
+  document.getElementById('simNote').textContent = (SIM_NOTE[lang] || SIM_NOTE.ko)(sign, Math.abs(diff).toFixed(1));
 }
-sliders.forEach(s => s.addEventListener('input', updateSim));
-updateSim();
+sliders.forEach((s) => s.addEventListener('input', updateSim));
+
+applyLang(lang);
 </script>
 
 </body>
