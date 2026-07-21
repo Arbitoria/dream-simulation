@@ -169,7 +169,10 @@ const L = {
     'diag.v15': '좋은 흐름이에요. {r}%가 미래로 갑니다 — 여기서 조금만 더 밀면 곡선이 달라져요.',
     'diag.v1': '{r}%가 미래로 흐릅니다. 시작이 반 — 흐름이 있다는 것 자체가 힘입니다.',
     'diag.v0': '지금은 모든 것이 오늘에 쓰입니다. 아주 작은 흐름 하나부터 — 그게 시작입니다.',
-    'diag.hidden': '모기지 상환 {p} 중 <b>{pr}은 숨은 저축</b>입니다 — 이자가 아니라 당신에게 쌓여요.',
+    'diag.hsT': '🏠 대출 상환금의 비밀 — 사실은 두 조각이에요',
+    'diag.hsInt': '이자 {i} — 은행에게. <b>사라지는 돈</b>',
+    'diag.hsPr': '원금 {pr} — 나에게. 집에 벽돌처럼 쌓이는 돈 = <b>숨은 저축</b>',
+    'diag.hsNote': '그래서 위의 저축률 {r}%에는 이 벽돌 몫이 이미 들어 있어요.',
     'diag.next': '이제, 꿈을 고르러 →',
     'car.step': '드림카', 'car.h': '어떤 차를 몰고 싶나요?',
     'home.step': '살 곳', 'home.h': '세계 어디에서 살고 싶나요?',
@@ -259,7 +262,10 @@ const L = {
     'diag.v15': 'A good current. {r}% goes forward — one push more and the curve changes.',
     'diag.v1': '{r}% flows forward. A stream exists — that itself is power.',
     'diag.v0': 'Right now everything is spent on today. One small stream — that is how it starts.',
-    'diag.hidden': 'Of your {p} mortgage payment, <b>{pr} is hidden saving</b> — not interest, but yours.',
+    'diag.hsT': '🏠 The secret of your mortgage payment — it’s really two pieces',
+    'diag.hsInt': 'Interest {i} — to the bank. <b>Money that disappears</b>',
+    'diag.hsPr': 'Principal {pr} — to you. Stacking into your home like bricks = <b>hidden saving</b>',
+    'diag.hsNote': 'That’s why your savings rate above ({r}%) already includes these bricks.',
     'diag.next': 'Now, choose the dream →',
     'car.step': 'DREAM CAR', 'car.h': 'What would you drive?',
     'home.step': 'WHERE YOU LIVE', 'home.h': 'Where in the world would you live?',
@@ -349,7 +355,10 @@ const L = {
     'diag.v15': 'Un bon courant. {r}% va de l’avant — encore un effort et la courbe change.',
     'diag.v1': '{r}% coule vers l’avant. Un ruisseau existe — c’est déjà une force.',
     'diag.v0': 'Pour l’instant, tout part dans l’aujourd’hui. Un petit ruisseau — c’est ainsi que tout commence.',
-    'diag.hidden': 'Sur votre mensualité de {p}, <b>{pr} est une épargne cachée</b> — pas des intérêts, mais à vous.',
+    'diag.hsT': '🏠 Le secret de votre mensualité — en réalité, deux morceaux',
+    'diag.hsInt': 'Intérêts {i} — pour la banque. <b>De l’argent qui disparaît</b>',
+    'diag.hsPr': 'Capital {pr} — pour vous. Il s’empile dans votre logement comme des briques = <b>épargne cachée</b>',
+    'diag.hsNote': 'C’est pourquoi votre taux d’épargne ci-dessus ({r}%) inclut déjà ces briques.',
     'diag.next': 'Maintenant, le rêve →',
     'car.step': 'VOITURE DE RÊVE', 'car.h': 'Que conduiriez-vous ?',
     'home.step': 'OÙ VIVRE', 'home.h': 'Où dans le monde vivriez-vous ?',
@@ -773,8 +782,19 @@ function renderDiag() {
   big.classList.toggle('warn', r < 10);
   $('diagVerdict').innerHTML = r >= 30 ? t('diag.v30', { r }) : r >= 15 ? t('diag.v15', { r }) : r >= 1 ? t('diag.v1', { r }) : t('diag.v0');
   const hs = $('hiddenSave');
-  if (me.isOwn && me.principal > 0) { hs.hidden = false; hs.innerHTML = t('diag.hidden', { p: money(me.pay), pr: money(me.principal) }); }
-  else hs.hidden = true;
+  if (me.isOwn && me.principal > 0) {
+    hs.hidden = false;
+    const intPct = (me.interest / me.pay * 100).toFixed(0);
+    const prPct = (100 - intPct).toFixed(0);
+    hs.innerHTML = `
+      <div class="hs-title">${t('diag.hsT')}</div>
+      <div class="hs-bar">
+        <i class="hs-int" style="width:${intPct}%"></i><i class="hs-pr" style="width:${prPct}%"></i>
+      </div>
+      <div class="hs-row"><span class="hs-dot int"></span><span>${t('diag.hsInt', { i: money(me.interest) })}</span></div>
+      <div class="hs-row"><span class="hs-dot pr"></span><span>${t('diag.hsPr', { pr: money(me.principal) })}</span></div>
+      <div class="hs-note">${t('diag.hsNote', { r })}</div>`;
+  } else hs.hidden = true;
 }
 
 /* ── 8. 계산 ── */
