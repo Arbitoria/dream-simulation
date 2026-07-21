@@ -511,6 +511,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
       <p class="s-sub" style="margin-top:-14px;margin-bottom:20px" data-i18n="gen.sub"></p>
 
       <div class="glass life-score" id="lifeScore"></div>
+
+      <div class="glass reach-card" style="margin-top:14px">
+        <svg id="vizFinal" viewBox="0 0 520 240" role="img"></svg>
+        <p class="reach-line" id="reachLineFinal"></p>
+      </div>
+
       <div class="gen-track" id="genTrack" style="margin-top:14px"></div>
 
       <div class="insight" style="margin-top:14px">
@@ -1340,6 +1346,9 @@ function renderGen() {
     <div class="ls-col"><div class="lr-l">${t('life.scoreJob')}</div><div class="lr-v">${jName}</div></div>
     <div class="ls-col"><div class="lr-l">${t('life.scoreReach')}</div><div class="lr-v">${months === Infinity ? '∞' : reachAge + (lang === 'ko' ? '세' : '')}</div></div>
     <div class="ls-col"><div class="lr-l">${t('life.happy')}</div><div class="lr-v">${'❤️'.repeat(Math.round(h / 2))} ${h}/10</div></div>`;
+  drawViz(N, months, $('vizFinal'));
+  $('reachLineFinal').innerHTML = months === Infinity ? t('calc.reachNone')
+    : t('calc.reach', { y: Math.max(1, Math.round(months / 12)), age: reachAge, m: money(dreamMonthly()) });
   const r = S.rate / 100;
   const g2 = N * Math.pow(1 + r, 30), g3 = N * Math.pow(1 + r, 60);
   $('genTrack').innerHTML = `
@@ -1355,8 +1364,8 @@ function renderGen() {
 }
 
 /* ═══ 시각화 ═══ */
-function drawViz(N, months) {
-  const svg = $('viz'), W = 520, H = 240, padL = 14, padR = 14, padT = 20, padB = 30;
+function drawViz(N, months, svgEl) {
+  const svg = svgEl || $('viz'), W = 520, H = 240, padL = 14, padR = 14, padT = 20, padB = 30;
   const x0 = padL, x1 = W - padR, y0 = H - padB, y1 = padT;
   const r = S.rate / 100 / 12;
   const endM = months === Infinity ? (100 - S.age) * 12 : Math.round(months * 1.12);
@@ -1402,7 +1411,8 @@ function drawViz(N, months) {
 
 /* ═══ 공유 (해시 · 19필드) ═══ */
 const ci = (cat, id) => CATS[cat].findIndex((o) => o.id === id);
-function encodeState() {
+function encodeState(scrOverride) {
+  const scr = scrOverride != null ? scrOverride : screen;
   return [LANGS.indexOf(lang), ['female', 'male', 'other'].indexOf(S.gender) + 1, S.age,
     S.salary, TENURES.indexOf(S.tenure), S.homeValue, S.rent, S.fixedCost, S.save, S.assets,
     ci('car', S.car), ci('home', S.home), ci('trip', S.trip),
@@ -1410,7 +1420,7 @@ function encodeState() {
     S.partner ? 1 : 0, S.partnerAge, S.partnerMonthly, S.tripFreq,
     S.job === 'custom' ? 11 : JOBS.findIndex((j) => j.id === S.job) + 1,
     S.events.reduce((a, v, i) => a + v * Math.pow(3, i), 0),
-    screen].join('.');
+    scr].join('.');
 }
 function decodeState(str) {
   const p = str.split('.').map(Number); if (p.length < 22 || p.some(isNaN)) return;
@@ -1434,9 +1444,12 @@ function decodeState(str) {
 function clamp(v, a, b) { return Math.max(a, Math.min(b, Math.round(v || 0))); }
 function updateHash() { const u = new URL(location.href); u.hash = 'd=' + encodeState(); history.replaceState(null, '', u); }
 async function share() {
-  updateHash();
-  try { if (navigator.share) { await navigator.share({ title: 'Dream Simulation — ARBITORIA', url: location.href }); return; } } catch (_) {}
-  try { await navigator.clipboard.writeText(location.href); toast(t('toast.copied')); } catch (_) { toast(t('toast.manual')); }
+  /* 공유 링크는 항상 그래프가 있는 계산 화면(9)으로 열린다 */
+  const u = new URL(location.href);
+  u.hash = 'd=' + encodeState(9);
+  const link = u.toString();
+  try { if (navigator.share) { await navigator.share({ title: 'Dream Simulation — ARBITORIA', url: link }); return; } } catch (_) {}
+  try { await navigator.clipboard.writeText(link); toast(t('toast.copied')); } catch (_) { toast(t('toast.manual')); }
 }
 let toastT; function toast(m) { const el = $('toast'); el.textContent = m; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 2400); }
 
