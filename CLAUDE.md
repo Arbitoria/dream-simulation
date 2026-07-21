@@ -12,6 +12,7 @@
 
 ## 2. CSS 함정
 - `[hidden]{display:none}`은 우선순위가 낮아서 `.foo{display:flex/grid/block}`에 **덮인다.** 화면/모달을 `hidden`으로 감출 때는 반드시 `.screen[hidden]{display:none!important}` 같은 방어 규칙을 둔다.
+- **2026-07-21 재발**: `.field{display:block}`이 `#rentField[hidden]`을 덮어서 "아직 없음"인데 월세 슬라이더가 보였다. → 이제 styles.css에 **전역 `[hidden]{display:none!important}`** 가 있다. 지우지 말 것. hidden을 쓰는 새 요소는 이 규칙이 지켜준다.
 
 ## 3. 실행 & 빌드 (이 프로젝트 전용)
 - **서버:** 캐시 금지 + 멀티스레드 파이썬 서버. 파일: `<scratchpad>/nocache_server.py` (ThreadingHTTPServer, `Cache-Control: no-store`, 포트 8777).
