@@ -4,21 +4,26 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Dream Index — ARBITORIA</title>
-<meta name="description" content="익명의 꿈들이 모여 만드는 지도 — 사람들은 어디에서 살고, 무엇을 몰고, 어디로 떠나고 싶어할까." />
+<meta name="description" content="익명의 꿈들이 모여 만드는 지도 — Dream Index by ARBITORIA" />
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 <style>
 :root{--bg:#0B1F17;--surface:#122A20;--surface-2:#1A3A2C;--card-line:rgba(255,255,255,.08);
---ink:#F2EEE3;--ink-2:#BFCDC0;--ink-3:#7E9284;--gold:#C9A961;--gold-2:#E4C77B;
+--ink:#F2EEE3;--ink-2:#BFCDC0;--ink-3:#7E9284;--gold:#C9A961;--gold-2:#E4C77B;--line:rgba(201,169,97,.22);
 --emerald:#3FA37C;--shadow:0 2px 6px rgba(0,0,0,.25),0 16px 40px rgba(0,0,0,.35);--radius:14px;
 --sans:'Pretendard',-apple-system,'Apple SD Gothic Neo',system-ui,sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:radial-gradient(1200px 700px at 50% -10%,#123024 0%,var(--bg) 55%);color:var(--ink);
 font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;min-height:100vh}
 .topbar{position:sticky;top:0;z-index:50;background:rgba(11,31,23,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--card-line)}
-.topbar a{max-width:940px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:var(--ink);text-decoration:none}
+.topbar-inner{max-width:940px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:var(--ink);text-decoration:none}
 .mark{width:26px;height:26px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#0B1F17;font-size:13px;font-weight:800}
 .sub{color:var(--ink-3);font-weight:500;font-size:13.5px}
 .sub::before{content:'·';margin:0 8px}
+#langSel{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--gold);background:var(--surface-2);
+border:1.5px solid var(--line);border-radius:99px;padding:7px 12px;cursor:pointer;outline:none;-webkit-appearance:none;appearance:none}
+#langSel:hover{border-color:var(--gold)}
+#langSel option{background:var(--surface);color:var(--ink)}
 main{max-width:940px;margin:0 auto;padding:44px clamp(20px,5vw,32px) 80px}
 .eyebrow{display:inline-block;background:rgba(201,169,97,.14);color:var(--gold);padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 h1{font-size:clamp(26px,5vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 6px}
@@ -31,7 +36,7 @@ h1{font-size:clamp(26px,5vw,38px);font-weight:800;letter-spacing:-.02em;margin:1
 .card{background:var(--surface);border:1px solid var(--card-line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
 .card h2{font-size:15px;font-weight:800;margin-bottom:14px}
 .row{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13.5px}
-.row .name{min-width:110px;color:var(--ink-2)}
+.row .name{min-width:118px;color:var(--ink-2)}
 .row .bar{flex:1;height:10px;border-radius:6px;background:var(--surface-2);overflow:hidden}
 .row .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));border-radius:6px;transition:width .6s cubic-bezier(.2,.7,.2,1)}
 .row .pct{min-width:44px;text-align:right;font-weight:800;color:var(--gold-2);font-variant-numeric:tabular-nums}
@@ -42,63 +47,150 @@ h1{font-size:clamp(26px,5vw,38px);font-weight:800;letter-spacing:-.02em;margin:1
 </style>
 </head>
 <body>
-<header class="topbar"><a href="/"><span class="mark">A</span>ARBITORIA <span class="sub">Dream Index</span></a></header>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/"><span class="mark">A</span>ARBITORIA <span class="sub">Dream Index</span></a>
+    <select id="langSel" aria-label="Language">
+      <option value="ko">한국어</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
+  </div>
+</header>
 <main>
   <span class="eyebrow">DREAM · INDEX</span>
-  <h1>익명의 꿈들이 모여 만드는 지도</h1>
-  <p class="lead">사람들은 어디에서 살고, 무엇을 몰고, 어디로 떠나고 싶어할까 — 실시간 집계입니다.<br/>
-  <span style="font-size:12.5px">Where do people dream of living, driving, going — a live aggregate.</span></p>
+  <h1 id="title"></h1>
+  <p class="lead" id="lead"></p>
 
-  <div id="loading">모으는 중…</div>
+  <div id="loading"></div>
   <div id="content" style="display:none">
     <div class="grid" id="stats"></div>
     <div class="cols" id="lists"></div>
   </div>
 
-  <p class="privacy">🔒 개인정보는 저장되지 않습니다 — 이 페이지의 모든 수치는 익명 집계입니다.</p>
-  <p class="foot"><a href="/">🌳 나의 꿈도 그려보기 — Dream Simulation →</a></p>
+  <p class="privacy" id="privacy"></p>
+  <p class="foot"><a href="/" id="foot"></a></p>
 </main>
 <script>
-const NM = {
-  ny:'뉴욕', paris:'파리', la:'비버리힐스', dubai:'두바이', bali:'발리', swiss:'스위스', singapore:'싱가포르', london:'런던', tokyo:'도쿄', sydney:'시드니',
-  porsche:'포르쉐 911', huracan:'우라칸', ferrari:'페라리', rolls:'롤스로이스', bentley:'벤틀리', mclaren:'맥라렌', aston:'애스턴마틴', gwagon:'G-바겐', plaid:'테슬라 플래드', maserati:'마세라티',
-  cruise:'세계일주 크루즈', space:'우주여행', safari:'사파리', antarctica:'남극', island:'프라이빗 아일랜드', firstclass:'퍼스트클래스', maldives:'몰디브', aurora:'오로라', everest:'에베레스트', yacht:'지중해 요트',
-  kr:'🇰🇷 한국', us:'🇺🇸 미국', fr:'🇫🇷 프랑스', own:'자가', rent:'월세', none:'아직 없음',
+'use strict';
+/* ── i18n ── */
+const I = {
+  ko: {
+    title: '익명의 꿈들이 모여 만드는 지도',
+    lead: '사람들은 어디에서 살고, 무엇을 몰고, 어디로 떠나고 싶어할까 — 실시간 집계입니다.',
+    loading: '모으는 중…', retry: '잠시 후 다시 시도해주세요.',
+    stats: ['모인 꿈', '평균 나이', '평균 월수입', '평균 저축률', '평균 도달 나이', '평균 행복지수', '평균 종자돈', '동반자와 함께'],
+    unit: { dreams: '개', age: '세' },
+    lists: { cities: '🏙️ 꿈의 도시', cars: '🏎️ 드림카', trips: '✈️ 꿈의 여행', countries: '🌏 나라 (세금 기준)', rates: '📈 수익률 성향', tenures: '🏠 지금 사는 곳' },
+    privacy: '🔒 개인정보는 저장되지 않습니다 — 이 페이지의 모든 수치는 익명 집계입니다.',
+    foot: '🌳 나의 꿈도 그려보기 — Dream Simulation →',
+  },
+  en: {
+    title: 'A map made of anonymous dreams',
+    lead: 'Where do people dream of living, driving, going — a live aggregate.',
+    loading: 'Gathering…', retry: 'Please try again shortly.',
+    stats: ['Dreams gathered', 'Avg age', 'Avg monthly income', 'Avg savings rate', 'Avg arrival age', 'Avg happiness', 'Avg seed capital', 'With a partner'],
+    unit: { dreams: '', age: '' },
+    lists: { cities: '🏙️ Dream cities', cars: '🏎️ Dream cars', trips: '✈️ Dream journeys', countries: '🌏 Countries (tax basis)', rates: '📈 Return appetite', tenures: '🏠 Living now' },
+    privacy: '🔒 No personal data is stored — every number on this page is an anonymous aggregate.',
+    foot: '🌳 Draw your own dream — Dream Simulation →',
+  },
+  fr: {
+    title: 'Une carte faite de rêves anonymes',
+    lead: 'Où les gens rêvent-ils de vivre, de conduire, de partir — un agrégat en direct.',
+    loading: 'Collecte…', retry: 'Réessayez dans un instant.',
+    stats: ['Rêves recueillis', 'Âge moyen', 'Revenu mensuel moyen', 'Taux d’épargne moyen', 'Âge d’arrivée moyen', 'Bonheur moyen', 'Capital moyen', 'Avec partenaire'],
+    unit: { dreams: '', age: ' ans' },
+    lists: { cities: '🏙️ Villes de rêve', cars: '🏎️ Voitures de rêve', trips: '✈️ Voyages de rêve', countries: '🌏 Pays (base fiscale)', rates: '📈 Appétit de rendement', tenures: '🏠 Logement actuel' },
+    privacy: '🔒 Aucune donnée personnelle n’est stockée — chaque chiffre de cette page est un agrégat anonyme.',
+    foot: '🌳 Dessinez votre propre rêve — Dream Simulation →',
+  },
 };
-const nm = (k) => NM[k] || k;
-const wonKo = (v) => { v = Math.round(v||0); const e = Math.floor(v/10000), m = v%10000;
-  if (e>0) return m===0 ? e+'억' : e+'억 '+Math.round(m/1000)+'천'; return v.toLocaleString()+'만원'; };
+const NM = {
+  ko: { ny:'뉴욕', paris:'파리', la:'비버리힐스', dubai:'두바이', bali:'발리', swiss:'스위스', singapore:'싱가포르', london:'런던', tokyo:'도쿄', sydney:'시드니',
+    porsche:'포르쉐 911', huracan:'우라칸', ferrari:'페라리 SF90', rolls:'롤스로이스', bentley:'벤틀리', mclaren:'맥라렌', aston:'애스턴마틴', gwagon:'G-바겐', plaid:'테슬라 플래드', maserati:'마세라티',
+    cruise:'세계일주 크루즈', space:'우주여행', safari:'사파리', antarctica:'남극', island:'프라이빗 아일랜드', firstclass:'퍼스트클래스', maldives:'몰디브', aurora:'오로라', everest:'에베레스트', yacht:'지중해 요트',
+    kr:'🇰🇷 한국', us:'🇺🇸 미국', fr:'🇫🇷 프랑스', own:'자가', rent:'월세', none:'아직 없음' },
+  en: { ny:'New York', paris:'Paris', la:'Beverly Hills', dubai:'Dubai', bali:'Bali', swiss:'Swiss Alps', singapore:'Singapore', london:'London', tokyo:'Tokyo', sydney:'Sydney',
+    porsche:'Porsche 911', huracan:'Huracán', ferrari:'Ferrari SF90', rolls:'Rolls-Royce', bentley:'Bentley', mclaren:'McLaren', aston:'Aston Martin', gwagon:'G-Wagon', plaid:'Tesla Plaid', maserati:'Maserati',
+    cruise:'World cruise', space:'Space trip', safari:'Safari', antarctica:'Antarctica', island:'Private island', firstclass:'First class', maldives:'Maldives', aurora:'Northern lights', everest:'Everest', yacht:'Med. yacht',
+    kr:'🇰🇷 Korea', us:'🇺🇸 US', fr:'🇫🇷 France', own:'Own', rent:'Renting', none:'Not yet' },
+  fr: { ny:'New York', paris:'Paris', la:'Beverly Hills', dubai:'Dubaï', bali:'Bali', swiss:'Alpes suisses', singapore:'Singapour', london:'Londres', tokyo:'Tokyo', sydney:'Sydney',
+    porsche:'Porsche 911', huracan:'Huracán', ferrari:'Ferrari SF90', rolls:'Rolls-Royce', bentley:'Bentley', mclaren:'McLaren', aston:'Aston Martin', gwagon:'Classe G', plaid:'Tesla Plaid', maserati:'Maserati',
+    cruise:'Croisière mondiale', space:'Voyage spatial', safari:'Safari', antarctica:'Antarctique', island:'Île privée', firstclass:'1re classe', maldives:'Maldives', aurora:'Aurores boréales', everest:'Everest', yacht:'Yacht méd.',
+    kr:'🇰🇷 Corée', us:'🇺🇸 É.-U.', fr:'🇫🇷 France', own:'Propriétaire', rent:'Locataire', none:'Pas encore' },
+};
 
-fetch('/api/insights').then(r=>r.json()).then(d=>{
-  const s = d.summary || {};
+let lang = localStorage.getItem('dreamLang')
+  || ({ ko: 'ko', fr: 'fr' }[(navigator.language || 'en').slice(0, 2)] || 'en');
+let DATA = null, FXR = { usd_krw: 1400, eur_krw: 1500 };
+
+const nm = (k) => (NM[lang] && NM[lang][k]) || NM.ko[k] || k;
+const wonKo = (v) => { v = Math.round(v || 0); const e = Math.floor(v / 10000), m = v % 10000;
+  if (e > 0) return m === 0 ? e + '억' : e + '억 ' + Math.round(m / 1000) + '천'; return v.toLocaleString() + '만원'; };
+function money(manwon) {
+  if (lang === 'ko') return wonKo(manwon);
+  const krw = Math.round(manwon || 0) * 10000;
+  const cur = lang === 'fr' ? 'EUR' : 'USD', loc = lang === 'fr' ? 'fr-FR' : 'en-US';
+  const rate = lang === 'fr' ? FXR.eur_krw : FXR.usd_krw;
+  return new Intl.NumberFormat(loc, { style: 'currency', currency: cur, notation: 'compact', maximumFractionDigits: 1 }).format(krw / rate);
+}
+
+function render() {
+  const T = I[lang];
+  document.documentElement.lang = lang;
+  document.getElementById('langSel').value = lang;
+  document.getElementById('title').textContent = T.title;
+  document.getElementById('lead').textContent = T.lead;
+  document.getElementById('privacy').textContent = T.privacy;
+  document.getElementById('foot').textContent = T.foot;
+  document.getElementById('loading').textContent = T.loading;
+  if (!DATA) return;
+  const s = DATA.summary || {};
+  const age = (v) => (v || 0) + (lang === 'ko' ? '세' : (lang === 'fr' ? ' ans' : ''));
   document.getElementById('stats').innerHTML = [
-    ['모인 꿈', (s.total||0).toLocaleString()+'개'],
-    ['평균 나이', (s.avg_age||0)+'세'],
-    ['평균 월수입', wonKo(s.avg_salary)],
-    ['평균 저축률', (s.avg_save_pct||0)+'%'],
-    ['평균 도달 나이', (s.avg_reach||0)+'세'],
-    ['평균 행복지수', (s.avg_happy||0)+'/10'],
-    ['평균 종자돈', wonKo(s.avg_seed)],
-    ['동반자와 함께', (s.partner_pct||0)+'%'],
-  ].map(([l,v])=>`<div class="stat"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
+    [T.stats[0], (s.total || 0).toLocaleString() + (T.unit.dreams || '')],
+    [T.stats[1], age(s.avg_age)],
+    [T.stats[2], money(s.avg_salary)],
+    [T.stats[3], (s.avg_save_pct || 0) + '%'],
+    [T.stats[4], age(s.avg_reach)],
+    [T.stats[5], (s.avg_happy || 0) + '/10'],
+    [T.stats[6], money(s.avg_seed)],
+    [T.stats[7], (s.partner_pct || 0) + '%'],
+  ].map(([l, v]) => `<div class="stat"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
 
   const list = (title, rows) => {
     if (!rows || !rows.length) return '';
-    const max = rows[0].c || 1;
-    const total = rows.reduce((a,r)=>a+r.c,0) || 1;
-    return `<div class="card"><h2>${title}</h2>` + rows.map(r=>`
+    const max = rows[0].c || 1, total = rows.reduce((a, r) => a + r.c, 0) || 1;
+    return `<div class="card"><h2>${title}</h2>` + rows.map((r) => `
       <div class="row"><span class="name">${nm(String(r.k))}</span>
-        <span class="bar"><i style="width:${(r.c/max*100).toFixed(0)}%"></i></span>
-        <span class="pct">${Math.round(r.c/total*100)}%</span></div>`).join('') + '</div>';
+        <span class="bar"><i style="width:${(r.c / max * 100).toFixed(0)}%"></i></span>
+        <span class="pct">${Math.round(r.c / total * 100)}%</span></div>`).join('') + '</div>';
   };
   document.getElementById('lists').innerHTML =
-    list('🏙️ 꿈의 도시', d.cities) + list('🏎️ 드림카', d.cars) + list('✈️ 꿈의 여행', d.trips) +
-    list('🌏 나라 (세금 기준)', d.countries) +
-    list('📈 수익률 성향', (d.rates||[]).map(r=>({k:r.k+'%', c:r.c}))) +
-    list('🏠 지금 사는 곳', d.tenures);
-  document.getElementById('loading').style.display='none';
-  document.getElementById('content').style.display='block';
-}).catch(()=>{ document.getElementById('loading').textContent='잠시 후 다시 시도해주세요.'; });
+    list(I[lang].lists.cities, DATA.cities) + list(I[lang].lists.cars, DATA.cars) + list(I[lang].lists.trips, DATA.trips) +
+    list(I[lang].lists.countries, DATA.countries) +
+    list(I[lang].lists.rates, (DATA.rates || []).map((r) => ({ k: r.k + '%', c: r.c }))) +
+    list(I[lang].lists.tenures, DATA.tenures);
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+}
+
+document.getElementById('langSel').addEventListener('change', (e) => {
+  lang = e.target.value;
+  try { localStorage.setItem('dreamLang', lang); } catch (_) {}
+  render();
+});
+
+render();
+Promise.all([
+  fetch('/api/insights').then((r) => r.json()),
+  fetch('/api/fx').then((r) => r.json()).catch(() => null),
+]).then(([d, fx]) => {
+  DATA = d;
+  if (fx && fx.usd_krw > 0) FXR = fx;
+  render();
+}).catch(() => { document.getElementById('loading').textContent = I[lang].retry; });
 </script>
 </body>
 </html>
