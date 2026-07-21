@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream Simulation — ARBITORIA</title>
+  <meta name="description" content="지금의 나를 넣고, 꿈의 미래를 고르면 — 시간이 그 사이를 잇는 곡선을 보여줍니다. by ARBITORIA" />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="progress" id="progress" aria-hidden="true"><span id="progressFill"></span></div>
+
+  <header class="topbar">
+    <button class="topbar-inner" type="button" data-go="0" aria-label="ARBITORIA — 메인으로">
+      <div class="brand-mark">A</div>
+      ARBITORIA <span class="brand-sub">Dream Simulation</span>
+    </button>
+  </header>
+
+  <main id="stage">
+
+    <!-- 0. 언어 -->
+    <section class="screen center" data-screen="0">
+      <div class="glass hero">
+        <p class="eyebrow">DREAM · SIMULATION</p>
+        <h1 class="dreamy" id="coverTitle" data-i18n="cover.title">미래의 나를<br/>꿈꾸다</h1>
+        <p class="lang-sub" data-i18n="cover.sub"></p>
+        <div class="row wrap gap" id="langRow">
+          <button class="btn lang-btn" data-lang="ko" type="button">한국어</button>
+          <button class="btn lang-btn" data-lang="en" type="button">English</button>
+          <button class="btn lang-btn" data-lang="fr" type="button">Français</button>
+        </div>
+        <button class="btn glow start-btn" id="startBtn" data-go="1" data-i18n="cover.start">시작하기</button>
+      </div>
+    </section>
+
+    <!-- 1. 성별 -->
+    <section class="screen center" data-screen="1" hidden>
+      <div class="glass panel">
+        <h2 class="dreamy" data-i18n="gender.h"></h2>
+        <div class="choice-row" id="genderRow"></div>
+      </div>
+      <nav class="s-nav"><button class="btn ghost" data-go="0" data-i18n="nav.back"></button><button class="btn glow" data-go="2" data-i18n="nav.next"></button></nav>
+    </section>
+
+    <!-- 2. 나이 -->
+    <section class="screen center" data-screen="2" hidden>
+      <div class="glass panel">
+        <h2 class="dreamy" data-i18n="age.h"></h2>
+        <output class="big-num" id="ageBig">30</output>
+        <input type="range" id="age" min="15" max="70" step="1" value="30" />
+        <p class="muted" data-i18n="age.hint"></p>
+      </div>
+      <nav class="s-nav"><button class="btn ghost" data-go="1" data-i18n="nav.back"></button><button class="btn glow" data-go="3" data-i18n="nav.next"></button></nav>
+    </section>
+
+    <!-- 3. 직업 -->
+    <section class="screen" data-screen="3" hidden>
+      <header class="s-head"><p class="step-no" data-i18n="job.step"></p><h2 data-i18n="job.h"></h2><p class="s-sub" data-i18n="job.sub"></p></header>
+      <div class="grid" id="gridJob"></div>
+      <div class="glass controls" id="customJobField" style="margin-top:14px" hidden>
+        <label class="field">
+          <span class="ft"><span data-i18n="job.customLabel"></span><output id="customSalOut"></output></span>
+          <input type="range" id="customSal" min="50" max="5000" step="10" value="330" />
+        </label>
+      </div>
+      <p class="split" id="jobLine" style="margin-top:14px"></p>
+      <nav class="s-nav"><button class="btn ghost" data-go="2" data-i18n="nav.back"></button><button class="btn glow" data-go="4" data-i18n="nav.next"></button></nav>
+    </section>
+
+    <!-- 4. 나의 현실 -->
+    <section class="screen" data-screen="4" hidden>
+      <header class="s-head"><p class="step-no" data-i18n="sit.step"></p><h2 data-i18n="sit.h"></h2><p class="s-sub" data-i18n="sit.sub"></p></header>
+      <div class="sit">
+        <div class="glass">
+          <label class="field">
+            <span class="ft"><span data-i18n="sit.salary"></span><output id="salaryOut"></output></span>
+            <input type="range" id="salary" min="0" max="3500" step="10" value="330" />
+          </label>
+        </div>
+        <div class="glass">
+          <div class="field">
+            <span class="ft"><span data-i18n="sit.tenure"></span></span>
+            <div class="seg" id="tenure">
+              <button data-tenure="none" type="button" data-i18n="sit.none"></button>
+              <button data-tenure="rent" type="button" data-i18n="sit.rent"></button>
+              <button data-tenure="own" type="button" data-i18n="sit.own"></button>
+            </div>
+          </div>
+          <label class="field" id="rentField" hidden>
+            <span class="ft"><span data-i18n="sit.rentAmt"></span><output id="rentOut"></output></span>
+            <input type="range" id="rent" min="0" max="500" step="5" value="80" />
+          </label>
+          <div id="ownFields" hidden>
+            <label class="field">
+              <span class="ft"><span data-i18n="sit.homeValue"></span><output id="homeValueOut"></output></span>
+              <input type="range" id="homeValue" min="5000" max="300000" step="1000" value="40000" />
+            </label>
+            <p class="mort-note" id="mortNote"></p>
+          </div>
+        </div>
+        <div class="glass">
+          <label class="field">
+            <span class="ft"><span data-i18n="sit.fixed"></span><output id="fixedOut"></output></span>
+            <input type="range" id="fixedCost" min="0" max="600" step="5" value="70" />
+          </label>
+          <label class="field">
+            <span class="ft"><span data-i18n="sit.save"></span><output id="saveOut"></output></span>
+            <input type="range" id="saveAmt" min="0" max="1500" step="10" value="60" />
+          </label>
+          <label class="field">
+            <span class="ft"><span data-i18n="sit.assets"></span><output id="assetsOut"></output></span>
+            <input type="range" id="assets" min="0" max="200000" step="500" value="3000" />
+          </label>
+        </div>
+      </div>
+      <nav class="s-nav"><button class="btn ghost" data-go="3" data-i18n="nav.back"></button><button class="btn glow" data-go="5" data-i18n="sit.next"></button></nav>
+    </section>
+
+    <!-- 5. 진단 -->
+    <section class="screen" data-screen="5" hidden>
+      <header class="s-head"><p class="step-no" data-i18n="diag.step"></p><h2 data-i18n="diag.h"></h2><p class="s-sub" data-i18n="diag.sub"></p></header>
+      <div class="diag">
+        <div class="glass">
+          <span class="muted" data-i18n="diag.flowTitle"></span>
+          <div class="flow-bar" id="flowBar"></div>
+          <div class="flow-legend" id="flowLegend"></div>
+        </div>
+        <div class="glass" style="text-align:center">
+          <span class="muted" data-i18n="diag.saveRate"></span>
+          <div class="saverate-big" id="saveRateBig">–</div>
+          <p class="diag-verdict" id="diagVerdict"></p>
+          <div class="hidden-save" id="hiddenSave" hidden></div>
+        </div>
+      </div>
+      <nav class="s-nav"><button class="btn ghost" data-go="4" data-i18n="nav.back"></button><button class="btn glow" data-go="6" data-i18n="diag.next"></button></nav>
+    </section>
+
+    <!-- 6. 드림카 -->
+    <section class="screen" data-screen="6" hidden>
+      <header class="s-head"><p class="step-no" data-i18n="car.step"></p><h2 data-i18n="car.h"></h2></header>
+      <div class="grid" id="gridCar"></div>
+      <nav class="s-nav"><button class="btn ghost" data-go="5" data-i18n="nav.back"></button><button class="btn glow" data-go="7" data-i18n="nav.next"></button></nav>
+    </section>
+
+    <!-- 7. 집(도시) -->
+    <section class="screen" data-screen="7" hidden>
+      <header class="s-head"><p class="step-no" data-i18n="home.step"></p><h2 data-i18n="home.h"></h2></header>
+      <div class="grid" id="gridHome"></div>
+      <nav class="s-nav"><button class="btn ghost" data-go="6" data-i18n="nav.back"></button><button class="btn glow" data-go="8" data-i18n="nav.next"></button></nav>
+    </section>
+
+    <!-- 8. 여행 -->
+    <section class="screen" data-screen="8" hidden>
+      <header class="s-head"><p class="step-no" data-i18n="trip.step"></p><h2 data-i18n="trip.h"></h2></header>
+      <div class="grid" id="gridTrip"></div>
+      <div class="glass controls" style="margin-top:14px">
+        <div class="field">
+          <span class="ft"><span data-i18n="trip.freq"></span></span>
+          <div class="seg four" id="tripFreq">
+            <button data-freq="1" type="button" data-i18n="freq.1"></button>
+            <button data-freq="2" type="button" data-i18n="freq.2"></button>
+            <button data-freq="6" type="button" data-i18n="freq.6"></button>
+            <button data-freq="12" class="on" type="button" data-i18n="freq.12"></button>
+          </div>
+          <small class="split" id="tripMonthLine"></small>
+        </div>
+      </div>
+      <nav class="s-nav"><button class="btn ghost" data-go="7" data-i18n="nav.back"></button><button class="btn glow" data-go="9" data-i18n="trip.next"></button></nav>
+    </section>
+
+    <!-- 9. 계산 -->
+    <section class="screen" data-screen="9" hidden>
+      <header class="s-head"><p class="step-no" data-i18n="calc.step"></p><h2 data-i18n="calc.h"></h2></header>
+      <div class="calc">
+        <div class="glass dream-summary" id="dreamSummary"></div>
+
+        <div class="glass total-card">
+          <span class="muted" data-i18n="calc.dreamMonth"></span>
+          <b class="total-num" id="monthNum">–</b>
+          <div class="two-path" id="twoPath"></div>
+          <p class="seed-note" id="seedFlow"></p>
+          <p class="seed-assume" data-i18n="calc.assume"></p>
+        </div>
+
+        <div class="glass reach-card">
+          <svg id="viz" viewBox="0 0 520 240" role="img"></svg>
+          <p class="reach-line" id="reachLine"></p>
+        </div>
+
+        <div class="glass controls">
+          <label class="field">
+            <span class="ft"><span data-i18n="calc.saveEcho"></span><output id="calcSaveOut"></output></span>
+            <input type="range" id="calcSave" min="0" max="1500" step="10" value="60" />
+            <small class="muted scale"><span data-i18n="calc.slow"></span><span data-i18n="calc.fast"></span></small>
+            <small class="split" id="splitLine"></small>
+          </label>
+          <div class="field">
+            <span class="ft"><span data-i18n="calc.rate"></span></span>
+            <div class="seg" id="rate">
+              <button data-rate="5" type="button" data-i18n="calc.safe"></button>
+              <button data-rate="7" class="on" type="button" data-i18n="calc.index"></button>
+              <button data-rate="10" type="button" data-i18n="calc.bold"></button>
+            </div>
+          </div>
+          <div class="field">
+            <span class="ft"><span data-i18n="calc.country"></span></span>
+            <div class="seg" id="country">
+              <button data-country="kr" type="button" data-i18n="calc.kr"></button>
+              <button data-country="us" type="button" data-i18n="calc.us"></button>
+              <button data-country="fr" type="button" data-i18n="calc.fr"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass controls">
+          <div class="ft partner-head"><span data-i18n="calc.partnerH"></span>
+            <button class="pill" id="partnerBtn" type="button" data-i18n="calc.partnerBtn"></button></div>
+          <div id="partnerFields" hidden>
+            <label class="field">
+              <span class="ft"><span data-i18n="calc.partnerAge"></span><output id="partnerAgeOut"></output></span>
+              <input type="range" id="partnerAge" min="15" max="80" step="1" value="35" />
+            </label>
+            <label class="field">
+              <span class="ft"><span data-i18n="calc.partnerM"></span><output id="partnerMOut"></output></span>
+              <input type="range" id="partnerMonthly" min="0" max="1500" step="10" value="100" />
+            </label>
+            <p class="partner-note" id="partnerNote"></p>
+          </div>
+        </div>
+
+        <div class="glass bvr" id="bvrCard"></div>
+
+        <div class="weight-h"><h3 data-i18n="weight.h"></h3><p data-i18n="weight.sub"></p></div>
+        <div class="grid3" id="weightCards"></div>
+      </div>
+      <nav class="s-nav">
+        <button class="btn ghost" data-go="0" data-i18n="calc.again"></button>
+        <button class="btn glow" data-go="10" data-i18n="calc.nextLife"></button>
+      </nav>
+    </section>
+
+    <!-- 10. 인생 이벤트 -->
+    <section class="screen" data-screen="10" hidden>
+      <header class="s-head"><p class="step-no" data-i18n="life.step"></p><h2 data-i18n="life.h"></h2><p class="s-sub" data-i18n="life.sub"></p></header>
+      <div class="events" id="eventList"></div>
+      <div class="glass life-result" id="lifeResult" hidden></div>
+      <nav class="s-nav"><button class="btn ghost" data-go="9" data-i18n="nav.back"></button><button class="btn glow" data-go="11" data-i18n="life.next"></button></nav>
+    </section>
+
+    <!-- 11. 세대 곡선 & 공유 -->
+    <section class="screen" data-screen="11" hidden>
+      <header class="s-head"><p class="step-no" data-i18n="gen.step"></p><h2 data-i18n="gen.h"></h2></header>
+      <p class="s-sub" style="margin-top:-14px;margin-bottom:20px" data-i18n="gen.sub"></p>
+
+      <div class="glass life-score" id="lifeScore"></div>
+      <div class="gen-track" id="genTrack" style="margin-top:14px"></div>
+
+      <div class="insight" style="margin-top:14px">
+        <div class="insight-eyebrow" data-i18n="gen.philoTag"></div>
+        <div class="insight-text" data-i18n="gen.philo"></div>
+      </div>
+
+      <div class="glass cta-box" style="margin-top:14px">
+        <div class="insight-eyebrow">ARBITORIA</div>
+        <div class="insight-text" data-i18n="cta.line"></div>
+        <button class="btn glow" id="ctaBtn" data-i18n="cta.btn"></button>
+      </div>
+
+      <nav class="s-nav center">
+        <button class="btn ghost" data-go="10" data-i18n="nav.back"></button>
+        <button class="btn glow" id="shareBtn" data-i18n="calc.share"></button>
+      </nav>
+      <p class="disclaim" data-i18n="calc.disclaim"></p>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
