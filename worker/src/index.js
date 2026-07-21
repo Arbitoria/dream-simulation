@@ -27,6 +27,30 @@ export default {
       }
     }
 
+    /* 환율: 매달 첫 요청 때 ECB(frankfurter) 시세를 받아 D1에 캐시 */
+    if (url.pathname === '/api/fx' && request.method === 'GET') {
+      const month = new Date().toISOString().slice(0, 7);
+      let row = null;
+      try { row = await env.DB.prepare('SELECT month, usd_krw, eur_krw FROM fx WHERE month = ?').bind(month).first(); } catch (_) {}
+      if (!row) {
+        try {
+          const r = await fetch('https://api.frankfurter.dev/v1/latest?base=KRW&symbols=USD,EUR');
+          const j = await r.json();
+          if (j && j.rates && j.rates.USD && j.rates.EUR) {
+            const usd_krw = Math.round(1 / j.rates.USD * 100) / 100;
+            const eur_krw = Math.round(1 / j.rates.EUR * 100) / 100;
+            await env.DB.prepare('INSERT OR REPLACE INTO fx (month, usd_krw, eur_krw, updated) VALUES (?,?,?,datetime(\'now\'))')
+              .bind(month, usd_krw, eur_krw).run();
+            row = { month, usd_krw, eur_krw };
+          }
+        } catch (_) {}
+      }
+      if (!row) row = { month, usd_krw: 1400, eur_krw: 1500 }; // 폴백
+      return new Response(JSON.stringify(row), {
+        headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=86400' },
+      });
+    }
+
     if (url.pathname === '/api/stats' && request.method === 'GET') {
       const row = await env.DB.prepare('SELECT COUNT(*) AS total FROM dreams').first();
       return new Response(JSON.stringify({ total: row.total }), { headers: { 'content-type': 'application/json' } });

@@ -60,10 +60,20 @@
       <header class="s-head"><p class="step-no" data-i18n="job.step"></p><h2 data-i18n="job.h"></h2><p class="s-sub" data-i18n="job.sub"></p></header>
       <div class="grid" id="gridJob"></div>
       <div class="glass controls" id="customJobField" style="margin-top:14px" hidden>
+        <span class="ft"><span data-i18n="job.customLabel"></span></span>
         <label class="field">
-          <span class="ft"><span data-i18n="job.customLabel"></span><output id="customSalOut"></output></span>
-          <input type="range" id="customSal" min="50" max="5000" step="10" value="330" />
+          <span class="ft"><span data-i18n="fx.krw"></span><output id="customKrwOut"></output></span>
+          <input type="range" id="customKrw" min="50" max="5000" step="10" value="330" />
         </label>
+        <label class="field">
+          <span class="ft"><span data-i18n="fx.usd"></span><output id="customUsdOut"></output></span>
+          <input type="range" id="customUsd" min="300" max="36000" step="50" value="2400" />
+        </label>
+        <label class="field">
+          <span class="ft"><span data-i18n="fx.eur"></span><output id="customEurOut"></output></span>
+          <input type="range" id="customEur" min="300" max="34000" step="50" value="2200" />
+        </label>
+        <p class="mort-note" id="fxNote"></p>
       </div>
       <p class="split" id="jobLine" style="margin-top:14px"></p>
       <nav class="s-nav"><button class="btn ghost" data-go="2" data-i18n="nav.back"></button><button class="btn glow" data-go="4" data-i18n="nav.next"></button></nav>

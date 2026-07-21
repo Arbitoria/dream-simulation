@@ -135,6 +135,8 @@ const L = {
     'job.line': '{job} — 평균 {sal}. 수입의 30%인 <b>{save}</b>를 미래로 보내는 것으로 시작해요.',
     'job.custom': '직접 입력', 'job.customPr': '내 월급으로', 'job.customLabel': '나의 한 달 수입',
     'job.customLine': '내 수입 — 월 {sal}. 수입의 30%인 <b>{save}</b>를 미래로 보내는 것으로 시작해요.',
+    'fx.krw': '₩ 원', 'fx.usd': '$ 달러', 'fx.eur': '€ 유로',
+    'fx.note': '환율 {m} 기준 · $1 = ₩{u} · €1 = ₩{e} — 매달 자동 업데이트',
     'calc.nextLife': '인생을 살아보기 →',
     'life.step': '인생', 'life.h': '계획대로만 흘러가진 않죠', 'life.sub': '인생이 끼어듭니다. 하나씩, 당신의 선택은?',
     'life.at': '{age}세',
@@ -210,6 +212,8 @@ const L = {
     'job.line': '{job} — average {sal}. You start by sending 30%, <b>{save}</b>, to the future.',
     'job.custom': 'Enter my own', 'job.customPr': 'my salary', 'job.customLabel': 'My monthly income',
     'job.customLine': 'My income — {sal} a month. You start by sending 30%, <b>{save}</b>, to the future.',
+    'fx.krw': '₩ KRW', 'fx.usd': '$ USD', 'fx.eur': '€ EUR',
+    'fx.note': 'Rates as of {m} · $1 = ₩{u} · €1 = ₩{e} — refreshed monthly',
     'calc.nextLife': 'Live the life →',
     'life.step': 'LIFE', 'life.h': 'Life rarely follows the plan', 'life.sub': 'Life interrupts. One at a time — what do you choose?',
     'life.at': 'Age {age}',
@@ -285,6 +289,8 @@ const L = {
     'job.line': '{job} — moyenne {sal}. Vous commencez en envoyant 30%, <b>{save}</b>, vers le futur.',
     'job.custom': 'Saisir le mien', 'job.customPr': 'mon salaire', 'job.customLabel': 'Mon revenu mensuel',
     'job.customLine': 'Mon revenu — {sal} par mois. Vous commencez en envoyant 30%, <b>{save}</b>, vers le futur.',
+    'fx.krw': '₩ KRW', 'fx.usd': '$ USD', 'fx.eur': '€ EUR',
+    'fx.note': 'Taux de {m} · 1 $ = ₩{u} · 1 € = ₩{e} — actualisés chaque mois',
     'calc.nextLife': 'Vivre la vie →',
     'life.step': 'LA VIE', 'life.h': 'La vie suit rarement le plan', 'life.sub': 'La vie s’invite. Une à une — que choisissez-vous ?',
     'life.at': '{age} ans',
@@ -374,6 +380,19 @@ function wonKo(v) {
   if (v >= 1000) return `${v.toLocaleString()}만원`; return `${v}만원`;
 }
 const FX = { en: { cur: 'USD', locale: 'en-US', rate: 1400 }, fr: { cur: 'EUR', locale: 'fr-FR', rate: 1500 } };
+let fxMonth = null;
+/* 매달 갱신되는 실환율 (같은 오리진의 /api/fx — 없으면 기본값 유지) */
+function loadFx() {
+  try {
+    fetch('/api/fx').then((r) => r.json()).then((d) => {
+      if (d && d.usd_krw > 0 && d.eur_krw > 0) {
+        FX.en.rate = d.usd_krw; FX.fr.rate = d.eur_krw; fxMonth = d.month;
+        if (screen === 3) renderJobs();
+        else renderScreen(screen);
+      }
+    }).catch(() => {});
+  } catch (_) {}
+}
 function money(manwon) {
   if (lang === 'ko') return wonKo(manwon);
   const fx = FX[lang] || FX.en;
@@ -504,9 +523,25 @@ function renderJobs() {
       <span class="pr">${S.job === 'custom' ? (lang === 'ko' ? '월 ' + money(S.salary) : money(S.salary) + ' ' + per) : t('job.customPr')}</span>
     </button>`;
   $('customJobField').hidden = S.job !== 'custom';
-  $('customSal').value = S.salary;
-  $('customSalOut').textContent = money(S.salary);
+  syncCustomSal();
   syncJobLine();
+}
+/* ₩·$·€ 세 바 동기화 — 어느 바를 움직여도 나머지가 따라온다 */
+function syncCustomSal() {
+  const krw = S.salary;                                    // 만원
+  const usd = Math.round(krw * 10000 / FX.en.rate);
+  const eur = Math.round(krw * 10000 / FX.fr.rate);
+  $('customKrw').value = krw;
+  $('customUsd').value = usd;
+  $('customEur').value = eur;
+  $('customKrwOut').textContent = wonKo(krw);
+  $('customUsdOut').textContent = '$' + usd.toLocaleString('en-US');
+  $('customEurOut').textContent = '€' + eur.toLocaleString('fr-FR');
+  $('fxNote').innerHTML = t('fx.note', {
+    m: fxMonth || '—',
+    u: Math.round(FX.en.rate).toLocaleString(),
+    e: Math.round(FX.fr.rate).toLocaleString(),
+  });
 }
 function syncJobLine() {
   const j = jobOf(S.job);
@@ -872,7 +907,14 @@ function bind() {
     const el = e.target; if (el.type !== 'range') return;
     const v = +el.value;
     if (el.id === 'age') { S.age = v; $('ageBig').textContent = S.age + (lang === 'ko' ? '세' : ''); updateHash(); return; }
-    if (el.id === 'customSal') { S.salary = v; S.save = Math.round(v * 0.3); $('customSalOut').textContent = money(v); syncJobLine(); updateHash(); return; }
+    if (el.id === 'customKrw' || el.id === 'customUsd' || el.id === 'customEur') {
+      if (el.id === 'customKrw') S.salary = v;
+      else if (el.id === 'customUsd') S.salary = Math.round(v * FX.en.rate / 10000);
+      else S.salary = Math.round(v * FX.fr.rate / 10000);
+      S.salary = clamp(S.salary, 50, 5000);
+      S.save = Math.round(S.salary * 0.3);
+      syncCustomSal(); syncJobLine(); updateHash(); return;
+    }
     if (el.id === 'salary') S.salary = v;
     else if (el.id === 'rent') S.rent = v;
     else if (el.id === 'homeValue') S.homeValue = v;
@@ -905,5 +947,6 @@ function init() {
   const h = location.hash.match(/d=([\d.]+)/); let start = 0;
   if (h) { const s = decodeState(h[1]); if (s !== undefined) start = s; }
   applyLang(lang); bind(); go(start || 0);
+  loadFx();
 }
 init();

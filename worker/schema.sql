@@ -9,3 +9,10 @@ CREATE TABLE IF NOT EXISTS dreams (
   events TEXT, happiness INTEGER, reach_age INTEGER, seed INTEGER
 );
 CREATE INDEX IF NOT EXISTS idx_dreams_created ON dreams (created_at);
+
+CREATE TABLE IF NOT EXISTS fx (
+  month TEXT PRIMARY KEY,
+  usd_krw REAL,
+  eur_krw REAL,
+  updated TEXT
+);
