@@ -69,6 +69,7 @@
         <output class="big-num" id="ageBig">30</output>
         <input type="range" id="age" min="15" max="70" step="1" value="30" />
         <p class="muted" data-i18n="age.hint"></p>
+        <p class="age-reality" id="ageReality"></p>
       </div>
       <nav class="s-nav"><button class="btn ghost" data-go="1" data-i18n="nav.back"></button><button class="btn glow" data-go="3" data-i18n="nav.next"></button></nav>
     </section>
@@ -224,6 +225,8 @@
           <p class="reach-line" id="reachLine"></p>
         </div>
 
+        <div class="glass reality-card" id="realityCard"></div>
+
         <div class="glass controls">
           <label class="field">
             <span class="ft"><span data-i18n="calc.saveEcho"></span><output id="calcSaveOut"></output></span>
@@ -293,7 +296,9 @@
       <header class="s-head"><p class="step-no" data-i18n="gen.step"></p><h2 data-i18n="gen.h"></h2></header>
       <p class="s-sub" style="margin-top:-14px;margin-bottom:20px" data-i18n="gen.sub"></p>
 
-      <div class="glass life-score" id="lifeScore"></div>
+      <div class="glass ending-card" id="endingCard"></div>
+
+      <div class="glass life-score" id="lifeScore" style="margin-top:14px"></div>
 
       <div class="glass reach-card" style="margin-top:14px">
         <svg id="vizFinal" viewBox="0 0 520 240" role="img"></svg>

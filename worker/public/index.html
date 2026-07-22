@@ -299,6 +299,24 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 @keyframes flipIn{0%{transform:rotateY(90deg);opacity:0}60%{transform:rotateY(-12deg);opacity:1}100%{transform:rotateY(0)}}
 .ev-card.otherjob{opacity:1;pointer-events:auto;cursor:pointer;border-color:var(--emerald);transition:all .18s ease}
 .ev-card.otherjob:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+/* 현실 터칭 */
+.age-reality{margin-top:12px;font-size:13px;color:var(--ink-3);line-height:1.6}
+.age-reality b{color:var(--gold-2)}
+.reality-card{padding:18px 20px}
+.reality-card .rc-t{font-size:14.5px;font-weight:800;color:var(--gold-2);margin-bottom:10px}
+.reality-card .rc-row{font-size:13.5px;color:var(--ink-2);margin-bottom:7px;line-height:1.6}
+.reality-card .rc-row b{color:var(--ink)}
+.reality-card .rc-gap b{color:#E05B4B}
+.reality-card .rc-years{padding-top:8px;border-top:1px dashed rgba(255,255,255,.1);color:var(--ink-3);font-size:12.5px}
+.reality-card .rc-years b{color:var(--gold-2)}
+
+/* 엔딩 칭호 */
+.ending-card{text-align:center;padding:26px 20px}
+.end-tag{font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.end-emoji{font-size:46px;line-height:1;display:block;margin-bottom:8px;animation:bump .6s cubic-bezier(.2,.7,.2,1)}
+.end-title{font-size:25px;font-weight:800;letter-spacing:-.01em;color:var(--gold-2)}
+.end-desc{font-size:13.5px;color:var(--ink-2);margin-top:8px;line-height:1.6}
+
 /* 인생 이벤트 실시간 트래커 */
 .life-live{position:sticky;top:62px;z-index:10;max-width:640px;margin:0 auto 16px;padding:12px 20px;
   display:flex;justify-content:center;gap:34px;flex-wrap:wrap}
@@ -390,6 +408,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
         <output class="big-num" id="ageBig">30</output>
         <input type="range" id="age" min="15" max="70" step="1" value="30" />
         <p class="muted" data-i18n="age.hint"></p>
+        <p class="age-reality" id="ageReality"></p>
       </div>
       <nav class="s-nav"><button class="btn ghost" data-go="1" data-i18n="nav.back"></button><button class="btn glow" data-go="3" data-i18n="nav.next"></button></nav>
     </section>
@@ -545,6 +564,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
           <p class="reach-line" id="reachLine"></p>
         </div>
 
+        <div class="glass reality-card" id="realityCard"></div>
+
         <div class="glass controls">
           <label class="field">
             <span class="ft"><span data-i18n="calc.saveEcho"></span><output id="calcSaveOut"></output></span>
@@ -614,7 +635,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
       <header class="s-head"><p class="step-no" data-i18n="gen.step"></p><h2 data-i18n="gen.h"></h2></header>
       <p class="s-sub" style="margin-top:-14px;margin-bottom:20px" data-i18n="gen.sub"></p>
 
-      <div class="glass life-score" id="lifeScore"></div>
+      <div class="glass ending-card" id="endingCard"></div>
+
+      <div class="glass life-score" id="lifeScore" style="margin-top:14px"></div>
 
       <div class="glass reach-card" style="margin-top:14px">
         <svg id="vizFinal" viewBox="0 0 520 240" role="img"></svg>
@@ -705,6 +728,9 @@ const emojiOf = (cat, id) => opt(cat, id).e;
 
 const COUNTRIES = ['kr', 'us', 'fr'];
 const TAXES = { kr: 0.154, us: 0.15, fr: 0.30 };
+/* 평균 공적연금 수령액 (만원/월 · 단순화 — kr 국민연금, us Social Security, fr 기초연금) */
+const PENSION_MW = { kr: 65, us: 280, fr: 250 };
+const LIFE_EXPECT = 90;   // 초고령 사회의 기본값 가정
 const TENURES = ['none', 'rent', 'own'];
 const LOAN_RATE = 4, LOAN_YEARS = 25, DOWN_PCT = 0.2, HOME_GROWTH = 2;
 
@@ -787,6 +813,21 @@ const L = {
     'nav.back': '뒤로', 'nav.next': '다음',
     'gender.h': '당신은 누구인가요?', 'g.female': '여성', 'g.male': '남성', 'g.other': '그 외',
     'age.h': '지금, 몇 살인가요?', 'age.hint': '이른 시작일수록 시간이 당신 편입니다.',
+    'age.reality': '초고령 사회의 당신 세대에게 90세는 특별한 일이 아닙니다 — 지금부터 <b>{left}년</b>을 더 산다는 뜻이에요.',
+    'calc.realityT': '⏳ 현실 체크 — "연금 받으면 되지 않나?"',
+    'calc.pensionLine': '{pen}: 월 <b>{p}</b>',
+    'calc.gapLine': '이 꿈의 한 달은 {m} — 연금과의 간극 <b>월 {gap}</b>. 그 간극이 나무가 할 일입니다.',
+    'calc.gapNone': '드물게도, 연금만으로 이 꿈에 닿습니다. 그래도 나무가 있으면 연금이 자유가 됩니다.',
+    'calc.yearsLine': '{age}세에 나무가 다 자라면 — 90세까지 <b>{y}년</b>의 열매가 필요합니다. 노후 준비는 몇 년짜리가 아니라 수십 년짜리입니다.',
+    'pen.kr': '국민연금 평균 수령액', 'pen.us': 'Social Security 평균 수령액', 'pen.fr': '프랑스 공적연금 평균',
+    'end.tag': '당신의 엔딩',
+    'end.legend': '🌳 황금 나무', 'end.legendD': '일찍 닿았고, 행복도 놓치지 않았습니다. 전설의 결말.',
+    'end.forest': '🌲 이른 숲', 'end.forestD': '시간이 당신 편이었습니다 — 숲이 남들보다 일찍 시작됩니다.',
+    'end.gardener': '🌿 단단한 정원사', 'end.gardenerD': '서두르지 않고, 웃음을 지키며 나무를 키웠습니다.',
+    'end.sun': '☀️ 오늘을 사는 사람', 'end.sunD': '나무는 늦지만, 당신의 오늘은 이미 열매입니다.',
+    'end.vault': '🏦 부유한 은둔자', 'end.vaultD': '나무는 빨리 자랐지만 — 열매를 나눌 웃음이 모자랐습니다.',
+    'end.seed': '🌱 아직 씨앗', 'end.seedD': '아직 흙 속입니다. 씨앗의 잘못이 아니라, 시간이 필요할 뿐입니다.',
+    'end.walker': '🍃 묵묵한 걸음', 'end.walkerD': '눈에 띄지 않아도, 걸음은 쌓이고 있습니다.',
     'job.step': '직업', 'job.h': '무엇으로 벌고 있나요?', 'job.sub': '평균 월수입 기준 — 같은 비율을 미래로 보내도, 출발선이 도달을 바꿉니다.',
     'job.hint': '직업을 고르면 평균 수입과 저축 30%가 자동으로 채워져요 — 다음 화면에서 조정할 수 있어요.',
     'job.line': '{job} — 평균 {sal}. 수입의 30%인 <b>{save}</b>를 미래로 보내는 것으로 시작해요.',
@@ -880,6 +921,21 @@ const L = {
     'nav.back': 'Back', 'nav.next': 'Next',
     'gender.h': 'Who are you?', 'g.female': 'Woman', 'g.male': 'Man', 'g.other': 'Other',
     'age.h': 'How old are you now?', 'age.hint': 'The earlier you start, the more time is on your side.',
+    'age.reality': 'In a super-aged society, reaching 90 is no longer special for your generation — that means <b>{left} more years</b> from today.',
+    'calc.realityT': '⏳ Reality check — “won’t the pension be enough?”',
+    'calc.pensionLine': '{pen}: <b>{p}</b>/mo',
+    'calc.gapLine': 'This dream costs {m} a month — a gap of <b>{gap}/mo</b> versus the pension. That gap is the tree’s job.',
+    'calc.gapNone': 'Rarely, the pension alone reaches this dream. Even then, a tree turns the pension into freedom.',
+    'calc.yearsLine': 'If your tree is grown at {age}, it must bear fruit for <b>{y} years</b> until 90. Retirement prep isn’t a few years — it’s decades.',
+    'pen.kr': 'Korea national pension (avg)', 'pen.us': 'Social Security (avg)', 'pen.fr': 'French public pension (avg)',
+    'end.tag': 'Your ending',
+    'end.legend': '🌳 The Golden Tree', 'end.legendD': 'You arrived early, and kept your happiness. The legendary ending.',
+    'end.forest': '🌲 The Early Forest', 'end.forestD': 'Time was on your side — your forest starts earlier than most.',
+    'end.gardener': '🌿 The Steady Gardener', 'end.gardenerD': 'You never rushed, kept your smile, and grew the tree.',
+    'end.sun': '☀️ The One Who Lives Today', 'end.sunD': 'The tree is late, but your today is already fruit.',
+    'end.vault': '🏦 The Wealthy Hermit', 'end.vaultD': 'The tree grew fast — but there was too little laughter to share the fruit.',
+    'end.seed': '🌱 Still a Seed', 'end.seedD': 'Still under the soil. Not the seed’s fault — it just needs time.',
+    'end.walker': '🍃 The Quiet Walker', 'end.walkerD': 'Unnoticed, perhaps — but the steps are adding up.',
     'job.step': 'YOUR WORK', 'job.h': 'How do you earn?', 'job.sub': 'Average monthly income — the same share sent forward, a different starting line, a different arrival.',
     'job.hint': 'Pick a career and its average income + 30% saving fill in — adjust them on the next screen.',
     'job.line': '{job} — average {sal}. You start by sending 30%, <b>{save}</b>, to the future.',
@@ -973,6 +1029,21 @@ const L = {
     'nav.back': 'Retour', 'nav.next': 'Suivant',
     'gender.h': 'Qui êtes-vous ?', 'g.female': 'Femme', 'g.male': 'Homme', 'g.other': 'Autre',
     'age.h': 'Quel âge avez-vous ?', 'age.hint': 'Plus tôt vous commencez, plus le temps est de votre côté.',
+    'age.reality': 'Dans une société super-âgée, atteindre 90 ans n’a plus rien d’exceptionnel pour votre génération — cela signifie <b>{left} années</b> de plus à vivre.',
+    'calc.realityT': '⏳ Vérification de réalité — « la pension ne suffira-t-elle pas ? »',
+    'calc.pensionLine': '{pen} : <b>{p}</b>/mois',
+    'calc.gapLine': 'Ce rêve coûte {m} par mois — un écart de <b>{gap}/mois</b> face à la pension. Cet écart, c’est le travail de l’arbre.',
+    'calc.gapNone': 'Rarement, la pension seule atteint ce rêve. Même alors, un arbre transforme la pension en liberté.',
+    'calc.yearsLine': 'Si votre arbre est adulte à {age} ans, il doit porter des fruits pendant <b>{y} ans</b> jusqu’à 90. La retraite ne se prépare pas en années — en décennies.',
+    'pen.kr': 'Pension nationale coréenne (moy.)', 'pen.us': 'Social Security (moy.)', 'pen.fr': 'Pension publique française (moy.)',
+    'end.tag': 'Votre fin',
+    'end.legend': '🌳 L’Arbre d’or', 'end.legendD': 'Arrivé tôt, sans perdre le bonheur. La fin légendaire.',
+    'end.forest': '🌲 La Forêt précoce', 'end.forestD': 'Le temps était de votre côté — votre forêt commence plus tôt que les autres.',
+    'end.gardener': '🌿 Le Jardinier constant', 'end.gardenerD': 'Sans hâte, le sourire intact, vous avez fait grandir l’arbre.',
+    'end.sun': '☀️ Celui qui vit aujourd’hui', 'end.sunD': 'L’arbre est tardif, mais votre présent est déjà un fruit.',
+    'end.vault': '🏦 L’Ermite fortuné', 'end.vaultD': 'L’arbre a poussé vite — mais il manquait des rires pour partager les fruits.',
+    'end.seed': '🌱 Encore une graine', 'end.seedD': 'Encore sous la terre. Ce n’est pas la faute de la graine — il faut du temps.',
+    'end.walker': '🍃 Le Marcheur silencieux', 'end.walkerD': 'Discret, peut-être — mais les pas s’accumulent.',
     'job.step': 'VOTRE MÉTIER', 'job.h': 'Comment gagnez-vous ?', 'job.sub': 'Revenu mensuel moyen — la même part envoyée, une autre ligne de départ, une autre arrivée.',
     'job.hint': 'Choisissez un métier : revenu moyen + 30% d’épargne se remplissent — ajustez à l’écran suivant.',
     'job.line': '{job} — moyenne {sal}. Vous commencez en envoyant 30%, <b>{save}</b>, vers le futur.',
@@ -1224,7 +1295,7 @@ function sendDream() {
 }
 function renderScreen(n) {
   if (n === 1) renderGender();
-  if (n === 2) $('ageBig').textContent = S.age + (lang === 'ko' ? '세' : '');
+  if (n === 2) { $('ageBig').textContent = S.age + (lang === 'ko' ? '세' : ''); renderAgeReality(); }
   if (n === 3) renderJobs();
   if (n === 4) renderSituation();
   if (n === 5) renderDiag();
@@ -1351,6 +1422,35 @@ function renderLifeResult() {
     </div>
     <p class="lr-note">${t('life.note')}</p>`;
 }
+/* 현실 한 줄: 90세까지 남은 시간 */
+function renderAgeReality() {
+  $('ageReality').innerHTML = t('age.reality', { left: Math.max(0, LIFE_EXPECT - S.age) });
+}
+
+/* 현실 체크 카드: 연금 vs 꿈의 간극 + 몇 년치 열매가 필요한가 */
+function renderReality(months) {
+  const dm = dreamMonthly();
+  const pen = PENSION_MW[S.country] != null ? PENSION_MW[S.country] : 65;
+  const gap = dm - pen;
+  const reachAge = months === Infinity ? null : S.age + Math.round(months / 12);
+  const years = reachAge !== null ? Math.max(0, LIFE_EXPECT - reachAge) : null;
+  $('realityCard').innerHTML = `
+    <div class="rc-t">${t('calc.realityT')}</div>
+    <div class="rc-row">${t('calc.pensionLine', { pen: t('pen.' + S.country), p: money(pen) })}</div>
+    <div class="rc-row rc-gap">${gap > 0 ? t('calc.gapLine', { m: money(dm), gap: money(gap) }) : t('calc.gapNone')}</div>
+    ${years !== null ? `<div class="rc-years">${t('calc.yearsLine', { age: reachAge, y: years })}</div>` : ''}`;
+}
+
+/* 엔딩 매트릭스: 도달나이 × 행복 */
+function endingOf(months, reachAge, h) {
+  if (months === Infinity) return h >= 7 ? 'sun' : 'seed';
+  if (reachAge <= 45) return h >= 7 ? 'legend' : 'vault';
+  if (reachAge <= 58) return h >= 7 ? 'forest' : 'vault';
+  if (h >= 7) return 'gardener';
+  if (h <= 4) return 'vault';
+  return 'walker';
+}
+
 function renderGender() {
   $('genderRow').innerHTML = [['female', '🌷'], ['male', '🌿'], ['other', '✨']].map(([g, e]) =>
     `<button class="choice ${S.gender === g ? 'on' : ''}" data-gender="${g}" type="button"><span class="ce">${e}</span>${t('g.' + g)}</button>`).join('');
@@ -1522,6 +1622,7 @@ function updateReach() {
     $('partnerNote').textContent = dy !== null && dy >= 1 ? t('calc.partnerNote', { y: dy }) : '';
   }
   drawViz(N, months);
+  renderReality(months);
   renderBvr();
   renderWeight(N, months);
 }
@@ -1570,6 +1671,12 @@ function renderGen() {
   const h = happiness();
   const j = jobOf(S.job);
   const jName = S.job === 'custom' ? t('job.custom') : (j ? (j.nm[lang] || j.nm.ko) : '—');
+  const endKey = endingOf(months, reachAge, h);
+  $('endingCard').innerHTML = `
+    <div class="end-tag">${t('end.tag')}</div>
+    <span class="end-emoji">${t('end.' + endKey).split(' ')[0]}</span>
+    <div class="end-title">${t('end.' + endKey).split(' ').slice(1).join(' ')}</div>
+    <div class="end-desc">${t('end.' + endKey + 'D')}</div>`;
   $('lifeScore').innerHTML = `
     <div class="ls-col"><div class="lr-l">${t('life.scoreJob')}</div><div class="lr-v">${jName}</div></div>
     <div class="ls-col"><div class="lr-l">${t('life.scoreReach')}</div><div class="lr-v">${months === Infinity ? '∞' : reachAge + (lang === 'ko' ? '세' : '')}</div></div>
@@ -1672,11 +1779,15 @@ function decodeState(str) {
 function clamp(v, a, b) { return Math.max(a, Math.min(b, Math.round(v || 0))); }
 function updateHash() { const u = new URL(location.href); u.hash = 'd=' + encodeState(); history.replaceState(null, '', u); }
 async function share() {
-  /* 공유 링크는 항상 그래프가 있는 계산 화면(9)으로 열린다 */
+  /* 공유 링크는 항상 그래프가 있는 계산 화면(9)으로 열린다 · 엔딩 칭호 포함 */
   const u = new URL(location.href);
   u.hash = 'd=' + encodeState(9);
   const link = u.toString();
-  try { if (navigator.share) { await navigator.share({ title: 'Dream Simulation — ARBITORIA', url: link }); return; } } catch (_) {}
+  const N = seedNeeded();
+  const months = monthsToReach(N);
+  const reachAge = months === Infinity ? S.age + 30 : S.age + Math.round(months / 12);
+  const endTitle = t('end.' + endingOf(months, reachAge, happiness()));
+  try { if (navigator.share) { await navigator.share({ title: 'Dream Simulation — ARBITORIA', text: endTitle, url: link }); return; } } catch (_) {}
   try { await navigator.clipboard.writeText(link); toast(t('toast.copied')); } catch (_) { toast(t('toast.manual')); }
 }
 let toastT; function toast(m) { const el = $('toast'); el.textContent = m; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 2400); }
@@ -1730,7 +1841,7 @@ function bind() {
   document.body.addEventListener('input', (e) => {
     const el = e.target; if (el.type !== 'range') return;
     const v = +el.value;
-    if (el.id === 'age') { S.age = v; $('ageBig').textContent = S.age + (lang === 'ko' ? '세' : ''); updateHash(); return; }
+    if (el.id === 'age') { S.age = v; $('ageBig').textContent = S.age + (lang === 'ko' ? '세' : ''); renderAgeReality(); updateHash(); return; }
     if (el.id === 'customKrw' || el.id === 'customUsd' || el.id === 'customEur') {
       if (el.id === 'customKrw') S.salary = v;
       else if (el.id === 'customUsd') S.salary = Math.round(v * FX.en.rate / 10000);
