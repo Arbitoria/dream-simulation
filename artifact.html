@@ -295,6 +295,13 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .end-title{font-size:25px;font-weight:800;letter-spacing:-.01em;color:var(--gold-2)}
 .end-desc{font-size:13.5px;color:var(--ink-2);margin-top:8px;line-height:1.6}
 
+/* 공유 문구 미리보기 */
+.share-preview{margin-top:14px;padding:18px 20px;text-align:center}
+.sp-label{font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.sp-msg{font-size:15.5px;font-weight:700;color:var(--ink);line-height:1.6;margin-bottom:12px}
+.sp-msg b{color:var(--gold-2)}
+#rerollMsg{font-size:12.5px}
+
 /* 인생 이벤트 실시간 트래커 */
 .life-live{position:sticky;top:62px;z-index:10;max-width:640px;margin:0 auto 16px;padding:12px 20px;
   display:flex;justify-content:center;gap:34px;flex-wrap:wrap}
@@ -321,6 +328,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .insight-text em{font-style:normal;color:var(--gold-2)}
 .cta-box{text-align:center;padding:26px 20px}
 .cta-box .btn{margin-top:14px}
+.cta-hope{font-size:22px;font-weight:800;letter-spacing:-.01em;color:var(--ink);line-height:1.45;margin-bottom:10px}
+.cta-hope em{font-style:normal;color:var(--gold-2)}
+.cta-box .insight-text{margin-bottom:8px;font-weight:500;color:var(--ink-2)}
+.cta-box .insight-text:last-of-type{margin-bottom:0;font-weight:600;color:var(--ink)}
 .disclaim{text-align:center;color:var(--ink-3);font-size:11.5px;margin-top:18px;max-width:40em;margin-inline:auto}
 .privacy-line{margin-top:18px;font-size:12px;color:var(--ink-3)}
 .insights-link{color:var(--gold);font-weight:700;font-size:13.5px;text-decoration:none;border-bottom:1px dashed var(--gold)}
@@ -630,8 +641,16 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 
       <div class="glass cta-box" style="margin-top:14px">
         <div class="insight-eyebrow">ARBITORIA</div>
+        <div class="cta-hope" data-i18n="cta.hope"></div>
+        <div class="insight-text" data-i18n="cta.hopeSub"></div>
         <div class="insight-text" data-i18n="cta.line"></div>
         <button class="btn glow" id="ctaBtn" data-i18n="cta.btn"></button>
+      </div>
+
+      <div class="glass share-preview" id="sharePreview">
+        <p class="sp-label" data-i18n="share.label"></p>
+        <p class="sp-msg" id="shareMsgText"></p>
+        <button class="pill" id="rerollMsg" type="button">🎲 <span data-i18n="share.reroll"></span></button>
       </div>
 
       <nav class="s-nav center">
@@ -886,9 +905,13 @@ const L = {
     'gen.g2': '제 2세대 — 자녀', 'gen.g2when': '+30년', 'gen.g2note': '같은 나무가 30년 더 자라면 — 자녀 세대의 숲.',
     'gen.g3': '제 3세대 — 손자녀', 'gen.g3when': '+60년', 'gen.g3note': '세 번째 세대에 이르면, 숲은 스스로 자랍니다.',
     'gen.philoTag': '철학', 'gen.philo': '한 사람의 일생만으로는 보이지 않는 곡선이 있습니다. <em>시간을 자산으로</em> 보면, 오늘의 결정은 60년 뒤의 누군가에게 닿습니다.',
+    'cta.hope': '노후는 이제 걱정이 아닌 <em>기대</em>',
+    'cta.hopeSub': '막연한 꿈이 아니라 실천 가능한 계획으로 — 누군가를 이겨야 얻는 제로섬이 아니라, 시간과 함께 자라는 세상입니다.',
     'cta.line': '꿈은 시간이 이룹니다. 지키는 건 <em>구조</em>입니다.', 'cta.btn': 'ARBITORIA Family Office 보기',
     'calc.disclaim': '교육·상상용 시뮬레이션입니다. 수익률·가격·세율·대출 조건은 단순화한 가정이며 투자·세무 조언이 아닙니다.',
     'toast.copied': '링크를 복사했어요.', 'toast.manual': '주소창의 링크를 복사해 공유하세요.',
+    'toast.copiedMsg': '질문과 링크를 함께 복사했어요. 붙여넣어 보내세요.',
+    'share.label': '이 질문과 함께 보내집니다', 'share.reroll': '다른 질문',
   },
   en: {
     'cover.title': 'Dreaming of<br/>my future self', 'cover.sub': 'Enter who you are, choose the dream — time draws the line between them.', 'cover.start': 'Begin',
@@ -994,9 +1017,13 @@ const L = {
     'gen.g2': '2nd generation — Your child', 'gen.g2when': '+30 years', 'gen.g2note': 'The same tree, 30 more years — your child’s forest.',
     'gen.g3': '3rd generation — Grandchild', 'gen.g3when': '+60 years', 'gen.g3note': 'By the third generation, the forest grows on its own.',
     'gen.philoTag': 'Philosophy', 'gen.philo': 'Some curves cannot be seen within one lifetime. Treat <em>time as an asset</em>, and today’s decision reaches someone 60 years away.',
+    'cta.hope': 'Retirement is no longer a worry — it is <em>anticipation</em>',
+    'cta.hopeSub': 'Not a vague dream but an actionable plan — not a zero-sum game where someone must lose, but a world that grows with time.',
     'cta.line': 'Time builds the dream. <em>Structure</em> keeps it.', 'cta.btn': 'See ARBITORIA Family Office',
     'calc.disclaim': 'A simulation for learning and imagining. Returns, prices, taxes and loan terms are simplified assumptions — not financial or tax advice.',
     'toast.copied': 'Link copied.', 'toast.manual': 'Copy the link from your address bar to share.',
+    'toast.copiedMsg': 'Question and link copied together. Paste to send.',
+    'share.label': 'Sent along with this question', 'share.reroll': 'Another question',
   },
   fr: {
     'cover.title': 'Rêver de<br/>mon futur moi', 'cover.sub': 'Entrez qui vous êtes, choisissez le rêve — le temps trace la ligne entre les deux.', 'cover.start': 'Commencer',
@@ -1102,9 +1129,13 @@ const L = {
     'gen.g2': '2e génération — Votre enfant', 'gen.g2when': '+30 ans', 'gen.g2note': 'Le même arbre, 30 ans de plus — la forêt de votre enfant.',
     'gen.g3': '3e génération — Petit-enfant', 'gen.g3when': '+60 ans', 'gen.g3note': 'À la troisième génération, la forêt pousse toute seule.',
     'gen.philoTag': 'Philosophie', 'gen.philo': 'Certaines courbes sont invisibles en une seule vie. Voyez le <em>temps comme un actif</em>, et la décision d’aujourd’hui touche quelqu’un dans 60 ans.',
+    'cta.hope': 'La retraite n’est plus une inquiétude — c’est une <em>attente heureuse</em>',
+    'cta.hopeSub': 'Pas un rêve vague mais un plan réalisable — pas un jeu à somme nulle où quelqu’un doit perdre, mais un monde qui grandit avec le temps.',
     'cta.line': 'Le temps bâtit le rêve. La <em>structure</em> le garde.', 'cta.btn': 'Voir ARBITORIA Family Office',
     'calc.disclaim': 'Une simulation pour apprendre et imaginer. Rendements, prix, impôts et prêts sont des hypothèses simplifiées — ni conseil financier ni fiscal.',
     'toast.copied': 'Lien copié.', 'toast.manual': 'Copiez le lien de la barre d’adresse pour partager.',
+    'toast.copiedMsg': 'Question et lien copiés ensemble. Collez pour envoyer.',
+    'share.label': 'Envoyé avec cette question', 'share.reroll': 'Une autre question',
   },
 };
 function t(k, p) { let s = (L[lang] && L[lang][k]) != null ? L[lang][k] : (L.ko[k] != null ? L.ko[k] : k); if (p) for (const x in p) s = s.replace(new RegExp('\\{' + x + '\\}', 'g'), p[x]); return s; }
@@ -1418,6 +1449,81 @@ function renderReality(months) {
     ${years !== null ? `<div class="rc-years">${t('calc.yearsLine', { age: reachAge, y: years })}</div>` : ''}`;
 }
 
+/* ═══ 공유 문구 — 링크가 아니라 질문을 던진다 ═══
+   {age}=도달나이 {ending}=엔딩칭호 {gap}=연금과의 간극 {pen}=연금 {m}=꿈의 한 달 */
+const SHARE_MSGS = {
+  ko: [
+    '버는 날보다 쓸 날이 많아진다면 — 당신은 무엇을 준비하고 있나요?',
+    '{pen}. 당신의 꿈은 한 달에 얼마인가요?',
+    '90세까지 산다면 은퇴 후 30년 — 그 시간의 계획, 있나요?',
+    '나는 {age}세에 꿈에 닿아요. 당신은 몇 살에 닿나요?',
+    '남은 인생의 방향을 3분 만에 그려봤어요. 내 엔딩은 {ending}.',
+    '시간은 수익률보다 큰 무기래요 — 3분이면 확인돼요.',
+    '죽는 날은 몰라도, 쓸 날이 버는 날보다 많아지는 날은 반드시 옵니다.',
+    '내 꿈과 연금의 간극은 월 {gap}이었어요. 당신의 간극은요?',
+    '노후가 걱정이 아니라 기대가 될 수도 있대요 — 3분이면 내 숫자로 확인돼요.',
+  ],
+  en: [
+    'One day you will have more days to spend than days to earn — what are you preparing?',
+    '{pen}. How much is your dream, per month?',
+    'Live to 90 and retirement lasts 30 years — is there a plan for that time?',
+    'I reach my dream at {age}. At what age do you reach yours?',
+    'I drew the direction of my remaining life in 3 minutes. My ending: {ending}.',
+    'Time beats returns, they say — takes 3 minutes to check.',
+    'You never know your last day, but the day spending outpaces earning will surely come.',
+    'The gap between my dream and the pension was {gap}/mo. What is yours?',
+    'Retirement can be anticipation instead of worry — 3 minutes with your own numbers.',
+  ],
+  fr: [
+    'Un jour, vous aurez plus de jours à dépenser qu’à gagner — que préparez-vous ?',
+    '{pen}. Et votre rêve, combien coûte-t-il par mois ?',
+    'Vivre jusqu’à 90 ans, c’est 30 ans de retraite — avez-vous un plan pour ce temps ?',
+    'J’atteins mon rêve à {age} ans. Et vous, à quel âge ?',
+    'J’ai tracé la direction de ma vie restante en 3 minutes. Ma fin : {ending}.',
+    'Le temps bat le rendement, dit-on — 3 minutes suffisent pour vérifier.',
+    'On ignore son dernier jour, mais le jour où l’on dépense plus qu’on ne gagne viendra sûrement.',
+    'L’écart entre mon rêve et la pension était de {gap}/mois. Et le vôtre ?',
+    'La retraite peut devenir une attente heureuse plutôt qu’une inquiétude — 3 minutes avec vos propres chiffres.',
+  ],
+};
+let shareMsgIdx = -1;
+function buildShareMsg(idx) {
+  const N = seedNeeded();
+  const months = monthsToReach(N);
+  const reachAge = months === Infinity ? '?' : S.age + Math.round(months / 12);
+  const ending = t('end.' + endingOf(months, reachAge === '?' ? 999 : reachAge, happiness()));
+  const dm = dreamMonthly();
+  const pen = PENSION_MW[S.country] != null ? PENSION_MW[S.country] : 65;
+  const gap = dm - pen;
+  let pool = SHARE_MSGS[lang] || SHARE_MSGS.ko;
+  // 간극이 없거나 미도달이면 해당 템플릿 제외
+  const usable = pool.map((m, i) => ({ m, i }))
+    .filter((x) => !(x.m.includes('{gap}') && gap <= 0))
+    .filter((x) => !(x.m.includes('{age}') && reachAge === '?'));
+  const pick = idx != null && usable.some((u) => u.i === idx)
+    ? usable.find((u) => u.i === idx)
+    : usable[Math.floor(Math.random() * usable.length)];
+  shareMsgIdx = pick.i;
+  const penLabel = t('pen.' + S.country) + ' ' + (lang === 'ko' ? '월 ' : '') + money(pen) + (lang === 'ko' ? '' : '/mo');
+  return pick.m
+    .replace('{age}', reachAge)
+    .replace('{ending}', ending)
+    .replace('{gap}', money(Math.max(0, gap)))
+    .replace('{pen}', penLabel)
+    .replace('{m}', money(dm));
+}
+let currentShareMsg = '';
+function updateShareMsg(reroll) {
+  let next = buildShareMsg(null);
+  if (reroll) {
+    // 같은 문구 연속 방지
+    let guard = 0;
+    while (next === currentShareMsg && guard++ < 5) next = buildShareMsg(null);
+  }
+  currentShareMsg = next;
+  $('shareMsgText').textContent = currentShareMsg;
+}
+
 /* 엔딩 매트릭스: 도달나이 × 행복 */
 function endingOf(months, reachAge, h) {
   if (months === Infinity) return h >= 7 ? 'sun' : 'seed';
@@ -1673,6 +1779,7 @@ function renderGen() {
     <div class="gen-card"><div class="gen-tag">${t('gen.g3')}</div>
       <h4>${t('gen.g3when')}</h4>
       <div class="gen-amt">${money(g3)}</div><div class="gen-note">${t('gen.g3note')}</div></div>`;
+  updateShareMsg();
 }
 
 /* ═══ 시각화 ═══ */
@@ -1756,16 +1863,14 @@ function decodeState(str) {
 function clamp(v, a, b) { return Math.max(a, Math.min(b, Math.round(v || 0))); }
 function updateHash() { const u = new URL(location.href); u.hash = 'd=' + encodeState(); history.replaceState(null, '', u); }
 async function share() {
-  /* 공유 링크는 항상 그래프가 있는 계산 화면(9)으로 열린다 · 엔딩 칭호 포함 */
+  /* 공유 링크는 항상 그래프가 있는 계산 화면(9)으로 열린다 · 링크가 아니라 질문을 보낸다 */
   const u = new URL(location.href);
   u.hash = 'd=' + encodeState(9);
   const link = u.toString();
-  const N = seedNeeded();
-  const months = monthsToReach(N);
-  const reachAge = months === Infinity ? S.age + 30 : S.age + Math.round(months / 12);
-  const endTitle = t('end.' + endingOf(months, reachAge, happiness()));
-  try { if (navigator.share) { await navigator.share({ title: 'Dream Simulation — ARBITORIA', text: endTitle, url: link }); return; } } catch (_) {}
-  try { await navigator.clipboard.writeText(link); toast(t('toast.copied')); } catch (_) { toast(t('toast.manual')); }
+  if (!currentShareMsg) updateShareMsg();
+  const msg = currentShareMsg;
+  try { if (navigator.share) { await navigator.share({ title: 'Dream Simulation — ARBITORIA', text: msg, url: link }); return; } } catch (_) {}
+  try { await navigator.clipboard.writeText(msg + '\n' + link); toast(t('toast.copiedMsg')); } catch (_) { toast(t('toast.manual')); }
 }
 let toastT; function toast(m) { const el = $('toast'); el.textContent = m; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 2400); }
 
@@ -1806,6 +1911,7 @@ function bind() {
       schedule(updateReach); updateHash(); return;
     }
     if (e.target.closest('#shareBtn')) { share(); return; }
+    if (e.target.closest('#rerollMsg')) { updateShareMsg(true); return; }
     if (e.target.closest('#ctaBtn')) { window.open('https://arbitoria.com/family-office', '_blank'); return; }
     if (e.target.closest('#cookieOk')) { try { localStorage.setItem('cookieAck', '1'); } catch (_) {} $('cookieBar').hidden = true; return; }
     if (e.target.closest('#deepToggle')) {
