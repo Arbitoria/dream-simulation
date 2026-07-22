@@ -4,7 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dream Simulation — ARBITORIA</title>
-  <meta name="description" content="지금의 나를 넣고, 꿈의 미래를 고르면 — 시간이 그 사이를 잇는 곡선을 보여줍니다. by ARBITORIA" />
+  <meta name="description" content="당신의 꿈은 몇 살에 이뤄질까? 지금의 나를 넣고 꿈을 고르면, 시간이 답합니다. What age will your dream come true? by ARBITORIA" />
+  <link rel="canonical" href="https://arbitoria.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ARBITORIA" />
+  <meta property="og:title" content="당신의 꿈은 몇 살에 이뤄질까? — Dream Simulation" />
+  <meta property="og:description" content="포르쉐, 발리, 오로라 — 꿈을 고르면 시간이 답합니다. 3분, 무료, 개인정보 무저장." />
+  <meta property="og:url" content="https://arbitoria.com/" />
+  <meta property="og:image" content="https://arbitoria.com/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="당신의 꿈은 몇 살에 이뤄질까? — Dream Simulation" />
+  <meta name="twitter:description" content="꿈을 고르면 시간이 답합니다. 3분, 무료, 개인정보 무저장." />
+  <meta name="twitter:image" content="https://arbitoria.com/og.png" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Dream Simulation","alternateName":"드림시뮬레이션","url":"https://arbitoria.com/","description":"A free life-planning game: pick your dream, and time answers when it comes true.","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":["ko","en","fr"],"isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"ARBITORIA","url":"https://arbitoria.com/"}}</script>
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
   <style>
 /* ── 드림시뮬레이션 · ARBITORIA (deep forest + gold) ── */
@@ -1171,7 +1185,19 @@ function go(n) {
   renderScreen(n);
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateHash();
+  if (n === 1) sendStartPing();
   if (n === 11) sendDream();
+}
+
+/* 익명 시작 신호 (1회 · kind+lang만 — 완주율 측정) */
+let startPinged = false;
+function sendStartPing() {
+  if (startPinged) return;
+  startPinged = true;
+  try {
+    fetch('/api/ping', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ kind: 'start', lang }) }).catch(() => {});
+  } catch (_) {}
 }
 
 /* 익명 꿈 데이터 수집 (완주 1회 · 같은 오리진에 API 있을 때만 성공) */

@@ -16,3 +16,11 @@ CREATE TABLE IF NOT EXISTS fx (
   eur_krw REAL,
   updated TEXT
 );
+
+-- 깔때기 측정: 익명 시작 신호 (kind + lang 만 — PII 없음)
+CREATE TABLE IF NOT EXISTS pings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at TEXT DEFAULT (datetime('now')),
+  kind TEXT,
+  lang TEXT
+);

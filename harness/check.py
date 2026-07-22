@@ -132,7 +132,18 @@ def main():
             check('API', 'insights 집계 형태 (개인 데이터 미반환)', 'summary' in ins and 'cities' in ins and '"id":' not in json.dumps(ins))
             s, body = fetch('/api/stats')
             st = json.loads(body)
-            check('API', f'stats total={st.get("total")}', isinstance(st.get('total'), int))
+            check('API', f'stats total={st.get("total")} starts={st.get("starts")}',
+                  isinstance(st.get('total'), int) and isinstance(st.get('starts'), int))
+            # ── [SEO] ──
+            s, body = fetch('/robots.txt')
+            check('SEO', 'robots.txt 200 + Sitemap 선언', s == 200 and 'Sitemap:' in body)
+            s, body = fetch('/sitemap.xml')
+            check('SEO', 'sitemap.xml 200 + 4개 URL', s == 200 and body.count('<loc>') >= 4)
+            req = urllib.request.Request(BASE + '/og.png', headers={'User-Agent': 'arbitoria-harness/1.0'})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                check('SEO', 'og.png 200 + image/png', r.status == 200 and 'image/png' in r.headers.get('Content-Type', ''))
+            s, body = fetch('/')
+            check('SEO', 'og:image·JSON-LD·canonical 메타', 'og:image' in body and 'application/ld+json' in body and 'canonical' in body)
         except Exception as ex:
             check('LIVE', '네트워크 접근', False, str(ex)[:100])
 

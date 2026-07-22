@@ -57,9 +57,24 @@ export default {
       });
     }
 
+    /* 익명 시작 신호 — 완주율 측정용 (kind·lang만 저장) */
+    if (url.pathname === '/api/ping' && request.method === 'POST') {
+      try {
+        const d = await request.json();
+        const kind = d.kind === 'start' ? 'start' : 'other';
+        const lg = typeof d.lang === 'string' ? d.lang.slice(0, 8) : null;
+        await env.DB.prepare('INSERT INTO pings (kind, lang) VALUES (?, ?)').bind(kind, lg).run();
+      } catch (_) {}
+      return new Response(JSON.stringify({ ok: true }), { headers: { 'content-type': 'application/json' } });
+    }
+
     if (url.pathname === '/api/stats' && request.method === 'GET') {
-      const row = await env.DB.prepare('SELECT COUNT(*) AS total FROM dreams').first();
-      return new Response(JSON.stringify({ total: row.total }), { headers: { 'content-type': 'application/json' } });
+      const [row, st] = await Promise.all([
+        env.DB.prepare('SELECT COUNT(*) AS total FROM dreams').first(),
+        env.DB.prepare("SELECT COUNT(*) AS starts FROM pings WHERE kind = 'start'").first(),
+      ]);
+      const completion = st.starts > 0 ? Math.round(row.total / st.starts * 100) : null;
+      return new Response(JSON.stringify({ total: row.total, starts: st.starts, completion_pct: completion }), { headers: { 'content-type': 'application/json' } });
     }
 
     /* Dream Index — 익명 꿈들의 집계 (개인 단위 데이터는 절대 반환하지 않음) */

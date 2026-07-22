@@ -1162,7 +1162,19 @@ function go(n) {
   renderScreen(n);
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateHash();
+  if (n === 1) sendStartPing();
   if (n === 11) sendDream();
+}
+
+/* 익명 시작 신호 (1회 · kind+lang만 — 완주율 측정) */
+let startPinged = false;
+function sendStartPing() {
+  if (startPinged) return;
+  startPinged = true;
+  try {
+    fetch('/api/ping', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ kind: 'start', lang }) }).catch(() => {});
+  } catch (_) {}
 }
 
 /* 익명 꿈 데이터 수집 (완주 1회 · 같은 오리진에 API 있을 때만 성공) */
