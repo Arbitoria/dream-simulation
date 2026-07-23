@@ -76,30 +76,7 @@
 
     <!-- 3. 직업 -->
     <section class="screen" data-screen="3" hidden>
-      <header class="s-head"><p class="step-no" data-i18n="job.step"></p><h2 data-i18n="job.h"></h2><p class="s-sub" data-i18n="job.sub"></p></header>
-      <div class="glass controls sit-narrow" id="customJobField">
-        <span class="ft"><span data-i18n="job.customLabel"></span></span>
-        <label class="field">
-          <span class="ft"><span data-i18n="fx.krw"></span><output id="customKrwOut"></output></span>
-          <input type="range" id="customKrw" min="50" max="5000" step="10" value="330" />
-        </label>
-        <label class="field">
-          <span class="ft"><span data-i18n="fx.usd"></span><output id="customUsdOut"></output></span>
-          <input type="range" id="customUsd" min="300" max="36000" step="50" value="2400" />
-        </label>
-        <label class="field">
-          <span class="ft"><span data-i18n="fx.eur"></span><output id="customEurOut"></output></span>
-          <input type="range" id="customEur" min="300" max="34000" step="50" value="2200" />
-        </label>
-        <p class="mort-note" id="fxNote"></p>
-      </div>
-      <p class="split" id="jobLine" style="margin-top:14px"></p>
-
-      <div class="s-head" style="margin-top:34px;margin-bottom:16px">
-        <p class="step-no" data-i18n="path.tag"></p>
-        <h2 style="font-size:clamp(18px,3vw,22px)" data-i18n="path.h"></h2>
-        <p class="s-sub" data-i18n="path.sub"></p>
-      </div>
+      <header class="s-head"><p class="step-no" data-i18n="path.tag"></p><h2 data-i18n="path.h"></h2><p class="s-sub" data-i18n="path.sub"></p></header>
       <div class="path-pick" id="pathPick">
         <button class="path-card" data-path="now" type="button"><span class="pe">🌱</span><span class="pn" data-i18n="path.now"></span><span class="pd" data-i18n="path.nowD"></span></button>
         <button class="path-card" data-path="future" type="button"><span class="pe">🎴</span><span class="pn" data-i18n="path.future"></span><span class="pd" data-i18n="path.futureD"></span></button>
@@ -126,6 +103,29 @@
       </div>
 
       <div class="glass chal-card" id="chalCard" hidden></div>
+
+      <div class="s-head" style="margin-top:34px;margin-bottom:16px">
+        <p class="step-no" data-i18n="job.step"></p>
+        <h2 style="font-size:clamp(18px,3vw,22px)" data-i18n="job.h"></h2>
+        <p class="s-sub" data-i18n="job.sub"></p>
+      </div>
+      <div class="glass controls sit-narrow" id="customJobField">
+        <span class="ft"><span data-i18n="job.customLabel"></span></span>
+        <label class="field">
+          <span class="ft"><span data-i18n="fx.krw"></span><output id="customKrwOut"></output></span>
+          <input type="range" id="customKrw" min="50" max="5000" step="10" value="330" />
+        </label>
+        <label class="field">
+          <span class="ft"><span data-i18n="fx.usd"></span><output id="customUsdOut"></output></span>
+          <input type="range" id="customUsd" min="300" max="36000" step="50" value="2400" />
+        </label>
+        <label class="field">
+          <span class="ft"><span data-i18n="fx.eur"></span><output id="customEurOut"></output></span>
+          <input type="range" id="customEur" min="300" max="34000" step="50" value="2200" />
+        </label>
+        <p class="mort-note" id="fxNote"></p>
+      </div>
+      <p class="split" id="jobLine" style="margin-top:14px"></p>
 
       <nav class="s-nav"><button class="btn ghost" data-go="2" data-i18n="nav.back"></button><button class="btn glow" data-go="4" data-i18n="nav.next"></button></nav>
     </section>
