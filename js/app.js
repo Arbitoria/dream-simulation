@@ -157,6 +157,7 @@ const L = {
     'job.line': '{job} — 평균 {sal}. 수입의 30%인 <b>{save}</b>를 미래로 보내는 것으로 시작해요.',
     'job.custom': '직접 입력', 'job.customPr': '내 월급으로', 'job.customLabel': '나의 한 달 수입',
     'job.customLine': '내 수입 — 월 {sal}. 수입의 30%인 <b>{save}</b>를 미래로 보내는 것으로 시작해요.',
+    'job.chalLine': '지금은 월 {sal}에서 시작해요. <b>{label}</b> 도전에 성공하면 월 {target} — 미래로 보내는 돈은 <b>{save} → {save2}</b>.',
     'fx.krw': '₩ 원', 'fx.usd': '$ 달러', 'fx.eur': '€ 유로',
     'fx.note': '환율 {m} 기준 · $1 = ₩{u} · €1 = ₩{e} — 매달 자동 업데이트',
     'job.mystery': '숨겨진 인생', 'job.hiddenTag': '히든', 'job.hiddenH': '숨겨진 인생들',
@@ -283,6 +284,7 @@ const L = {
     'job.line': '{job} — average {sal}. You start by sending 30%, <b>{save}</b>, to the future.',
     'job.custom': 'Enter my own', 'job.customPr': 'my salary', 'job.customLabel': 'My monthly income',
     'job.customLine': 'My income — {sal} a month. You start by sending 30%, <b>{save}</b>, to the future.',
+    'job.chalLine': 'You start on {sal}/mo. Succeed at <b>{label}</b> and it becomes {target}/mo — money sent to the future grows {save} → <b>{save2}</b>.',
     'fx.krw': '₩ KRW', 'fx.usd': '$ USD', 'fx.eur': '€ EUR',
     'fx.note': 'Rates as of {m} · $1 = ₩{u} · €1 = ₩{e} — refreshed monthly',
     'job.mystery': 'A hidden life', 'job.hiddenTag': 'HIDDEN', 'job.hiddenH': 'Hidden lives',
@@ -409,6 +411,7 @@ const L = {
     'job.line': '{job} — moyenne {sal}. Vous commencez en envoyant 30%, <b>{save}</b>, vers le futur.',
     'job.custom': 'Saisir le mien', 'job.customPr': 'mon salaire', 'job.customLabel': 'Mon revenu mensuel',
     'job.customLine': 'Mon revenu — {sal} par mois. Vous commencez en envoyant 30%, <b>{save}</b>, vers le futur.',
+    'job.chalLine': 'Vous partez avec {sal}/mois. Réussissez <b>{label}</b> et cela devient {target}/mois — l’argent envoyé vers le futur passe de {save} à <b>{save2}</b>.',
     'fx.krw': '₩ KRW', 'fx.usd': '$ USD', 'fx.eur': '€ EUR',
     'fx.note': 'Taux de {m} · 1 $ = ₩{u} · 1 € = ₩{e} — actualisés chaque mois',
     'job.mystery': 'Une vie cachée', 'job.hiddenTag': 'CACHÉ', 'job.hiddenH': 'Les vies cachées',
@@ -830,7 +833,16 @@ function syncCustomSal() {
   });
 }
 function syncJobLine() {
-  $('jobLine').innerHTML = t('job.customLine', { sal: money(S.salary), save: money(Math.round(S.salary * 0.3)) });
+  const ci = challengeInfo();
+  if (!ci) {
+    $('jobLine').innerHTML = t('job.customLine', { sal: money(S.salary), save: money(Math.round(S.salary * 0.3)) });
+    return;
+  }
+  /* 도전 경로: 지금 수입 → 성공 시의 변화가 한 줄로 보인다 */
+  $('jobLine').innerHTML = t('job.chalLine', {
+    sal: money(S.salary), label: ci.label, target: money(ci.targetSal),
+    save: money(S.save), save2: money(S.save + chalBoost()),
+  });
 }
 
 /* ── 10. 인생 이벤트 ── */
@@ -1423,7 +1435,7 @@ function bind() {
       syncCustomSal(); syncJobLine(); renderChalCard();
       updateHash(); return;
     }
-    if (el.id === 'startupIncome') { S.startupIncome = v; S.challenge = 0; syncStartup(); renderChalCard(); updateHash(); return; }
+    if (el.id === 'startupIncome') { S.startupIncome = v; S.challenge = 0; syncStartup(); renderChalCard(); syncJobLine(); updateHash(); return; }
     if (el.id === 'salary') S.salary = v;
     else if (el.id === 'rent') S.rent = v;
     else if (el.id === 'homeValue') S.homeValue = v;
