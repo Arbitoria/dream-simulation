@@ -57,20 +57,21 @@ const LIFE_EXPECT = 90;   // 초고령 사회의 기본값 가정
 const TENURES = ['none', 'rent', 'own'];
 const LOAN_RATE = 4, LOAN_YEARS = 25, DOWN_PCT = 0.2, HOME_GROWTH = 2;
 
-/* ── 직업 (sal = 평균 월수입, 만원 · 단순화 가정) ── */
+/* ── 직업 (sal = 평균 월수입, 만원 · prob = 전직 성공 확률 %, years = 준비 기간 · 단순화 가정) ── */
 const JOBS = [
-  { id: 'doctor', e: '🩺', sal: 3000, nm: { ko: '의사 (전문의)', en: 'Doctor', fr: 'Médecin' } },
-  { id: 'banker', e: '📊', sal: 1800, nm: { ko: '금융가', en: 'Investment banker', fr: 'Banquier' } },
-  { id: 'lawyer', e: '⚖️', sal: 1500, nm: { ko: '변호사', en: 'Lawyer', fr: 'Avocat' } },
-  { id: 'pilot', e: '✈️', sal: 1200, nm: { ko: '파일럿', en: 'Pilot', fr: 'Pilote' } },
-  { id: 'founder', e: '🚀', sal: 900, nm: { ko: '창업가', en: 'Founder', fr: 'Fondateur' } },
-  { id: 'dev', e: '💻', sal: 700, nm: { ko: '개발자', en: 'Developer', fr: 'Développeur' } },
-  { id: 'creator', e: '🎥', sal: 500, nm: { ko: '크리에이터', en: 'Creator', fr: 'Créateur' } },
-  { id: 'designer', e: '🎨', sal: 450, nm: { ko: '디자이너', en: 'Designer', fr: 'Designer' } },
-  { id: 'teacher', e: '📚', sal: 400, nm: { ko: '교사', en: 'Teacher', fr: 'Enseignant' } },
-  { id: 'chef', e: '👨‍🍳', sal: 380, nm: { ko: '셰프', en: 'Chef', fr: 'Chef' } },
+  { id: 'doctor', e: '🩺', sal: 3000, prob: 8, years: 10, nm: { ko: '의사 (전문의)', en: 'Doctor', fr: 'Médecin' } },
+  { id: 'banker', e: '📊', sal: 1800, prob: 14, years: 5, nm: { ko: '금융가', en: 'Investment banker', fr: 'Banquier' } },
+  { id: 'lawyer', e: '⚖️', sal: 1500, prob: 11, years: 6, nm: { ko: '변호사', en: 'Lawyer', fr: 'Avocat' } },
+  { id: 'pilot', e: '✈️', sal: 1200, prob: 15, years: 5, nm: { ko: '파일럿', en: 'Pilot', fr: 'Pilote' } },
+  { id: 'founder', e: '🚀', sal: 900, prob: 9, years: 4, nm: { ko: '창업가', en: 'Founder', fr: 'Fondateur' } },
+  { id: 'dev', e: '💻', sal: 700, prob: 55, years: 2, nm: { ko: '개발자', en: 'Developer', fr: 'Développeur' } },
+  { id: 'creator', e: '🎥', sal: 500, prob: 6, years: 3, nm: { ko: '크리에이터', en: 'Creator', fr: 'Créateur' } },
+  { id: 'designer', e: '🎨', sal: 450, prob: 45, years: 2, nm: { ko: '디자이너', en: 'Designer', fr: 'Designer' } },
+  { id: 'teacher', e: '📚', sal: 400, prob: 30, years: 3, nm: { ko: '교사', en: 'Teacher', fr: 'Enseignant' } },
+  { id: 'chef', e: '👨‍🍳', sal: 380, prob: 40, years: 3, nm: { ko: '셰프', en: 'Chef', fr: 'Chef' } },
 ];
 const jobOf = (id) => JOBS.find((j) => j.id === id) || null;
+const PATHS = ['now', 'future', 'startup'];
 
 /* ── 인생 이벤트 (offset년 뒤 · 선택 A/B → 저축 변화 + 행복 변화) ── */
 const EVENTS = [
@@ -159,7 +160,21 @@ const L = {
     'fx.krw': '₩ 원', 'fx.usd': '$ 달러', 'fx.eur': '€ 유로',
     'fx.note': '환율 {m} 기준 · $1 = ₩{u} · €1 = ₩{e} — 매달 자동 업데이트',
     'job.mystery': '숨겨진 인생', 'job.hiddenTag': '히든', 'job.hiddenH': '숨겨진 인생들',
-    'job.hiddenSub': '카드를 뒤집으면 다른 삶의 출발선이 보여요 — 그 삶으로 계산해볼 수도 있어요.',
+    'job.hiddenSub': '카드를 뒤집으면 다른 삶의 출발선이 보여요 — 도전할 삶을 고르세요.',
+    'path.tag': '갈림길', 'path.h': '앞으로는 어떤 길인가요?',
+    'path.sub': '지금 이대로 갈 수도, 다른 삶에 도전할 수도 있어요 — 도전에는 확률과 시간이 붙습니다.',
+    'path.now': '지금 이대로', 'path.nowD': '현재 수입으로 꾸준히 — 확률 없음, 배신도 없음',
+    'path.future': '꿈의 직업', 'path.futureD': '준비해서 갈아탄다 — 성공 확률의 게임',
+    'path.startup': '창업', 'path.startupD': '목표 수입은 내가 정한다 — 확률은 야망에 반비례',
+    'path.targetLabel': '창업 목표 — 성공했을 때의 월수입', 'path.targetOut': '목표 월수입',
+    'chal.tag': '도전 카드', 'chal.salTo': '성공 시 월 {sal}',
+    'chal.prob': '성공 확률', 'chal.years': '준비 기간', 'chal.yearsShort': '{y}년',
+    'chal.boost': '성공 시 저축 증가',
+    'chal.note': '통계를 단순화한 가정이에요. 준비 기간 동안은 지금 수입 그대로, 성공하면 늘어난 수입의 절반이 저축에 더해집니다. 실패해도 잃는 건 없어요 — 지금의 길로 계속 갑니다.',
+    'chal.branch': '🎲 성공하면 <b>{wa}</b>에 도달 · 실패하면 <b>{la}</b>',
+    'chal.roll': '🎲 운명 굴리기', 'chal.reroll': '🎲 다른 인생으로 다시',
+    'chal.win': '🎉 도전 성공! 새 인생이 시작됩니다', 'chal.lose': '🌧️ 이번엔 닿지 않았어요 — 지금의 길로 계속 갑니다',
+    'chal.winTag': '(도전 성공)', 'chal.loseTag': '(도전 실패)',
     'calc.nextLife': '인생을 살아보기 →',
     'life.step': '인생', 'life.h': '계획대로만 흘러가진 않죠', 'life.sub': '인생이 끼어듭니다. 하나씩, 당신의 선택은?',
     'life.at': '{age}세',
@@ -271,7 +286,21 @@ const L = {
     'fx.krw': '₩ KRW', 'fx.usd': '$ USD', 'fx.eur': '€ EUR',
     'fx.note': 'Rates as of {m} · $1 = ₩{u} · €1 = ₩{e} — refreshed monthly',
     'job.mystery': 'A hidden life', 'job.hiddenTag': 'HIDDEN', 'job.hiddenH': 'Hidden lives',
-    'job.hiddenSub': 'Flip a card to glimpse another life’s starting line — and try the dream from there.',
+    'job.hiddenSub': 'Flip a card to glimpse another life’s starting line — pick the one to chase.',
+    'path.tag': 'THE FORK', 'path.h': 'Which road from here?',
+    'path.sub': 'Stay the course, or bet on another life — every bet carries odds and years.',
+    'path.now': 'Stay the course', 'path.nowD': 'Steady on current income — no odds, no betrayal',
+    'path.future': 'Dream job', 'path.futureD': 'Train and switch — a game of odds',
+    'path.startup': 'Start a company', 'path.startupD': 'You set the target income — odds shrink as ambition grows',
+    'path.targetLabel': 'Startup goal — monthly income if it works', 'path.targetOut': 'Target /mo',
+    'chal.tag': 'CHALLENGE CARD', 'chal.salTo': '{sal}/mo on success',
+    'chal.prob': 'Odds of success', 'chal.years': 'Years of preparation', 'chal.yearsShort': '{y} yrs',
+    'chal.boost': 'Extra saving on success',
+    'chal.note': 'Simplified statistics. During preparation your income stays as is; on success, half the raise goes to savings. Failure costs nothing — you continue on today’s road.',
+    'chal.branch': '🎲 Succeed and reach at <b>{wa}</b> · fail and it’s <b>{la}</b>',
+    'chal.roll': '🎲 Roll the dice', 'chal.reroll': '🎲 Roll another life',
+    'chal.win': '🎉 The bet paid off! A new life begins', 'chal.lose': '🌧️ Not this time — you continue on today’s road',
+    'chal.winTag': '(succeeded)', 'chal.loseTag': '(failed)',
     'calc.nextLife': 'Live the life →',
     'life.step': 'LIFE', 'life.h': 'Life rarely follows the plan', 'life.sub': 'Life interrupts. One at a time — what do you choose?',
     'life.at': 'Age {age}',
@@ -383,7 +412,21 @@ const L = {
     'fx.krw': '₩ KRW', 'fx.usd': '$ USD', 'fx.eur': '€ EUR',
     'fx.note': 'Taux de {m} · 1 $ = ₩{u} · 1 € = ₩{e} — actualisés chaque mois',
     'job.mystery': 'Une vie cachée', 'job.hiddenTag': 'CACHÉ', 'job.hiddenH': 'Les vies cachées',
-    'job.hiddenSub': 'Retournez une carte pour entrevoir la ligne de départ d’une autre vie — et tentez le rêve depuis là.',
+    'job.hiddenSub': 'Retournez une carte pour entrevoir la ligne de départ d’une autre vie — choisissez celle à poursuivre.',
+    'path.tag': 'LA BIFURCATION', 'path.h': 'Quelle route à partir d’ici ?',
+    'path.sub': 'Garder le cap, ou parier sur une autre vie — chaque pari porte des probabilités et des années.',
+    'path.now': 'Garder le cap', 'path.nowD': 'Régulier, au revenu actuel — pas de probabilité, pas de trahison',
+    'path.future': 'Métier de rêve', 'path.futureD': 'Se former et changer — un jeu de probabilités',
+    'path.startup': 'Créer une entreprise', 'path.startupD': 'Vous fixez le revenu cible — les chances baissent avec l’ambition',
+    'path.targetLabel': 'Objectif — revenu mensuel en cas de succès', 'path.targetOut': 'Cible /mois',
+    'chal.tag': 'CARTE DÉFI', 'chal.salTo': '{sal}/mois en cas de succès',
+    'chal.prob': 'Chances de succès', 'chal.years': 'Années de préparation', 'chal.yearsShort': '{y} ans',
+    'chal.boost': 'Épargne en plus si succès',
+    'chal.note': 'Statistiques simplifiées. Pendant la préparation, votre revenu reste inchangé ; en cas de succès, la moitié de la hausse va à l’épargne. L’échec ne coûte rien — vous continuez sur la route d’aujourd’hui.',
+    'chal.branch': '🎲 Réussissez et atteignez à <b>{wa}</b> · échouez et ce sera <b>{la}</b>',
+    'chal.roll': '🎲 Lancer les dés', 'chal.reroll': '🎲 Rejouer une autre vie',
+    'chal.win': '🎉 Le pari est gagné ! Une nouvelle vie commence', 'chal.lose': '🌧️ Pas cette fois — vous continuez sur la route d’aujourd’hui',
+    'chal.winTag': '(réussi)', 'chal.loseTag': '(échoué)',
     'calc.nextLife': 'Vivre la vie →',
     'life.step': 'LA VIE', 'life.h': 'La vie suit rarement le plan', 'life.sub': 'La vie s’invite. Une à une — que choisissez-vous ?',
     'life.at': '{age} ans',
@@ -471,6 +514,7 @@ const nameOf = (cat, id) => opt(cat, id).nm[lang] || opt(cat, id).nm.ko;
 /* ── 상태 ── */
 const S = {
   gender: null, age: 30, job: 'custom',
+  jobPath: 'now', jobTarget: 'dev', startupIncome: 500, challenge: 0,   // challenge: 0=미굴림 1=성공 2=실패
   salary: 330, tenure: 'none', homeValue: 40000, rent: 80, fixedCost: 70, save: 60, assets: 3000,
   car: 'porsche', home: 'bali', trip: 'aurora', tripFreq: 12,
   rate: 7, country: 'kr',
@@ -543,8 +587,39 @@ function buyTotal() { return priceOf('car', S.car) + priceOf('home', S.home) + p
 function taxRate() { return TAXES[S.country] != null ? TAXES[S.country] : 0.154; }
 function seedNeeded() { return dreamMonthly() * 12 / (1 - taxRate()) / 0.04; }
 
+/* ── 도전 (미래 직업 · 창업) — 확률·준비기간·성공 시 수입 ── */
+function challengeInfo() {
+  if (S.jobPath === 'future') {
+    const j = jobOf(S.jobTarget) || JOBS[5];
+    return { targetSal: j.sal, prob: j.prob, years: j.years, label: j.nm[lang] || j.nm.ko, e: j.e };
+  }
+  if (S.jobPath === 'startup') {
+    /* 야망 배율에 반비례하는 확률 — 5년 생존율 통계의 단순화 */
+    const base = Math.max(S.salary, 100);
+    const lg = Math.log2(Math.max(S.startupIncome / base, 1));
+    const prob = clamp(50 - 14 * lg, 3, 50);
+    const years = clamp(2 + 1.2 * lg, 2, 10);
+    return { targetSal: S.startupIncome, prob, years, label: t('path.startup'), e: '🚀' };
+  }
+  return null;
+}
+/* 성공 시: 늘어난 수입의 절반이 저축에 더해진다 (가정) */
+function chalBoost() {
+  const ci = challengeInfo();
+  return ci ? Math.max(0, Math.round((ci.targetSal - S.salary) * 0.5)) : 0;
+}
+let chalMode = null;   // null=상태(S.challenge) 따름 · 'win'/'lose' = 가지 계산용 강제
+function chalActive(m) {
+  const ci = challengeInfo();
+  if (!ci) return false;
+  const won = chalMode ? chalMode === 'win' : S.challenge === 1;
+  return won && m / 12 >= ci.years;
+}
+function monthsToReachMode(N, mode) { chalMode = mode; const r = monthsToReach(N); chalMode = null; return r; }
+
 function contribAt(m, extra, noEvents) {
   let c = S.save + (extra || 0);
+  if (chalActive(m)) c += chalBoost();
   if (S.partner && S.age + m / 12 >= S.partnerAge) c += S.partnerMonthly;
   if (!noEvents) {
     for (let i = 0; i < EVENTS.length; i++) {
@@ -592,6 +667,10 @@ function go(n) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateHash();
   if (n === 1) sendStartPing();
+  if (n === 10 && challengeInfo() && !S.challenge) {
+    rollChallenge();
+    toast(t(S.challenge === 1 ? 'chal.win' : 'chal.lose'));
+  }
   if (n === 11) sendDream();
 }
 
@@ -642,11 +721,14 @@ function renderScreen(n) {
   if (n === 11) renderGen();
 }
 
-/* ── 3. 직업 ── */
+/* ── 3. 직업 — 세 갈래 경로: 지금 이대로 · 꿈의 직업(확률 게임) · 창업 ── */
 /* 히든 카드: 뒤집기 전엔 ???, 뒤집으면 그 인생의 출발선이 드러난다 */
 let revealed = [];
 function renderJobs() {
   const per = lang === 'ko' ? '월 ' : lang === 'fr' ? '/mois' : '/mo';
+  document.querySelectorAll('#pathPick .path-card').forEach((b) => b.classList.toggle('on', b.dataset.path === S.jobPath));
+  $('futureBlock').hidden = S.jobPath !== 'future';
+  $('startupBlock').hidden = S.jobPath !== 'startup';
   $('gridJob').innerHTML = JOBS.map((j) => {
     if (!revealed.includes(j.id)) {
       return `
@@ -656,16 +738,80 @@ function renderJobs() {
       </button>`;
     }
     return `
-    <button class="card ${S.job === j.id ? 'on' : ''} ${j.id === lastReveal ? 'revealing' : ''}" data-job="${j.id}" type="button">
+    <button class="card ${S.jobPath === 'future' && S.jobTarget === j.id ? 'on' : ''} ${j.id === lastReveal ? 'revealing' : ''}" data-job="${j.id}" type="button">
       <span class="ce">${j.e}</span><span class="nm">${j.nm[lang] || j.nm.ko}</span>
       <span class="pr">${lang === 'ko' ? per + money(j.sal) : money(j.sal) + ' ' + per}</span>
+      <span class="pr faint">🎲 ${j.prob}% · ${t('chal.yearsShort', { y: j.years })}</span>
     </button>`;
   }).join('');
   lastReveal = null;
   syncCustomSal();
+  syncStartup();
+  renderChalCard();
   syncJobLine();
 }
 let lastReveal = null;
+function syncStartup() {
+  $('startupIncome').value = S.startupIncome;
+  $('startupOut').innerHTML = money3(S.startupIncome);
+}
+/* 도전 카드 본문 — 화면 3(미리보기)과 화면 9(주사위)가 공유 */
+function chalCardHTML(withRoll) {
+  const ci = challengeInfo();
+  if (!ci) return '';
+  const boost = chalBoost();
+  let html = `
+    <div class="chal-tag">⚔️ ${t('chal.tag')}</div>
+    <div class="chal-title">${ci.e} ${ci.label} — ${t('chal.salTo', { sal: money(ci.targetSal) })}</div>
+    <div class="chal-rows">
+      <div class="chal-row"><span class="cr-l">${t('chal.prob')}</span>
+        <span class="meter"><span class="meter-fill ${ci.prob < 15 ? 'low' : ci.prob < 35 ? 'mid' : ''}" style="width:${ci.prob}%"></span></span>
+        <b>${ci.prob}%</b></div>
+      <div class="chal-row"><span class="cr-l">${t('chal.years')}</span><b>${t('chal.yearsShort', { y: ci.years })}</b></div>
+      <div class="chal-row"><span class="cr-l">${t('chal.boost')}</span><b>+${money(boost)}/${lang === 'ko' ? '월' : 'mo'}</b></div>
+    </div>
+    <p class="chal-note">${t('chal.note')}</p>`;
+  if (withRoll) {
+    const N = seedNeeded();
+    const w = monthsToReachMode(N, 'win'), l = monthsToReachMode(N, 'lose');
+    const ageOf = (m) => m === Infinity ? '∞' : (S.age + Math.round(m / 12)) + (lang === 'ko' ? '세' : '');
+    html += `<p class="chal-branch">${t('chal.branch', { wa: ageOf(w), la: ageOf(l) })}</p>`;
+    if (S.challenge === 0) html += `<button class="btn glow" id="rollBtn" type="button">${t('chal.roll')}</button>`;
+    else html += `
+      <div class="chal-result ${S.challenge === 1 ? 'win' : 'lose'}">${t(S.challenge === 1 ? 'chal.win' : 'chal.lose')}</div>
+      <button class="pill" id="rollBtn" type="button">${t('chal.reroll')}</button>`;
+  }
+  return html;
+}
+function renderChalCard() {
+  const ci = challengeInfo();
+  $('chalCard').hidden = !ci;
+  if (ci) $('chalCard').innerHTML = chalCardHTML(false);
+}
+function renderChalCard9() {
+  const ci = challengeInfo();
+  $('chalCard9').hidden = !ci;
+  if (ci) $('chalCard9').innerHTML = chalCardHTML(true);
+}
+function rollChallenge() {
+  const ci = challengeInfo(); if (!ci) return;
+  S.challenge = Math.random() * 100 < ci.prob ? 1 : 2;
+  updateHash();
+}
+/* 경로를 반영한 직업 라벨 (엔딩 화면·요약용) */
+function jobLabel() {
+  if (S.jobPath === 'future') {
+    const j = jobOf(S.jobTarget);
+    const nm = j ? (j.nm[lang] || j.nm.ko) : '—';
+    return nm + (S.challenge === 1 ? ' ' + t('chal.winTag') : S.challenge === 2 ? ' ' + t('chal.loseTag') : '');
+  }
+  if (S.jobPath === 'startup') {
+    return t('path.startup') + (S.challenge === 1 ? ' ' + t('chal.winTag') : S.challenge === 2 ? ' ' + t('chal.loseTag') : '');
+  }
+  /* 옛 공유 링크 호환 — 경로 정보 없이 직업만 있던 시절 */
+  const j = S.job !== 'custom' ? jobOf(S.job) : null;
+  return j ? (j.nm[lang] || j.nm.ko) : t('job.custom');
+}
 /* ₩·$·€ 세 바 동기화 — 어느 바를 움직여도 나머지가 따라온다 */
 function syncCustomSal() {
   const krw = S.salary;                                    // 만원
@@ -684,12 +830,7 @@ function syncCustomSal() {
   });
 }
 function syncJobLine() {
-  const j = jobOf(S.job);
-  $('jobLine').innerHTML = S.job === 'custom'
-    ? t('job.customLine', { sal: money(S.salary), save: money(Math.round(S.salary * 0.3)) })
-    : j
-      ? t('job.line', { job: j.nm[lang] || j.nm.ko, sal: money(j.sal), save: money(Math.round(j.sal * 0.3)) })
-      : t('job.hint');
+  $('jobLine').innerHTML = t('job.customLine', { sal: money(S.salary), save: money(Math.round(S.salary * 0.3)) });
 }
 
 /* ── 10. 인생 이벤트 ── */
@@ -1035,6 +1176,7 @@ function updateReach() {
     $('partnerNote').textContent = dy !== null && dy >= 1 ? t('calc.partnerNote', { y: dy }) : '';
   }
   drawViz(N, months);
+  renderChalCard9();
   renderReality(months);
   renderBvr();
   renderWeight(N, months);
@@ -1082,8 +1224,7 @@ function renderGen() {
   const months = monthsToReach(N);
   const reachAge = months === Infinity ? S.age + 30 : S.age + Math.round(months / 12);
   const h = happiness();
-  const j = jobOf(S.job);
-  const jName = S.job === 'custom' ? t('job.custom') : (j ? (j.nm[lang] || j.nm.ko) : '—');
+  const jName = jobLabel();
   const endKey = endingOf(months, reachAge, h);
   $('endingCard').innerHTML = `
     <div class="end-tag">${t('end.tag')}</div>
@@ -1169,7 +1310,8 @@ function encodeState(scrOverride) {
     S.partner ? 1 : 0, S.partnerAge, S.partnerMonthly, S.tripFreq,
     S.job === 'custom' ? 11 : JOBS.findIndex((j) => j.id === S.job) + 1,
     S.events.reduce((a, v, i) => a + v * Math.pow(3, i), 0),
-    scr].join('.');
+    scr,
+    PATHS.indexOf(S.jobPath), JOBS.findIndex((j) => j.id === S.jobTarget) + 1, S.startupIncome, S.challenge].join('.');
 }
 function decodeState(str) {
   const p = str.split('.').map(Number); if (p.length < 22 || p.some(isNaN)) return;
@@ -1188,6 +1330,16 @@ function decodeState(str) {
   if (S.job !== 'custom' && !revealed.includes(S.job)) revealed.push(S.job);
   let ec = clamp(p[20], 0, 242);
   S.events = S.events.map(() => { const v = ec % 3; ec = Math.floor(ec / 3); return v; });
+  /* v2 필드 (옛 링크에는 없음 — 그땐 기본 경로로 리셋) */
+  if (p.length >= 26) {
+    S.jobPath = PATHS[p[22]] || 'now';
+    S.jobTarget = (JOBS[p[23] - 1] || JOBS[5]).id;
+    S.startupIncome = clamp(p[24], 100, 3000);
+    S.challenge = clamp(p[25], 0, 2);
+    if (S.jobPath === 'future' && !revealed.includes(S.jobTarget)) revealed.push(S.jobTarget);
+  } else {
+    S.jobPath = 'now'; S.challenge = 0;
+  }
   return clamp(p[21] || 0, 0, 11);
 }
 function clamp(v, a, b) { return Math.max(a, Math.min(b, Math.round(v || 0))); }
@@ -1212,15 +1364,21 @@ function bind() {
     const lb = e.target.closest('[data-lang]'); if (lb) { applyLang(lb.dataset.lang); S.country = { ko: 'kr', en: 'us', fr: 'fr' }[lb.dataset.lang] || 'kr'; updateHash(); return; }
     const g = e.target.closest('[data-go]'); if (g) { go(+g.dataset.go); return; }
     const gd = e.target.closest('[data-gender]'); if (gd) { S.gender = gd.dataset.gender; renderGender(); updateHash(); return; }
+    const pb = e.target.closest('[data-path]'); if (pb) {
+      S.jobPath = pb.dataset.path; S.challenge = 0;
+      S.job = S.jobPath === 'future' ? S.jobTarget : 'custom';
+      renderJobs(); updateHash(); return;
+    }
     const jb = e.target.closest('[data-job]'); if (jb) {
       const id = jb.dataset.job;
       const j = jobOf(id);
       if (j) {
         if (!revealed.includes(id)) { revealed.push(id); lastReveal = id; }
-        S.job = id; S.salary = j.sal; S.save = Math.round(j.sal * 0.3);
+        S.jobPath = 'future'; S.jobTarget = id; S.job = id; S.challenge = 0;   // 현재 수입은 그대로 — 직업은 '도전 대상'
       }
       renderJobs(); updateHash(); return;
     }
+    if (e.target.closest('#rollBtn')) { rollChallenge(); renderChalCard9(); schedule(updateReach); return; }
     const ec = e.target.closest('.ev-choice'); if (ec) {
       S.events[+ec.dataset.ev] = +ec.dataset.pick;
       renderEvents(); updateHash(); return;
@@ -1261,10 +1419,11 @@ function bind() {
       else S.salary = Math.round(v * FX.fr.rate / 10000);
       S.salary = clamp(S.salary, 50, 5000);
       S.save = Math.round(S.salary * 0.3);
-      if (S.job !== 'custom') { S.job = 'custom'; renderJobs(); }
-      else { syncCustomSal(); syncJobLine(); }
+      S.challenge = 0;   // 수입이 바뀌면 확률도 바뀐다 — 주사위 리셋
+      syncCustomSal(); syncJobLine(); renderChalCard();
       updateHash(); return;
     }
+    if (el.id === 'startupIncome') { S.startupIncome = v; S.challenge = 0; syncStartup(); renderChalCard(); updateHash(); return; }
     if (el.id === 'salary') S.salary = v;
     else if (el.id === 'rent') S.rent = v;
     else if (el.id === 'homeValue') S.homeValue = v;

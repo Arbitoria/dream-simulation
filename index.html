@@ -94,12 +94,39 @@
         <p class="mort-note" id="fxNote"></p>
       </div>
       <p class="split" id="jobLine" style="margin-top:14px"></p>
+
       <div class="s-head" style="margin-top:34px;margin-bottom:16px">
-        <p class="step-no" data-i18n="job.hiddenTag"></p>
-        <h2 style="font-size:clamp(18px,3vw,22px)" data-i18n="job.hiddenH"></h2>
-        <p class="s-sub" data-i18n="job.hiddenSub"></p>
+        <p class="step-no" data-i18n="path.tag"></p>
+        <h2 style="font-size:clamp(18px,3vw,22px)" data-i18n="path.h"></h2>
+        <p class="s-sub" data-i18n="path.sub"></p>
       </div>
-      <div class="grid" id="gridJob"></div>
+      <div class="path-pick" id="pathPick">
+        <button class="path-card" data-path="now" type="button"><span class="pe">🌱</span><span class="pn" data-i18n="path.now"></span><span class="pd" data-i18n="path.nowD"></span></button>
+        <button class="path-card" data-path="future" type="button"><span class="pe">🎴</span><span class="pn" data-i18n="path.future"></span><span class="pd" data-i18n="path.futureD"></span></button>
+        <button class="path-card" data-path="startup" type="button"><span class="pe">🚀</span><span class="pn" data-i18n="path.startup"></span><span class="pd" data-i18n="path.startupD"></span></button>
+      </div>
+
+      <div id="futureBlock" hidden>
+        <div class="s-head" style="margin-top:26px;margin-bottom:16px">
+          <p class="step-no" data-i18n="job.hiddenTag"></p>
+          <h2 style="font-size:clamp(18px,3vw,22px)" data-i18n="job.hiddenH"></h2>
+          <p class="s-sub" data-i18n="job.hiddenSub"></p>
+        </div>
+        <div class="grid" id="gridJob"></div>
+      </div>
+
+      <div id="startupBlock" hidden>
+        <div class="glass controls sit-narrow" style="margin-top:26px">
+          <span class="ft"><span data-i18n="path.targetLabel"></span></span>
+          <label class="field">
+            <span class="ft"><span data-i18n="path.targetOut"></span><output id="startupOut"></output></span>
+            <input type="range" id="startupIncome" min="100" max="3000" step="50" value="500" />
+          </label>
+        </div>
+      </div>
+
+      <div class="glass chal-card" id="chalCard" hidden></div>
+
       <nav class="s-nav"><button class="btn ghost" data-go="2" data-i18n="nav.back"></button><button class="btn glow" data-go="4" data-i18n="nav.next"></button></nav>
     </section>
 
@@ -224,6 +251,8 @@
           <svg id="viz" viewBox="0 0 520 240" role="img"></svg>
           <p class="reach-line" id="reachLine"></p>
         </div>
+
+        <div class="glass chal-card" id="chalCard9" hidden></div>
 
         <div class="glass reality-card" id="realityCard"></div>
 
