@@ -909,6 +909,7 @@ const L = {
     'chal.roll': '🎲 운명 굴리기', 'chal.reroll': '🎲 다른 인생으로 다시',
     'chal.win': '🎉 도전 성공! 새 인생이 시작됩니다', 'chal.lose': '🌧️ 이번엔 닿지 않았어요 — 지금의 길로 계속 갑니다',
     'chal.winTag': '(도전 성공)', 'chal.loseTag': '(도전 실패)',
+    'chal.down': '이미 목표보다 많이 벌고 있어요 — 이 도전은 돈이 아니라 꿈을 위한 선택이에요.',
     'calc.nextLife': '인생을 살아보기 →',
     'life.step': '인생', 'life.h': '계획대로만 흘러가진 않죠', 'life.sub': '인생이 끼어듭니다. 하나씩, 당신의 선택은?',
     'life.at': '{age}세',
@@ -1036,6 +1037,7 @@ const L = {
     'chal.roll': '🎲 Roll the dice', 'chal.reroll': '🎲 Roll another life',
     'chal.win': '🎉 The bet paid off! A new life begins', 'chal.lose': '🌧️ Not this time — you continue on today’s road',
     'chal.winTag': '(succeeded)', 'chal.loseTag': '(failed)',
+    'chal.down': 'You already earn more than this goal — this bet is about the dream, not the money.',
     'calc.nextLife': 'Live the life →',
     'life.step': 'LIFE', 'life.h': 'Life rarely follows the plan', 'life.sub': 'Life interrupts. One at a time — what do you choose?',
     'life.at': 'Age {age}',
@@ -1163,6 +1165,7 @@ const L = {
     'chal.roll': '🎲 Lancer les dés', 'chal.reroll': '🎲 Rejouer une autre vie',
     'chal.win': '🎉 Le pari est gagné ! Une nouvelle vie commence', 'chal.lose': '🌧️ Pas cette fois — vous continuez sur la route d’aujourd’hui',
     'chal.winTag': '(réussi)', 'chal.loseTag': '(échoué)',
+    'chal.down': 'Vous gagnez déjà plus que cet objectif — ce pari concerne le rêve, pas l’argent.',
     'calc.nextLife': 'Vivre la vie →',
     'life.step': 'LA VIE', 'life.h': 'La vie suit rarement le plan', 'life.sub': 'La vie s’invite. Une à une — que choisissez-vous ?',
     'life.at': '{age} ans',
@@ -1339,10 +1342,10 @@ function challengeInfo() {
   }
   return null;
 }
-/* 성공 시: 늘어난 수입의 절반이 저축에 더해진다 (가정) */
+/* 성공 시: 수입 변화의 절반이 저축에 반영 (가정) — 목표가 지금보다 낮으면 음수도 정직하게 */
 function chalBoost() {
   const ci = challengeInfo();
-  return ci ? Math.max(0, Math.round((ci.targetSal - S.salary) * 0.5)) : 0;
+  return ci ? Math.round((ci.targetSal - S.salary) * 0.5) : 0;
 }
 let chalMode = null;   // null=상태(S.challenge) 따름 · 'win'/'lose' = 가지 계산용 강제
 function chalActive(m) {
@@ -1504,8 +1507,9 @@ function chalCardHTML(withRoll) {
         <span class="meter"><span class="meter-fill ${ci.prob < 15 ? 'low' : ci.prob < 35 ? 'mid' : ''}" style="width:${ci.prob}%"></span></span>
         <b>${ci.prob}%</b></div>
       <div class="chal-row"><span class="cr-l">${t('chal.years')}</span><b>${t('chal.yearsShort', { y: ci.years })}</b></div>
-      <div class="chal-row"><span class="cr-l">${t('chal.boost')}</span><b>+${money(boost)}/${lang === 'ko' ? '월' : 'mo'}</b></div>
+      <div class="chal-row"><span class="cr-l">${t('chal.boost')}</span><b>${boost >= 0 ? '+' : '−'}${money(Math.abs(boost))}/${lang === 'ko' ? '월' : 'mo'}</b></div>
     </div>
+    ${boost < 0 ? `<p class="chal-branch">💭 ${t('chal.down')}</p>` : ''}
     <p class="chal-note">${t('chal.note')}</p>`;
   if (withRoll) {
     const N = seedNeeded();
@@ -1574,7 +1578,7 @@ function syncJobLine() {
   /* 도전 경로: 지금 수입 → 성공 시의 변화가 한 줄로 보인다 */
   $('jobLine').innerHTML = t('job.chalLine', {
     sal: money(S.salary), label: ci.label, target: money(ci.targetSal),
-    save: money(S.save), save2: money(S.save + chalBoost()),
+    save: money(S.save), save2: money(Math.max(0, S.save + chalBoost())),
   });
 }
 
