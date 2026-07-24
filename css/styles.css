@@ -332,6 +332,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .chal-card .pill{margin-top:10px}
 .card .pr.faint{font-size:11px;color:var(--ink-3)}
 
+/* 인라인 라인 아이콘 — 텍스트 색(금색)을 따라간다 */
+.ic{width:14px;height:14px;vertical-align:-2px;margin-right:2px}
+
 /* 세계 평균 지도 모달 */
 .modal{position:fixed;inset:0;z-index:60;background:rgba(4,12,9,.62);backdrop-filter:blur(8px);
   display:flex;align-items:center;justify-content:center;padding:18px}
