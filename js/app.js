@@ -204,6 +204,15 @@ const L = {
     'map.apply': '이 평균으로 채우기',
     'map.note': '도시 1인 기준을 단순화한 참고치예요 — 채운 뒤 슬라이더로 언제든 조정하세요.',
     'map.applied': '{c}의 평균으로 채웠어요 — 슬라이더로 조정해 보세요.',
+    'mode.reco': '추천으로 고르기', 'mode.recoD': '준비된 꿈 중에서 고른다',
+    'mode.mine': '내가 원하는 삶', 'mode.mineD': '내 꿈의 숫자를 직접 적는다',
+    'mine.carLabel': '원하는 차의 가격', 'mine.carLine': '월 유지비는 차 값의 1.2% — 월 {m}으로 잡아요.',
+    'mine.carZero': '0이면 차 없이 사는 꿈 — 그것도 좋은 답이에요.',
+    'mine.cityLabel': '살고 싶은 곳', 'mine.cityPh': '예: 제주, 리스본, 치앙마이…',
+    'mine.rentLabel': '그곳의 한 달 월세',
+    'mine.tripLabel': '하고 싶은 여행', 'mine.tripPh': '예: 산티아고 순례길, 어머니와 크루즈…',
+    'mine.tripCostLabel': '한 번 갈 때 쓰고 싶은 돈',
+    'mine.myCar': '나의 차', 'mine.myCity': '살고 싶은 곳', 'mine.myTrip': '나의 여행',
     'calc.nextLife': '인생을 살아보기 →',
     'life.step': '인생', 'life.h': '계획대로만 흘러가진 않죠', 'life.sub': '인생이 끼어듭니다. 하나씩, 당신의 선택은?',
     'life.at': '{age}세',
@@ -339,6 +348,15 @@ const L = {
     'map.apply': 'Fill with these averages',
     'map.note': 'Simplified single-person city figures, for reference — adjust with the sliders anytime.',
     'map.applied': 'Filled with {c} averages — fine-tune with the sliders.',
+    'mode.reco': 'Pick from our list', 'mode.recoD': 'Choose among curated dreams',
+    'mode.mine': 'The life I want', 'mode.mineD': 'Write your own numbers',
+    'mine.carLabel': 'Price of the car you want', 'mine.carLine': 'Upkeep is 1.2% of the price — {m}/mo.',
+    'mine.carZero': 'Zero means a life without a car — a fine answer too.',
+    'mine.cityLabel': 'Where you want to live', 'mine.cityPh': 'e.g. Jeju, Lisbon, Chiang Mai…',
+    'mine.rentLabel': 'Monthly rent there',
+    'mine.tripLabel': 'The trip you dream of', 'mine.tripPh': 'e.g. Camino de Santiago, a cruise with mom…',
+    'mine.tripCostLabel': 'What you’d spend per trip',
+    'mine.myCar': 'My car', 'mine.myCity': 'My place', 'mine.myTrip': 'My trip',
     'calc.nextLife': 'Live the life →',
     'life.step': 'LIFE', 'life.h': 'Life rarely follows the plan', 'life.sub': 'Life interrupts. One at a time — what do you choose?',
     'life.at': 'Age {age}',
@@ -474,6 +492,15 @@ const L = {
     'map.apply': 'Remplir avec ces moyennes',
     'map.note': 'Chiffres simplifiés (ville, une personne), à titre indicatif — ajustez avec les curseurs à tout moment.',
     'map.applied': 'Rempli avec les moyennes de {c} — affinez avec les curseurs.',
+    'mode.reco': 'Choisir dans la liste', 'mode.recoD': 'Parmi des rêves préparés',
+    'mode.mine': 'La vie que je veux', 'mode.mineD': 'Écrivez vos propres chiffres',
+    'mine.carLabel': 'Prix de la voiture voulue', 'mine.carLine': 'Entretien : 1,2% du prix — {m}/mois.',
+    'mine.carZero': 'Zéro : une vie sans voiture — une belle réponse aussi.',
+    'mine.cityLabel': 'Où vous voulez vivre', 'mine.cityPh': 'ex. Jeju, Lisbonne, Chiang Mai…',
+    'mine.rentLabel': 'Loyer mensuel là-bas',
+    'mine.tripLabel': 'Le voyage dont vous rêvez', 'mine.tripPh': 'ex. Compostelle, une croisière avec maman…',
+    'mine.tripCostLabel': 'Budget par voyage',
+    'mine.myCar': 'Ma voiture', 'mine.myCity': 'Mon lieu', 'mine.myTrip': 'Mon voyage',
     'calc.nextLife': 'Vivre la vie →',
     'life.step': 'LA VIE', 'life.h': 'La vie suit rarement le plan', 'life.sub': 'La vie s’invite. Une à une — que choisissez-vous ?',
     'life.at': '{age} ans',
@@ -557,6 +584,17 @@ const L = {
 };
 function t(k, p) { let s = (L[lang] && L[lang][k]) != null ? L[lang][k] : (L.ko[k] != null ? L.ko[k] : k); if (p) for (const x in p) s = s.replace(new RegExp('\\{' + x + '\\}', 'g'), p[x]); return s; }
 const nameOf = (cat, id) => opt(cat, id).nm[lang] || opt(cat, id).nm.ko;
+/* 모드 인식 이름·이모지 — mine이면 사용자가 적은 이름(로컬), 없으면 일반 라벨 */
+function dreamName(cat) {
+  if (S.dreamMode !== 'mine') return nameOf(cat, S[cat]);
+  if (cat === 'car') return t('mine.myCar');
+  if (cat === 'home') return S.cCityNm.trim() || t('mine.myCity');
+  return S.cTripNm.trim() || t('mine.myTrip');
+}
+function dreamEmoji(cat) {
+  if (S.dreamMode !== 'mine') return emojiOf(cat, S[cat]);
+  return cat === 'car' ? '🚗' : cat === 'home' ? '🏠' : '✈️';
+}
 
 /* ── 상태 ── */
 const S = {
@@ -565,6 +603,9 @@ const S = {
   baseSalary: 330, baseSave: 60,   // '지금 이대로'의 삶 — 도전 실패 시 여기로 돌아온다
   salary: 330, tenure: 'none', homeValue: 40000, rent: 80, fixedCost: 70, save: 60, assets: 3000,
   car: 'porsche', home: 'bali', trip: 'aurora', tripFreq: 12,
+  dreamMode: 'reco',   // reco=추천 카탈로그 · mine=내가 원하는 삶(직접 입력)
+  cCarPrice: 15000, cRent: 200, cTripCost: 500,   // 직접 입력 값 (만원 · cTripCost는 1회당)
+  cCityNm: '', cTripNm: '',                        // 이름은 로컬 전용 — 서버·해시에 싣지 않는다
   rate: 7, country: 'kr',
   partner: false, partnerAge: 35, partnerMonthly: 100,
   events: [0, 0, 0, 0, 0],   // 0=미선택, 1=A, 2=B
@@ -627,11 +668,30 @@ function computeMe() {
 }
 
 /* ═══ 꿈 · 종자돈 ═══ */
+/* 직접 입력(mine) 모드 환산 가정: 차 월 유지비 = 가격의 1.2% (카탈로그 평균과 동일 비율),
+   집 매매가 = 월세×600 (연 2% 수익률 역산 — 카탈로그 비율), 여행 일시불 = 1회 비용 */
+const MINE_CAR_M = 0.012, MINE_HOME_X = 600;
+function catM(cat) {
+  if (S.dreamMode === 'mine') {
+    if (cat === 'car') return Math.round(S.cCarPrice * MINE_CAR_M);
+    if (cat === 'home') return S.cRent;
+    return Math.round(S.cTripCost / 12);
+  }
+  return mOf(cat, S[cat]);
+}
+function catPrice(cat) {
+  if (S.dreamMode === 'mine') {
+    if (cat === 'car') return S.cCarPrice;
+    if (cat === 'home') return S.cRent * MINE_HOME_X;
+    return S.cTripCost;
+  }
+  return priceOf(cat, S[cat]);
+}
 /* 여행 1회 비용 = m×12 (기존 월예산은 '1년에 한 번' 기준) → 빈도로 월 환산 */
-function tripPerTrip() { return mOf('trip', S.trip) * 12; }
+function tripPerTrip() { return S.dreamMode === 'mine' ? S.cTripCost : mOf('trip', S.trip) * 12; }
 function tripMonthly() { return Math.round(tripPerTrip() / S.tripFreq); }
-function dreamMonthly() { return mOf('car', S.car) + mOf('home', S.home) + tripMonthly(); }
-function buyTotal() { return priceOf('car', S.car) + priceOf('home', S.home) + priceOf('trip', S.trip); }
+function dreamMonthly() { return catM('car') + catM('home') + tripMonthly(); }
+function buyTotal() { return catPrice('car') + catPrice('home') + catPrice('trip'); }
 function taxRate() { return TAXES[S.country] != null ? TAXES[S.country] : 0.154; }
 function seedNeeded() { return dreamMonthly() * 12 / (1 - taxRate()) / 0.04; }
 
@@ -756,7 +816,10 @@ function sendDream() {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         lang, gender: S.gender, age: S.age, job: S.job, salary: S.salary, save: S.save,
-        tenure: S.tenure, assets: S.assets, car: S.car, home: S.home, trip: S.trip,
+        tenure: S.tenure, assets: S.assets,
+        car: S.dreamMode === 'mine' ? 'custom' : S.car,
+        home: S.dreamMode === 'mine' ? 'custom' : S.home,
+        trip: S.dreamMode === 'mine' ? 'custom' : S.trip,
         tripFreq: S.tripFreq, rate: S.rate, country: S.country,
         partner: S.partner, partnerAge: S.partnerAge, partnerMonthly: S.partnerMonthly,
         events: S.events, happiness: happiness(),
@@ -1086,6 +1149,14 @@ function renderGender() {
     `<button class="choice ${S.gender === g ? 'on' : ''}" data-gender="${g}" type="button"><span class="ce">${e}</span>${t('g.' + g)}</button>`).join('');
 }
 function renderGrid(cat, boxId) {
+  const mine = S.dreamMode === 'mine';
+  /* 화면 상단 모드 선택 (추천 / 내가 원하는 삶) — 세 화면 공통 */
+  const scr = $(boxId).closest('.screen');
+  scr.querySelectorAll('.mode-card').forEach((b) => b.classList.toggle('on', b.dataset.dmode === S.dreamMode));
+  $(boxId).hidden = mine;
+  const mineBox = { gridCar: 'mineCar', gridHome: 'mineHome', gridTrip: 'mineTrip' }[boxId];
+  $(mineBox).hidden = !mine;
+  if (mine) { syncMine(); if (cat === 'trip') syncTripFreq(); return; }
   const per = lang === 'ko' ? '월 ' : lang === 'fr' ? '/mois' : '/mo';
   const perTrip = lang === 'ko' ? '1회 ' : lang === 'fr' ? '/voyage' : '/trip';
   $(boxId).innerHTML = CATS[cat].map((o) => {
@@ -1099,6 +1170,20 @@ function renderGrid(cat, boxId) {
     </button>`;
   }).join('');
   if (cat === 'trip') syncTripFreq();
+}
+/* 직접 입력 값 → 화면 동기화 */
+function syncMine() {
+  $('cCarPrice').value = S.cCarPrice;
+  $('cCarOut').innerHTML = money3(S.cCarPrice);
+  $('cCarLine').innerHTML = S.cCarPrice === 0 ? t('mine.carZero') : t('mine.carLine', { m: money(catM('car')) });
+  $('cRent').value = S.cRent;
+  $('cRentOut').innerHTML = money3(S.cRent);
+  $('cCityNm').value = S.cCityNm;
+  $('cCityNm').placeholder = t('mine.cityPh');
+  $('cTripCost').value = S.cTripCost;
+  $('cTripOut').innerHTML = money3(S.cTripCost);
+  $('cTripNm').value = S.cTripNm;
+  $('cTripNm').placeholder = t('mine.tripPh');
 }
 function syncTripFreq() {
   [...$('tripFreq').children].forEach((b) => b.classList.toggle('on', +b.dataset.freq === S.tripFreq));
@@ -1246,7 +1331,7 @@ function renderDiag() {
 /* ── 8. 계산 ── */
 function renderCalc() {
   $('dreamSummary').innerHTML = ['car', 'home', 'trip'].map((c) =>
-    `<span class="ds"><span class="e">${emojiOf(c, S[c])}</span>${nameOf(c, S[c])}</span>`).join('');
+    `<span class="ds"><span class="e">${dreamEmoji(c)}</span>${dreamName(c)}</span>`).join('');
   $('calcSave').value = S.save;
   $('partnerAge').value = Math.max(S.age, S.partnerAge);
   $('partnerMonthly').value = S.partnerMonthly;
@@ -1310,13 +1395,13 @@ function updateReach() {
 
 /* ── 사기 vs 렌트 (선택 도시 · GAME_HANDOFF §8) ── */
 function renderBvr() {
-  const city = opt('home', S.home);
+  const hv = catPrice('home'), hm = catM('home');
   const r = buyVsRent({ loanYears: LOAN_YEARS, rate: S.rate, homeGrowth: HOME_GROWTH,
-    downPayment: city.price * DOWN_PCT, homeValue: city.price, loanRate: LOAN_RATE, monthlyRent: city.m });
+    downPayment: hv * DOWN_PCT, homeValue: hv, loanRate: LOAN_RATE, monthlyRent: hm });
   const buyWin = r.diff >= 0;
   const d = money(Math.abs(r.diff));
   $('bvrCard').innerHTML = `
-    <h3>${t('bvr.h', { city: nameOf('home', S.home) })}</h3>
+    <h3>${t('bvr.h', { city: dreamName('home') })}</h3>
     <div class="bvr-sub">${t('bvr.sub', { y: LOAN_YEARS, g: HOME_GROWTH })}</div>
     <div class="bvr-cols">
       <div class="bvr-col ${buyWin ? 'win' : ''}"><div class="t">${t('bvr.buy')}</div><div class="v">${money(r.buyEnd)}</div></div>
@@ -1438,7 +1523,8 @@ function encodeState(scrOverride) {
     S.events.reduce((a, v, i) => a + v * Math.pow(3, i), 0),
     scr,
     PATHS.indexOf(S.jobPath), JOBS.findIndex((j) => j.id === S.jobTarget) + 1, S.startupIncome, S.challenge,
-    S.baseSalary, S.baseSave].join('.');
+    S.baseSalary, S.baseSave,
+    S.dreamMode === 'mine' ? 1 : 0, S.cCarPrice, S.cRent, S.cTripCost].join('.');
 }
 function decodeState(str) {
   const p = str.split('.').map(Number); if (p.length < 22 || p.some(isNaN)) return;
@@ -1469,6 +1555,10 @@ function decodeState(str) {
   }
   if (p.length >= 28) { S.baseSalary = clamp(p[26], 50, 5000); S.baseSave = clamp(p[27], 0, 1200); }
   else { S.baseSalary = S.salary; S.baseSave = S.save; }
+  if (p.length >= 32) {
+    S.dreamMode = p[28] === 1 ? 'mine' : 'reco';
+    S.cCarPrice = clamp(p[29], 0, 60000); S.cRent = clamp(p[30], 0, 1000); S.cTripCost = clamp(p[31], 0, 5000);
+  } else { S.dreamMode = 'reco'; }
   return clamp(p[21] || 0, 0, 11);
 }
 function clamp(v, a, b) { return Math.max(a, Math.min(b, Math.round(v || 0))); }
@@ -1520,6 +1610,10 @@ function bind() {
     if (e.target.closest('#mapClose') || e.target.id === 'mapModal') { $('mapModal').hidden = true; return; }
     const mp = e.target.closest('[data-cc]'); if (mp) { mapPick = mp.dataset.cc; renderMap(); return; }
     if (e.target.closest('#mapApply')) { applyCountryAvg(); return; }
+    const dm = e.target.closest('[data-dmode]'); if (dm) {
+      S.dreamMode = dm.dataset.dmode;
+      renderScreen(screen); updateHash(); return;
+    }
     const ec = e.target.closest('.ev-choice'); if (ec) {
       S.events[+ec.dataset.ev] = +ec.dataset.pick;
       renderEvents(); updateHash(); return;
@@ -1551,7 +1645,11 @@ function bind() {
     }
   });
   document.body.addEventListener('input', (e) => {
-    const el = e.target; if (el.type !== 'range') return;
+    const el = e.target;
+    /* 직접 입력 이름 — 로컬 상태로만 보관 (서버·해시·공유에 싣지 않음) */
+    if (el.id === 'cCityNm') { S.cCityNm = el.value; return; }
+    if (el.id === 'cTripNm') { S.cTripNm = el.value; return; }
+    if (el.type !== 'range') return;
     const v = +el.value;
     if (el.id === 'age') { S.age = v; $('ageBig').textContent = S.age + (lang === 'ko' ? '세' : ''); renderAgeReality(); updateHash(); return; }
     if (el.id === 'customKrw' || el.id === 'customUsd' || el.id === 'customEur') {
@@ -1566,6 +1664,9 @@ function bind() {
       updateHash(); return;
     }
     if (el.id === 'startupIncome') { S.startupIncome = v; S.challenge = 0; syncStartup(); renderChalCard(); syncJobLine(); updateHash(); return; }
+    if (el.id === 'cCarPrice') { S.cCarPrice = v; syncMine(); updateHash(); return; }
+    if (el.id === 'cRent') { S.cRent = v; syncMine(); updateHash(); return; }
+    if (el.id === 'cTripCost') { S.cTripCost = v; syncMine(); syncTripFreq(); updateHash(); return; }
     if (el.id === 'salary') { S.salary = v; syncBase(); }
     else if (el.id === 'rent') S.rent = v;
     else if (el.id === 'homeValue') S.homeValue = v;

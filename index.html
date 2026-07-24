@@ -203,21 +203,60 @@
     <!-- 6. 드림카 -->
     <section class="screen" data-screen="6" hidden>
       <header class="s-head"><p class="step-no" data-i18n="car.step"></p><h2 data-i18n="car.h"></h2></header>
+      <div class="mode-pick">
+        <button class="mode-card" data-dmode="reco" type="button"><span class="pn" data-i18n="mode.reco"></span><span class="pd" data-i18n="mode.recoD"></span></button>
+        <button class="mode-card" data-dmode="mine" type="button"><span class="pn" data-i18n="mode.mine"></span><span class="pd" data-i18n="mode.mineD"></span></button>
+      </div>
       <div class="grid" id="gridCar"></div>
+      <div class="glass controls sit-narrow" id="mineCar" hidden>
+        <label class="field">
+          <span class="ft"><span data-i18n="mine.carLabel"></span><output id="cCarOut"></output></span>
+          <input type="range" id="cCarPrice" min="0" max="60000" step="500" value="15000" />
+        </label>
+        <p class="mort-note" id="cCarLine"></p>
+      </div>
       <nav class="s-nav"><button class="btn ghost" data-go="5" data-i18n="nav.back"></button><button class="btn glow" data-go="7" data-i18n="nav.next"></button></nav>
     </section>
 
     <!-- 7. 집(도시) -->
     <section class="screen" data-screen="7" hidden>
       <header class="s-head"><p class="step-no" data-i18n="home.step"></p><h2 data-i18n="home.h"></h2></header>
+      <div class="mode-pick">
+        <button class="mode-card" data-dmode="reco" type="button"><span class="pn" data-i18n="mode.reco"></span><span class="pd" data-i18n="mode.recoD"></span></button>
+        <button class="mode-card" data-dmode="mine" type="button"><span class="pn" data-i18n="mode.mine"></span><span class="pd" data-i18n="mode.mineD"></span></button>
+      </div>
       <div class="grid" id="gridHome"></div>
+      <div class="glass controls sit-narrow" id="mineHome" hidden>
+        <label class="field">
+          <span class="ft"><span data-i18n="mine.cityLabel"></span></span>
+          <input type="text" class="txt-in" id="cCityNm" maxlength="40" />
+        </label>
+        <label class="field">
+          <span class="ft"><span data-i18n="mine.rentLabel"></span><output id="cRentOut"></output></span>
+          <input type="range" id="cRent" min="0" max="1000" step="10" value="200" />
+        </label>
+      </div>
       <nav class="s-nav"><button class="btn ghost" data-go="6" data-i18n="nav.back"></button><button class="btn glow" data-go="8" data-i18n="nav.next"></button></nav>
     </section>
 
     <!-- 8. 여행 -->
     <section class="screen" data-screen="8" hidden>
       <header class="s-head"><p class="step-no" data-i18n="trip.step"></p><h2 data-i18n="trip.h"></h2></header>
+      <div class="mode-pick">
+        <button class="mode-card" data-dmode="reco" type="button"><span class="pn" data-i18n="mode.reco"></span><span class="pd" data-i18n="mode.recoD"></span></button>
+        <button class="mode-card" data-dmode="mine" type="button"><span class="pn" data-i18n="mode.mine"></span><span class="pd" data-i18n="mode.mineD"></span></button>
+      </div>
       <div class="grid" id="gridTrip"></div>
+      <div class="glass controls sit-narrow" id="mineTrip" hidden>
+        <label class="field">
+          <span class="ft"><span data-i18n="mine.tripLabel"></span></span>
+          <input type="text" class="txt-in" id="cTripNm" maxlength="40" />
+        </label>
+        <label class="field">
+          <span class="ft"><span data-i18n="mine.tripCostLabel"></span><output id="cTripOut"></output></span>
+          <input type="range" id="cTripCost" min="0" max="5000" step="50" value="500" />
+        </label>
+      </div>
       <div class="glass controls" style="margin-top:14px">
         <div class="field">
           <span class="ft"><span data-i18n="trip.freq"></span></span>

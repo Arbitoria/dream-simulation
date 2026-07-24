@@ -332,6 +332,20 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .chal-card .pill{margin-top:10px}
 .card .pr.faint{font-size:11px;color:var(--ink-3)}
 
+/* 꿈 고르는 방식 — 추천 / 내가 원하는 삶 */
+.mode-pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:560px;margin:0 auto 18px}
+@media (max-width:480px){.mode-pick{grid-template-columns:1fr}}
+.mode-card{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 12px;border-radius:var(--radius);
+  background:var(--glass);border:1px solid var(--line);cursor:pointer;text-align:center;transition:border-color .2s,transform .2s}
+.mode-card:hover{transform:translateY(-2px)}
+.mode-card.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 10px 30px rgba(201,169,97,.15)}
+.mode-card .pn{font-size:14.5px;font-weight:800;color:var(--ink)}
+.mode-card .pd{font-size:11.5px;color:var(--ink-3);line-height:1.5}
+.txt-in{width:100%;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,.05);
+  border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-family:inherit;outline:none}
+.txt-in:focus{border-color:var(--gold)}
+.txt-in::placeholder{color:var(--ink-3)}
+
 /* 인라인 라인 아이콘 — 텍스트 색(금색)을 따라간다 */
 .ic{width:14px;height:14px;vertical-align:-2px;margin-right:2px}
 
