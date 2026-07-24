@@ -342,13 +342,15 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 #worldMap{width:100%;height:auto;display:block;border-radius:14px;
   background:radial-gradient(120% 100% at 50% 0%,rgba(63,163,124,.10) 0%,rgba(11,31,23,.35) 60%,rgba(6,18,13,.5) 100%);
   border:1px solid var(--line)}
-.map-land{fill:rgba(201,169,97,.07);stroke:rgba(255,255,255,.08);stroke-width:1.2}
+.map-land{fill:rgba(63,163,124,.16);stroke:rgba(201,169,97,.25);stroke-width:.6}
 .map-pin{cursor:pointer}
 .pin-hit{fill:transparent}
-.pin-dot{fill:var(--gold);opacity:.75;transition:r .2s,opacity .2s}
+.pin-dot{fill:var(--gold);opacity:.85;stroke:rgba(11,31,23,.9);stroke-width:1.5;transition:r .2s,opacity .2s}
 .map-pin:hover .pin-dot{opacity:1}
-.map-pin.on .pin-dot{fill:var(--gold-2);opacity:1;filter:drop-shadow(0 0 6px rgba(201,169,97,.8))}
-.pin-e{font-size:15px;pointer-events:none}
+.map-pin.on .pin-dot{fill:var(--gold-2);opacity:1;filter:drop-shadow(0 0 6px rgba(201,169,97,.9))}
+.pin-l{font-size:10px;font-weight:700;fill:var(--ink-2);letter-spacing:.05em;pointer-events:none;
+  paint-order:stroke;stroke:rgba(6,18,13,.85);stroke-width:2.5px}
+.map-pin.on .pin-l{fill:var(--gold-2)}
 .map-info{margin-top:14px;text-align:center}
 .map-hint{color:var(--ink-3);font-size:13.5px;padding:8px 0 2px}
 .mi-head{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px}
