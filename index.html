@@ -133,6 +133,7 @@
     <!-- 4. 나의 현실 -->
     <section class="screen" data-screen="4" hidden>
       <header class="s-head"><p class="step-no" data-i18n="sit.step"></p><h2 data-i18n="sit.h"></h2><p class="s-sub" data-i18n="sit.sub"></p></header>
+      <p style="text-align:center;margin:-6px 0 20px"><button class="pill" id="mapBtn" type="button">🌍 <span data-i18n="map.btn"></span></button></p>
       <div class="sit">
         <div class="glass sit-live" id="sitLive"></div>
         <div class="glass">
@@ -369,6 +370,20 @@
     <span data-i18n="cookie.text"></span>
     <a href="https://arbitoria.com/privacy" target="_blank" rel="noopener" data-i18n="cookie.link"></a>
     <button class="btn glow cookie-ok" id="cookieOk" type="button" data-i18n="cookie.ok"></button>
+  </div>
+
+  <!-- 세계 평균 지도 모달 -->
+  <div class="modal" id="mapModal" hidden>
+    <div class="glass map-box">
+      <button class="map-close" id="mapClose" type="button" aria-label="close">✕</button>
+      <div class="s-head" style="margin-bottom:10px">
+        <p class="step-no" data-i18n="map.tag"></p>
+        <h2 style="font-size:clamp(18px,3vw,22px)" data-i18n="map.h"></h2>
+        <p class="s-sub" data-i18n="map.sub"></p>
+      </div>
+      <svg id="worldMap" viewBox="0 0 1000 460" role="img"></svg>
+      <div class="map-info" id="mapInfo"></div>
+    </div>
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>

@@ -332,6 +332,33 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .chal-card .pill{margin-top:10px}
 .card .pr.faint{font-size:11px;color:var(--ink-3)}
 
+/* 세계 평균 지도 모달 */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(4,12,9,.62);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;padding:18px}
+.map-box{position:relative;width:min(880px,100%);max-height:92vh;overflow:auto;padding:26px 26px 22px}
+.map-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;font-size:14px}
+.map-close:hover{color:var(--ink);border-color:var(--gold)}
+#worldMap{width:100%;height:auto;display:block;border-radius:14px;
+  background:radial-gradient(120% 100% at 50% 0%,rgba(63,163,124,.10) 0%,rgba(11,31,23,.35) 60%,rgba(6,18,13,.5) 100%);
+  border:1px solid var(--line)}
+.map-land{fill:rgba(201,169,97,.07);stroke:rgba(255,255,255,.08);stroke-width:1.2}
+.map-pin{cursor:pointer}
+.pin-hit{fill:transparent}
+.pin-dot{fill:var(--gold);opacity:.75;transition:r .2s,opacity .2s}
+.map-pin:hover .pin-dot{opacity:1}
+.map-pin.on .pin-dot{fill:var(--gold-2);opacity:1;filter:drop-shadow(0 0 6px rgba(201,169,97,.8))}
+.pin-e{font-size:15px;pointer-events:none}
+.map-info{margin-top:14px;text-align:center}
+.map-hint{color:var(--ink-3);font-size:13.5px;padding:8px 0 2px}
+.mi-head{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.mi-head b{color:var(--gold-2)}
+.mi-row{display:flex;justify-content:space-between;align-items:baseline;max-width:380px;margin:0 auto;
+  padding:7px 2px;border-bottom:1px dashed rgba(255,255,255,.07);font-size:14px}
+.mi-l{color:var(--ink-3);font-size:12.5px;font-weight:700}
+.mi-v{color:var(--gold-2);font-weight:800}
+.map-info .btn{margin-top:14px}
+
 /* 인생 이벤트 실시간 트래커 */
 .life-live{position:sticky;top:62px;z-index:10;max-width:640px;margin:0 auto 16px;padding:12px 20px;
   display:flex;justify-content:center;gap:34px;flex-wrap:wrap}

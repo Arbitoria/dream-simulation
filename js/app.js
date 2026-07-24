@@ -73,6 +73,26 @@ const JOBS = [
 const jobOf = (id) => JOBS.find((j) => j.id === id) || null;
 const PATHS = ['now', 'future', 'startup'];
 
+/* ── 세계 평균 (만원/월 · 도시 1인 기준 대략치 — 단순화 가정, 참고용) ──
+   x·y = 등장방형 근사 좌표 (viewBox 1000×460) */
+const WORLD = [
+  { id: 'kr', e: '🇰🇷', x: 852, y: 150, inc: 330, rent: 80, fixed: 70, sv: 90, nm: { ko: '한국', en: 'South Korea', fr: 'Corée du Sud' } },
+  { id: 'jp', e: '🇯🇵', x: 890, y: 158, inc: 300, rent: 90, fixed: 80, sv: 60, nm: { ko: '일본', en: 'Japan', fr: 'Japon' } },
+  { id: 'vn', e: '🇻🇳', x: 794, y: 205, inc: 60, rent: 40, fixed: 25, sv: 10, nm: { ko: '베트남', en: 'Vietnam', fr: 'Vietnam' } },
+  { id: 'th', e: '🇹🇭', x: 770, y: 222, inc: 90, rent: 50, fixed: 30, sv: 15, nm: { ko: '태국', en: 'Thailand', fr: 'Thaïlande' } },
+  { id: 'sg', e: '🇸🇬', x: 788, y: 252, inc: 500, rent: 350, fixed: 120, sv: 120, nm: { ko: '싱가포르', en: 'Singapore', fr: 'Singapour' } },
+  { id: 'au', e: '🇦🇺', x: 905, y: 345, inc: 450, rent: 250, fixed: 120, sv: 80, nm: { ko: '호주', en: 'Australia', fr: 'Australie' } },
+  { id: 'us', e: '🇺🇸', x: 232, y: 152, inc: 560, rent: 250, fixed: 150, sv: 80, nm: { ko: '미국', en: 'United States', fr: 'États-Unis' } },
+  { id: 'ca', e: '🇨🇦', x: 218, y: 105, inc: 400, rent: 200, fixed: 110, sv: 70, nm: { ko: '캐나다', en: 'Canada', fr: 'Canada' } },
+  { id: 'br', e: '🇧🇷', x: 362, y: 300, inc: 120, rent: 60, fixed: 40, sv: 15, nm: { ko: '브라질', en: 'Brazil', fr: 'Brésil' } },
+  { id: 'uk', e: '🇬🇧', x: 483, y: 108, inc: 370, rent: 200, fixed: 110, sv: 60, nm: { ko: '영국', en: 'United Kingdom', fr: 'Royaume-Uni' } },
+  { id: 'fr', e: '🇫🇷', x: 500, y: 132, inc: 340, rent: 130, fixed: 90, sv: 60, nm: { ko: '프랑스', en: 'France', fr: 'France' } },
+  { id: 'es', e: '🇪🇸', x: 480, y: 155, inc: 250, rent: 120, fixed: 70, sv: 40, nm: { ko: '스페인', en: 'Spain', fr: 'Espagne' } },
+  { id: 'de', e: '🇩🇪', x: 528, y: 112, inc: 380, rent: 130, fixed: 100, sv: 80, nm: { ko: '독일', en: 'Germany', fr: 'Allemagne' } },
+  { id: 'ch', e: '🇨🇭', x: 522, y: 135, inc: 830, rent: 300, fixed: 200, sv: 150, nm: { ko: '스위스', en: 'Switzerland', fr: 'Suisse' } },
+];
+const worldOf = (id) => WORLD.find((w) => w.id === id) || null;
+
 /* ── 인생 이벤트 (offset년 뒤 · 선택 A/B → 저축 변화 + 행복 변화) ── */
 const EVENTS = [
   { id: 'promo', e: '📈', offset: 4,
@@ -177,6 +197,13 @@ const L = {
     'chal.win': '🎉 도전 성공! 새 인생이 시작됩니다', 'chal.lose': '🌧️ 이번엔 닿지 않았어요 — 지금의 길로 계속 갑니다',
     'chal.winTag': '(도전 성공)', 'chal.loseTag': '(도전 실패)',
     'chal.down': '이미 목표보다 많이 벌고 있어요 — 이 도전은 돈이 아니라 꿈을 위한 선택이에요.',
+    'map.btn': '나라별 평균 보기', 'map.tag': '세계', 'map.h': '세계의 평균적인 한 달',
+    'map.sub': '핀을 클릭하면 그 나라의 평균 수입·월세·고정비·저축이 보여요.',
+    'map.pick': '🌍 지도의 핀을 눌러 나라를 골라보세요.',
+    'map.income': '평균 월수입', 'map.rent': '평균 월세', 'map.fixed': '평균 고정비', 'map.saveAvg': '평균 저축',
+    'map.apply': '이 평균으로 채우기',
+    'map.note': '도시 1인 기준을 단순화한 참고치예요 — 채운 뒤 슬라이더로 언제든 조정하세요.',
+    'map.applied': '{c}의 평균으로 채웠어요 — 슬라이더로 조정해 보세요.',
     'calc.nextLife': '인생을 살아보기 →',
     'life.step': '인생', 'life.h': '계획대로만 흘러가진 않죠', 'life.sub': '인생이 끼어듭니다. 하나씩, 당신의 선택은?',
     'life.at': '{age}세',
@@ -305,6 +332,13 @@ const L = {
     'chal.win': '🎉 The bet paid off! A new life begins', 'chal.lose': '🌧️ Not this time — you continue on today’s road',
     'chal.winTag': '(succeeded)', 'chal.loseTag': '(failed)',
     'chal.down': 'You already earn more than this goal — this bet is about the dream, not the money.',
+    'map.btn': 'See country averages', 'map.tag': 'THE WORLD', 'map.h': 'An average month around the world',
+    'map.sub': 'Click a pin to see that country’s average income, rent, fixed costs and savings.',
+    'map.pick': '🌍 Tap a pin on the map to pick a country.',
+    'map.income': 'Avg. monthly income', 'map.rent': 'Avg. rent', 'map.fixed': 'Avg. fixed costs', 'map.saveAvg': 'Avg. savings',
+    'map.apply': 'Fill with these averages',
+    'map.note': 'Simplified single-person city figures, for reference — adjust with the sliders anytime.',
+    'map.applied': 'Filled with {c} averages — fine-tune with the sliders.',
     'calc.nextLife': 'Live the life →',
     'life.step': 'LIFE', 'life.h': 'Life rarely follows the plan', 'life.sub': 'Life interrupts. One at a time — what do you choose?',
     'life.at': 'Age {age}',
@@ -433,6 +467,13 @@ const L = {
     'chal.win': '🎉 Le pari est gagné ! Une nouvelle vie commence', 'chal.lose': '🌧️ Pas cette fois — vous continuez sur la route d’aujourd’hui',
     'chal.winTag': '(réussi)', 'chal.loseTag': '(échoué)',
     'chal.down': 'Vous gagnez déjà plus que cet objectif — ce pari concerne le rêve, pas l’argent.',
+    'map.btn': 'Voir les moyennes par pays', 'map.tag': 'LE MONDE', 'map.h': 'Un mois moyen à travers le monde',
+    'map.sub': 'Cliquez sur une épingle pour voir revenu, loyer, charges et épargne moyens du pays.',
+    'map.pick': '🌍 Touchez une épingle sur la carte pour choisir un pays.',
+    'map.income': 'Revenu mensuel moyen', 'map.rent': 'Loyer moyen', 'map.fixed': 'Charges fixes moyennes', 'map.saveAvg': 'Épargne moyenne',
+    'map.apply': 'Remplir avec ces moyennes',
+    'map.note': 'Chiffres simplifiés (ville, une personne), à titre indicatif — ajustez avec les curseurs à tout moment.',
+    'map.applied': 'Rempli avec les moyennes de {c} — affinez avec les curseurs.',
     'calc.nextLife': 'Vivre la vie →',
     'life.step': 'LA VIE', 'life.h': 'La vie suit rarement le plan', 'life.sub': 'La vie s’invite. Une à une — que choisissez-vous ?',
     'life.at': '{age} ans',
@@ -1065,6 +1106,52 @@ function syncTripFreq() {
 }
 
 /* ── 3. 나의 현실 ── */
+/* ── 세계 평균 지도 — 나라를 클릭하면 그곳의 평균 한 달이 보인다 ── */
+let mapPick = null;
+const CONTINENTS = [
+  'M120,70 C190,42 300,52 330,95 C352,132 305,185 255,196 C205,206 158,178 138,138 C122,106 100,88 120,70 Z',                 // 북미
+  'M318,235 C355,222 392,244 397,292 C402,340 372,398 338,410 C306,418 296,372 292,322 C288,272 292,246 318,235 Z',            // 남미
+  'M468,90 C505,72 552,78 566,100 C578,122 562,142 530,148 C498,154 472,140 466,118 C462,102 462,95 468,90 Z',                 // 유럽
+  'M478,170 C520,158 562,175 572,220 C582,268 558,326 522,346 C490,362 464,326 458,276 C452,226 458,182 478,170 Z',            // 아프리카
+  'M580,70 C660,45 790,55 868,88 C905,108 915,148 885,178 C845,208 785,215 735,196 C685,180 622,165 592,135 C572,110 562,82 580,70 Z',  // 아시아
+  'M868,310 C912,298 945,318 945,348 C945,378 915,398 885,392 C855,386 845,355 850,332 C855,315 858,313 868,310 Z',            // 오세아니아
+];
+function renderMap() {
+  const pins = WORLD.map((w) => `
+    <g class="map-pin ${mapPick === w.id ? 'on' : ''}" data-cc="${w.id}" transform="translate(${w.x},${w.y})">
+      <circle r="14" class="pin-hit"></circle>
+      <circle r="${mapPick === w.id ? 7 : 5}" class="pin-dot"></circle>
+      <text y="-12" text-anchor="middle" class="pin-e">${w.e}</text>
+    </g>`).join('');
+  $('worldMap').innerHTML =
+    CONTINENTS.map((d) => `<path d="${d}" class="map-land"/>`).join('') + pins;
+  renderMapInfo();
+}
+function renderMapInfo() {
+  const w = worldOf(mapPick);
+  if (!w) { $('mapInfo').innerHTML = `<p class="map-hint">${t('map.pick')}</p>`; return; }
+  const row = (l, v) => `<div class="mi-row"><span class="mi-l">${l}</span><span class="mi-v">${money(v)} <span class="fx-sub">${moneyFx(v)}</span></span></div>`;
+  $('mapInfo').innerHTML = `
+    <div class="mi-head">${w.e} <b>${w.nm[lang] || w.nm.ko}</b></div>
+    ${row(t('map.income'), w.inc)}
+    ${row(t('map.rent'), w.rent)}
+    ${row(t('map.fixed'), w.fixed)}
+    ${row(t('map.saveAvg'), w.sv)}
+    <button class="btn glow" id="mapApply" type="button">${t('map.apply')}</button>
+    <p class="chal-note">${t('map.note')}</p>`;
+}
+function applyCountryAvg() {
+  const w = worldOf(mapPick); if (!w) return;
+  S.salary = w.inc; S.rent = w.rent; S.fixedCost = w.fixed; S.save = w.sv;
+  S.tenure = 'rent';
+  S.challenge = 0;
+  syncBase();
+  $('mapModal').hidden = true;
+  renderScreen(screen);
+  toast(t('map.applied', { c: w.nm[lang] || w.nm.ko }));
+  updateHash();
+}
+
 function renderSituation() {
   $('salary').value = S.salary; $('rent').value = S.rent; $('homeValue').value = S.homeValue;
   $('fixedCost').value = S.fixedCost; $('saveAmt').value = S.save; $('assets').value = S.assets;
@@ -1425,6 +1512,10 @@ function bind() {
       renderJobs(); updateHash(); return;
     }
     if (e.target.closest('#rollBtn')) { rollChallenge(); renderChalCard9(); schedule(updateReach); return; }
+    if (e.target.closest('#mapBtn')) { $('mapModal').hidden = false; renderMap(); return; }
+    if (e.target.closest('#mapClose') || e.target.id === 'mapModal') { $('mapModal').hidden = true; return; }
+    const mp = e.target.closest('[data-cc]'); if (mp) { mapPick = mp.dataset.cc; renderMap(); return; }
+    if (e.target.closest('#mapApply')) { applyCountryAvg(); return; }
     const ec = e.target.closest('.ev-choice'); if (ec) {
       S.events[+ec.dataset.ev] = +ec.dataset.pick;
       renderEvents(); updateHash(); return;
