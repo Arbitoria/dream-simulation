@@ -1035,6 +1035,8 @@ const L = {
     'chal.win': '🎉 도전 성공! 새 인생이 시작됩니다', 'chal.lose': '🌧️ 이번엔 닿지 않았어요 — 지금의 길로 계속 갑니다',
     'chal.winTag': '(도전 성공)', 'chal.loseTag': '(도전 실패)',
     'chal.down': '이미 목표보다 많이 벌고 있어요 — 이 도전은 돈이 아니라 꿈을 위한 선택이에요.',
+    'chal.ramp': '목표 수입까지 성장',
+    'chal.noteBiz': '창업의 현실을 반영한 가정이에요. 준비 기간엔 저축이 멈추고(나무가 자라지 않아요), 성공해도 목표 수입까지는 3년에 걸쳐 자랍니다. 실패하면 원래 삶으로 — 멈춰 있던 시간은 돌아오지 않아요. 확률은 내 수입 대비 야망과, 그 돈을 창업으로 버는 일 자체의 드묾 중 낮은 쪽입니다.',
     'map.btn': '나라별 평균 보기', 'map.tag': '세계', 'map.h': '세계의 평균적인 한 달',
     'map.sub': '핀을 클릭하면 그 나라의 평균 수입·월세·고정비·저축이 보여요.',
     'map.pick': '지도에서 나라를 눌러 골라보세요.',
@@ -1179,6 +1181,8 @@ const L = {
     'chal.win': '🎉 The bet paid off! A new life begins', 'chal.lose': '🌧️ Not this time — you continue on today’s road',
     'chal.winTag': '(succeeded)', 'chal.loseTag': '(failed)',
     'chal.down': 'You already earn more than this goal — this bet is about the dream, not the money.',
+    'chal.ramp': 'Growth to target income',
+    'chal.noteBiz': 'Startup-reality assumptions. Saving stops during preparation (the tree stops growing), and even success takes 3 years to reach the target income. Failure returns you to your original road — the paused years don’t come back. The odds are the lower of your ambition vs. your income, and the sheer rarity of earning that much from a startup.',
     'map.btn': 'See country averages', 'map.tag': 'THE WORLD', 'map.h': 'An average month around the world',
     'map.sub': 'Click a pin to see that country’s average income, rent, fixed costs and savings.',
     'map.pick': 'Tap a country on the map to pick it.',
@@ -1323,6 +1327,8 @@ const L = {
     'chal.win': '🎉 Le pari est gagné ! Une nouvelle vie commence', 'chal.lose': '🌧️ Pas cette fois — vous continuez sur la route d’aujourd’hui',
     'chal.winTag': '(réussi)', 'chal.loseTag': '(échoué)',
     'chal.down': 'Vous gagnez déjà plus que cet objectif — ce pari concerne le rêve, pas l’argent.',
+    'chal.ramp': 'Croissance jusqu’au revenu cible',
+    'chal.noteBiz': 'Hypothèses réalistes de la création d’entreprise. L’épargne s’arrête pendant la préparation (l’arbre cesse de pousser), et même le succès prend 3 ans pour atteindre le revenu cible. L’échec vous ramène à votre route d’origine — les années en pause ne reviennent pas. Les chances sont le plus bas entre votre ambition par rapport à votre revenu et la rareté même de gagner autant en entreprenant.',
     'map.btn': 'Voir les moyennes par pays', 'map.tag': 'LE MONDE', 'map.h': 'Un mois moyen à travers le monde',
     'map.sub': 'Cliquez sur une épingle pour voir revenu, loyer, charges et épargne moyens du pays.',
     'map.pick': 'Touchez un pays sur la carte pour le choisir.',
@@ -1540,12 +1546,15 @@ function challengeInfo() {
     return { targetSal: j.sal, prob: j.prob, years: j.years, label: j.nm[lang] || j.nm.ko, e: j.e };
   }
   if (S.jobPath === 'startup') {
-    /* 야망 배율에 반비례하는 확률 — 5년 생존율 통계의 단순화 · 기준은 원래 삶의 수입 */
+    /* 확률 = min(상대 야망, 절대 난이도) — 내 수입 대비 배율과 나라 평균 수입 대비 배율 중 낮은 쪽.
+       월 1,100만을 이미 벌고 있어도, 창업으로 그 돈을 버는 것 자체가 드문 일이다. */
     const base = Math.max(S.baseSalary, 100);
-    const lg = Math.log2(Math.max(S.startupIncome / base, 1));
-    const prob = clamp(50 - 14 * lg, 3, 50);
-    const years = clamp(2 + 1.2 * lg, 2, 10);
-    return { targetSal: S.startupIncome, prob, years, label: t('path.startup'), e: '🚀' };
+    const ref = (worldOf(S.country) || { inc: 330 }).inc;   // 나라 평균 월수입
+    const lgRel = Math.log2(Math.max(S.startupIncome / base, 1));
+    const lgAbs = Math.log2(Math.max(S.startupIncome / ref, 1));
+    const prob = clamp(Math.min(50 - 14 * lgRel, 50 - 16 * lgAbs), 3, 50);
+    const years = clamp(2 + 1.4 * Math.max(lgRel, lgAbs), 2, 12);
+    return { targetSal: S.startupIncome, prob, years, label: t('path.startup'), e: '🚀', ramp: 36 };
   }
   return null;
 }
@@ -1562,9 +1571,21 @@ function contribAt(m, extra, noEvents) {
   let c = S.save + (extra || 0);
   const ciA = challengeInfo();
   if (ciA) {
-    /* 도전 공통: 화면 수치는 꿈의 삶(S.save) — 준비 기간과 실패는 원래 삶(baseSave) */
     const won = chalMode ? chalMode === 'win' : S.challenge === 1;
-    if (!won || m / 12 < ciA.years) c = S.baseSave + (extra || 0);
+    const prepM = ciA.years * 12;
+    if (S.jobPath === 'startup') {
+      /* 창업: 준비 기간엔 저축이 멈춘다(성공이든 실패든 그 시간은 쓴다).
+         성공 후에도 목표 수입까지는 ramp(3년)에 걸쳐 자란다. 실패는 그 뒤 원래 삶으로. */
+      if (m < prepM) c = (extra || 0);
+      else if (!won) c = S.baseSave + (extra || 0);
+      else if (ciA.ramp && m < prepM + ciA.ramp) {
+        const f = (m - prepM) / ciA.ramp;
+        c = Math.round(S.baseSave + (S.save - S.baseSave) * f) + (extra || 0);
+      }
+    } else {
+      /* 꿈의 직업: 준비 기간·실패는 원래 삶(baseSave), 성공하면 새 삶(S.save) */
+      if (!won || m < prepM) c = S.baseSave + (extra || 0);
+    }
   }
   if (S.partner && S.age + m / 12 >= S.partnerAge) c += S.partnerMonthly;
   if (!noEvents) {
@@ -1717,10 +1738,11 @@ function chalCardHTML(withRoll) {
         <span class="meter"><span class="meter-fill ${ci.prob < 15 ? 'low' : ci.prob < 35 ? 'mid' : ''}" style="width:${ci.prob}%"></span></span>
         <b>${ci.prob}%</b></div>
       <div class="chal-row"><span class="cr-l">${t('chal.years')}</span><b>${t('chal.yearsShort', { y: ci.years })}</b></div>
+      ${ci.ramp ? `<div class="chal-row"><span class="cr-l">${t('chal.ramp')}</span><b>${t('chal.yearsShort', { y: Math.round(ci.ramp / 12) })}</b></div>` : ''}
       <div class="chal-row"><span class="cr-l">${t('chal.boost')}</span><b>${boost >= 0 ? '+' : '−'}${money(Math.abs(boost))}/${lang === 'ko' ? '월' : 'mo'}</b></div>
     </div>
     ${boost < 0 ? `<p class="chal-branch">💭 ${t('chal.down')}</p>` : ''}
-    <p class="chal-note">${t('chal.note')}</p>`;
+    <p class="chal-note">${t(S.jobPath === 'startup' ? 'chal.noteBiz' : 'chal.note')}</p>`;
   if (withRoll) {
     const N = seedNeeded();
     const w = monthsToReachMode(N, 'win'), l = monthsToReachMode(N, 'lose');
