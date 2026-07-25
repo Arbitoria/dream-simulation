@@ -136,7 +136,9 @@ let lang = localStorage.getItem('dreamLang')
   || ({ ko: 'ko', fr: 'fr' }[(navigator.language || 'en').slice(0, 2)] || 'en');
 let DATA = null, FXR = { usd_krw: 1400, eur_krw: 1500 };
 
-const nm = (k) => (NM[lang] && NM[lang][k]) || NM.ko[k] || k;
+/* 게임의 '내가 원하는 삶'에서 오는 지역·여행 id(예: kr-jeju, es-camino)는 사전 없이 이름화 */
+const nm = (k) => (NM[lang] && NM[lang][k]) || NM.ko[k]
+  || String(k).replace(/^[a-z]{2}-/, '').replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 const wonKo = (v) => { v = Math.round(v || 0); const e = Math.floor(v / 10000), m = v % 10000;
   if (e > 0) return m === 0 ? e + '억' : e + '억 ' + Math.round(m / 1000) + '천'; return v.toLocaleString() + '만원'; };
 function money(manwon) {
