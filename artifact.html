@@ -383,6 +383,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .mi-l{color:var(--ink-3);font-size:12.5px;font-weight:700}
 .mi-v{color:var(--gold-2);font-weight:800}
 .map-info .btn{margin-top:14px}
+.mi-vs{margin-top:12px;font-size:13.5px;color:var(--ink-2)}
+.mi-vs b{color:var(--gold-2)}
 
 /* 인생 이벤트 실시간 트래커 */
 .life-live{position:sticky;top:62px;z-index:10;max-width:640px;margin:0 auto 16px;padding:12px 20px;
@@ -1041,9 +1043,10 @@ const L = {
     'map.sub': '핀을 클릭하면 그 나라의 평균 수입·월세·고정비·저축이 보여요.',
     'map.pick': '지도에서 나라를 눌러 골라보세요.',
     'map.income': '평균 월수입', 'map.rent': '평균 월세', 'map.fixed': '평균 고정비', 'map.saveAvg': '평균 저축',
-    'map.apply': '이 평균으로 채우기',
+    'map.apply': '월세·고정비만 평균으로 채우기',
     'map.note': '도시 1인 기준을 단순화한 참고치예요 — 채운 뒤 슬라이더로 언제든 조정하세요.',
-    'map.applied': '{c}의 평균으로 채웠어요 — 슬라이더로 조정해 보세요.',
+    'map.applied': '{c}의 월세·고정비 평균을 채웠어요 — 월수입은 내 선택 그대로예요.',
+    'map.vsIncome': '내 월수입은 <b>{mine}</b> — {c} 평균은 {avg}이에요.',
     'mode.reco': '추천으로 고르기', 'mode.recoD': '준비된 꿈 중에서 고른다',
     'mode.mine': '내가 원하는 삶', 'mode.mineD': '내 꿈의 숫자를 직접 적는다',
     'mine.carLabel': '원하는 차의 가격', 'mine.carLine': '월 유지비는 차 값의 1.2% — 월 {m}으로 잡아요.',
@@ -1187,9 +1190,10 @@ const L = {
     'map.sub': 'Click a pin to see that country’s average income, rent, fixed costs and savings.',
     'map.pick': 'Tap a country on the map to pick it.',
     'map.income': 'Avg. monthly income', 'map.rent': 'Avg. rent', 'map.fixed': 'Avg. fixed costs', 'map.saveAvg': 'Avg. savings',
-    'map.apply': 'Fill with these averages',
+    'map.apply': 'Fill rent & fixed costs only',
     'map.note': 'Simplified single-person city figures, for reference — adjust with the sliders anytime.',
-    'map.applied': 'Filled with {c} averages — fine-tune with the sliders.',
+    'map.applied': 'Filled {c}’s average rent & fixed costs — your income stays as you chose.',
+    'map.vsIncome': 'Your income is <b>{mine}</b> — the {c} average is {avg}.',
     'mode.reco': 'Pick from our list', 'mode.recoD': 'Choose among curated dreams',
     'mode.mine': 'The life I want', 'mode.mineD': 'Write your own numbers',
     'mine.carLabel': 'Price of the car you want', 'mine.carLine': 'Upkeep is 1.2% of the price — {m}/mo.',
@@ -1333,9 +1337,10 @@ const L = {
     'map.sub': 'Cliquez sur une épingle pour voir revenu, loyer, charges et épargne moyens du pays.',
     'map.pick': 'Touchez un pays sur la carte pour le choisir.',
     'map.income': 'Revenu mensuel moyen', 'map.rent': 'Loyer moyen', 'map.fixed': 'Charges fixes moyennes', 'map.saveAvg': 'Épargne moyenne',
-    'map.apply': 'Remplir avec ces moyennes',
+    'map.apply': 'Remplir loyer et charges seulement',
     'map.note': 'Chiffres simplifiés (ville, une personne), à titre indicatif — ajustez avec les curseurs à tout moment.',
-    'map.applied': 'Rempli avec les moyennes de {c} — affinez avec les curseurs.',
+    'map.applied': 'Loyer et charges moyens de {c} remplis — votre revenu reste votre choix.',
+    'map.vsIncome': 'Votre revenu est <b>{mine}</b> — la moyenne en {c} est {avg}.',
     'mode.reco': 'Choisir dans la liste', 'mode.recoD': 'Parmi des rêves préparés',
     'mode.mine': 'La vie que je veux', 'mode.mineD': 'Écrivez vos propres chiffres',
     'mine.carLabel': 'Prix de la voiture voulue', 'mine.carLine': 'Entretien : 1,2% du prix — {m}/mois.',
@@ -2068,15 +2073,15 @@ function renderMapInfo() {
     ${row(t('map.rent'), w.rent)}
     ${row(t('map.fixed'), w.fixed)}
     ${row(t('map.saveAvg'), w.sv)}
+    <p class="mi-vs">${t('map.vsIncome', { mine: money(S.salary), avg: money(w.inc), c: w.nm[lang] || w.nm.ko })}</p>
     <button class="btn glow" id="mapApply" type="button">${t('map.apply')}</button>
     <p class="chal-note">${t('map.note')}</p>`;
 }
 function applyCountryAvg() {
+  /* 평균에서 가져오는 건 '삶의 값'(월세·고정비)뿐 — 월수입·저축은 내가 선택한 그대로 둔다 */
   const w = worldOf(mapPick); if (!w) return;
-  S.salary = w.inc; S.rent = w.rent; S.fixedCost = w.fixed; S.save = w.sv;
+  S.rent = w.rent; S.fixedCost = w.fixed;
   S.tenure = 'rent';
-  S.challenge = 0;
-  syncBase();
   $('mapModal').hidden = true;
   renderScreen(screen);
   toast(t('map.applied', { c: w.nm[lang] || w.nm.ko }));

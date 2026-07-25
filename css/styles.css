@@ -382,6 +382,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 .mi-l{color:var(--ink-3);font-size:12.5px;font-weight:700}
 .mi-v{color:var(--gold-2);font-weight:800}
 .map-info .btn{margin-top:14px}
+.mi-vs{margin-top:12px;font-size:13.5px;color:var(--ink-2)}
+.mi-vs b{color:var(--gold-2)}
 
 /* 인생 이벤트 실시간 트래커 */
 .life-live{position:sticky;top:62px;z-index:10;max-width:640px;margin:0 auto 16px;padding:12px 20px;
