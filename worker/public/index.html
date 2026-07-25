@@ -368,6 +368,13 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
   border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-family:inherit;outline:none}
 .txt-in:focus{border-color:var(--gold)}
 .txt-in::placeholder{color:var(--ink-3)}
+/* 직접 입력 차 — 월 지출 시각화 */
+.carm{margin-top:6px;padding:14px 4px 4px;text-align:center;border-top:1px dashed rgba(255,255,255,.08)}
+.carm-l{font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.carm-big{font-size:26px;font-weight:800;color:var(--gold-2);margin:4px 0 10px}
+.carm-big.bump{animation:bump .4s cubic-bezier(.2,.7,.2,1)}
+.carm-bar{display:flex;align-items:center;gap:10px;max-width:380px;margin:0 auto}
+.carm-bar b{font-size:12.5px;color:var(--ink-2);white-space:nowrap}
 
 /* 인라인 라인 아이콘 — 텍스트 색(금색)을 따라간다 */
 .ic{width:14px;height:14px;vertical-align:-2px;margin-right:2px}
@@ -647,6 +654,14 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
           <span class="ft"><span data-i18n="mine.carLabel"></span><output id="cCarOut"></output></span>
           <input type="range" id="cCarPrice" min="0" max="60000" step="500" value="15000" />
         </label>
+        <div class="carm" id="cCarViz">
+          <div class="carm-l" data-i18n="mine.carPerMo"></div>
+          <div class="carm-big" id="cCarM"></div>
+          <div class="carm-bar">
+            <span class="meter"><span class="meter-fill" id="cCarFill"></span></span>
+            <b id="cCarShare"></b>
+          </div>
+        </div>
         <p class="mort-note" id="cCarLine"></p>
       </div>
       <nav class="s-nav"><button class="btn ghost" data-go="5" data-i18n="nav.back"></button><button class="btn glow" data-go="7" data-i18n="nav.next"></button></nav>
@@ -1079,6 +1094,7 @@ const L = {
     'mine.tripLabel': '하고 싶은 여행', 'mine.tripPh': '예: 산티아고 순례길, 어머니와 크루즈…',
     'mine.tripCostLabel': '한 번 갈 때 쓰고 싶은 돈',
     'mine.myCar': '나의 차', 'mine.myCity': '살고 싶은 곳', 'mine.myTrip': '나의 여행',
+    'mine.carPerMo': '이 차의 한 달', 'mine.carShare': '내 월수입의 {p}%',
     'calc.nextLife': '인생을 살아보기 →',
     'life.step': '인생', 'life.h': '계획대로만 흘러가진 않죠', 'life.sub': '인생이 끼어듭니다. 하나씩, 당신의 선택은?',
     'life.at': '{age}세',
@@ -1226,6 +1242,7 @@ const L = {
     'mine.tripLabel': 'The trip you dream of', 'mine.tripPh': 'e.g. Camino de Santiago, a cruise with mom…',
     'mine.tripCostLabel': 'What you’d spend per trip',
     'mine.myCar': 'My car', 'mine.myCity': 'My place', 'mine.myTrip': 'My trip',
+    'mine.carPerMo': 'One month of this car', 'mine.carShare': '{p}% of my income',
     'calc.nextLife': 'Live the life →',
     'life.step': 'LIFE', 'life.h': 'Life rarely follows the plan', 'life.sub': 'Life interrupts. One at a time — what do you choose?',
     'life.at': 'Age {age}',
@@ -1373,6 +1390,7 @@ const L = {
     'mine.tripLabel': 'Le voyage dont vous rêvez', 'mine.tripPh': 'ex. Compostelle, une croisière avec maman…',
     'mine.tripCostLabel': 'Budget par voyage',
     'mine.myCar': 'Ma voiture', 'mine.myCity': 'Mon lieu', 'mine.myTrip': 'Mon voyage',
+    'mine.carPerMo': 'Un mois de cette voiture', 'mine.carShare': '{p}% de mon revenu',
     'calc.nextLife': 'Vivre la vie →',
     'life.step': 'LA VIE', 'life.h': 'La vie suit rarement le plan', 'life.sub': 'La vie s’invite. Une à une — que choisissez-vous ?',
     'life.at': '{age} ans',
@@ -2046,6 +2064,15 @@ function syncMine() {
   $('cCarPrice').value = S.cCarPrice;
   $('cCarOut').innerHTML = money3(S.cCarPrice);
   $('cCarLine').innerHTML = S.cCarPrice === 0 ? t('mine.carZero') : t('mine.carLine', { m: money(catM('car')) });
+  /* 차의 한 달 — 가격을 움직이면 월 지출이 눈앞에서 변한다 (결과를 움직이는 건 이 숫자) */
+  const carM = catM('car');
+  const pct = S.salary > 0 ? Math.round(carM / S.salary * 100) : 0;
+  const el = $('cCarM');
+  el.innerHTML = (lang === 'ko' ? '월 ' : '') + money3(carM) + (lang === 'ko' ? '' : lang === 'fr' ? ' /mois' : ' /mo');
+  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+  $('cCarFill').style.width = Math.min(100, pct) + '%';
+  $('cCarFill').className = 'meter-fill' + (pct > 40 ? ' low' : pct > 20 ? ' mid' : '');
+  $('cCarShare').textContent = t('mine.carShare', { p: pct });
   $('cRent').value = S.cRent;
   $('cRentOut').innerHTML = money3(S.cRent);
   $('cCityNm').value = S.cCityNm;

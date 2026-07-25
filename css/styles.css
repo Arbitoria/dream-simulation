@@ -345,6 +345,13 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
   border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-family:inherit;outline:none}
 .txt-in:focus{border-color:var(--gold)}
 .txt-in::placeholder{color:var(--ink-3)}
+/* 직접 입력 차 — 월 지출 시각화 */
+.carm{margin-top:6px;padding:14px 4px 4px;text-align:center;border-top:1px dashed rgba(255,255,255,.08)}
+.carm-l{font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.carm-big{font-size:26px;font-weight:800;color:var(--gold-2);margin:4px 0 10px}
+.carm-big.bump{animation:bump .4s cubic-bezier(.2,.7,.2,1)}
+.carm-bar{display:flex;align-items:center;gap:10px;max-width:380px;margin:0 auto}
+.carm-bar b{font-size:12.5px;color:var(--ink-2);white-space:nowrap}
 
 /* 인라인 라인 아이콘 — 텍스트 색(금색)을 따라간다 */
 .ic{width:14px;height:14px;vertical-align:-2px;margin-right:2px}

@@ -216,6 +216,7 @@ const L = {
     'mine.tripLabel': '하고 싶은 여행', 'mine.tripPh': '예: 산티아고 순례길, 어머니와 크루즈…',
     'mine.tripCostLabel': '한 번 갈 때 쓰고 싶은 돈',
     'mine.myCar': '나의 차', 'mine.myCity': '살고 싶은 곳', 'mine.myTrip': '나의 여행',
+    'mine.carPerMo': '이 차의 한 달', 'mine.carShare': '내 월수입의 {p}%',
     'calc.nextLife': '인생을 살아보기 →',
     'life.step': '인생', 'life.h': '계획대로만 흘러가진 않죠', 'life.sub': '인생이 끼어듭니다. 하나씩, 당신의 선택은?',
     'life.at': '{age}세',
@@ -363,6 +364,7 @@ const L = {
     'mine.tripLabel': 'The trip you dream of', 'mine.tripPh': 'e.g. Camino de Santiago, a cruise with mom…',
     'mine.tripCostLabel': 'What you’d spend per trip',
     'mine.myCar': 'My car', 'mine.myCity': 'My place', 'mine.myTrip': 'My trip',
+    'mine.carPerMo': 'One month of this car', 'mine.carShare': '{p}% of my income',
     'calc.nextLife': 'Live the life →',
     'life.step': 'LIFE', 'life.h': 'Life rarely follows the plan', 'life.sub': 'Life interrupts. One at a time — what do you choose?',
     'life.at': 'Age {age}',
@@ -510,6 +512,7 @@ const L = {
     'mine.tripLabel': 'Le voyage dont vous rêvez', 'mine.tripPh': 'ex. Compostelle, une croisière avec maman…',
     'mine.tripCostLabel': 'Budget par voyage',
     'mine.myCar': 'Ma voiture', 'mine.myCity': 'Mon lieu', 'mine.myTrip': 'Mon voyage',
+    'mine.carPerMo': 'Un mois de cette voiture', 'mine.carShare': '{p}% de mon revenu',
     'calc.nextLife': 'Vivre la vie →',
     'life.step': 'LA VIE', 'life.h': 'La vie suit rarement le plan', 'life.sub': 'La vie s’invite. Une à une — que choisissez-vous ?',
     'life.at': '{age} ans',
@@ -1183,6 +1186,15 @@ function syncMine() {
   $('cCarPrice').value = S.cCarPrice;
   $('cCarOut').innerHTML = money3(S.cCarPrice);
   $('cCarLine').innerHTML = S.cCarPrice === 0 ? t('mine.carZero') : t('mine.carLine', { m: money(catM('car')) });
+  /* 차의 한 달 — 가격을 움직이면 월 지출이 눈앞에서 변한다 (결과를 움직이는 건 이 숫자) */
+  const carM = catM('car');
+  const pct = S.salary > 0 ? Math.round(carM / S.salary * 100) : 0;
+  const el = $('cCarM');
+  el.innerHTML = (lang === 'ko' ? '월 ' : '') + money3(carM) + (lang === 'ko' ? '' : lang === 'fr' ? ' /mois' : ' /mo');
+  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+  $('cCarFill').style.width = Math.min(100, pct) + '%';
+  $('cCarFill').className = 'meter-fill' + (pct > 40 ? ' low' : pct > 20 ? ' mid' : '');
+  $('cCarShare').textContent = t('mine.carShare', { p: pct });
   $('cRent').value = S.cRent;
   $('cRentOut').innerHTML = money3(S.cRent);
   $('cCityNm').value = S.cCityNm;
