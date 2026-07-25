@@ -1540,8 +1540,8 @@ function challengeInfo() {
     return { targetSal: j.sal, prob: j.prob, years: j.years, label: j.nm[lang] || j.nm.ko, e: j.e };
   }
   if (S.jobPath === 'startup') {
-    /* 야망 배율에 반비례하는 확률 — 5년 생존율 통계의 단순화 */
-    const base = Math.max(S.salary, 100);
+    /* 야망 배율에 반비례하는 확률 — 5년 생존율 통계의 단순화 · 기준은 원래 삶의 수입 */
+    const base = Math.max(S.baseSalary, 100);
     const lg = Math.log2(Math.max(S.startupIncome / base, 1));
     const prob = clamp(50 - 14 * lg, 3, 50);
     const years = clamp(2 + 1.2 * lg, 2, 10);
@@ -1549,33 +1549,22 @@ function challengeInfo() {
   }
   return null;
 }
-/* 성공 시: 수입 변화의 절반이 저축에 반영 (가정) — 목표가 지금보다 낮으면 음수도 정직하게 */
-function chalBoost() {
-  const ci = challengeInfo();
-  return ci ? Math.round((ci.targetSal - S.salary) * 0.5) : 0;
-}
 let chalMode = null;   // null=상태(S.challenge) 따름 · 'win'/'lose' = 가지 계산용 강제
 function monthsToReachMode(N, mode) { chalMode = mode; const r = monthsToReach(N); chalMode = null; return r; }
-/* 도전 화면에 보여줄 '성공 시 저축 변화' — 꿈의 직업은 (꿈의 저축 − 원래 저축), 창업은 수입 변화 절반 */
-function chalBoostShown() {
-  return S.jobPath === 'future' ? S.save - S.baseSave : chalBoost();
-}
-/* '지금 이대로'의 삶 갱신 — 도전 중(future)이 아닐 때의 수입·저축이 기준선이 된다 */
+/* 도전 화면에 보여줄 '성공 시 저축 변화' = 꿈의 삶 저축 − 원래 삶 저축 (두 경로 공통) */
+function chalBoostShown() { return S.save - S.baseSave; }
+/* '지금 이대로'의 삶 갱신 — 도전 중이 아닐 때의 수입·저축이 기준선이 된다 */
 function syncBase() {
-  if (S.jobPath !== 'future') { S.baseSalary = S.salary; S.baseSave = S.save; }
+  if (S.jobPath === 'now') { S.baseSalary = S.salary; S.baseSave = S.save; }
 }
 
 function contribAt(m, extra, noEvents) {
   let c = S.save + (extra || 0);
   const ciA = challengeInfo();
   if (ciA) {
+    /* 도전 공통: 화면 수치는 꿈의 삶(S.save) — 준비 기간과 실패는 원래 삶(baseSave) */
     const won = chalMode ? chalMode === 'win' : S.challenge === 1;
-    if (S.jobPath === 'future') {
-      /* 꿈의 직업: 화면 수치는 꿈의 삶(S.save) — 준비 기간과 실패는 원래 삶(baseSave) */
-      if (!won || m / 12 < ciA.years) c = S.baseSave + (extra || 0);
-    } else if (won && m / 12 >= ciA.years) {
-      c += chalBoost();   // 창업: 성공 후 수입 변화의 절반
-    }
+    if (!won || m / 12 < ciA.years) c = S.baseSave + (extra || 0);
   }
   if (S.partner && S.age + m / 12 >= S.partnerAge) c += S.partnerMonthly;
   if (!noEvents) {
@@ -1796,18 +1785,11 @@ function syncJobLine() {
     $('jobLine').innerHTML = t('job.customLine', { sal: money(S.salary), save: money(Math.round(S.salary * 0.3)) });
     return;
   }
-  /* 도전 경로: 원래 삶 → 성공 시의 변화가 한 줄로 보인다 */
-  if (S.jobPath === 'future') {
-    $('jobLine').innerHTML = t('job.chalLine', {
-      sal: money(S.baseSalary), label: ci.label, target: money(ci.targetSal),
-      save: money(S.baseSave), save2: money(S.save),
-    });
-  } else {
-    $('jobLine').innerHTML = t('job.chalLine', {
-      sal: money(S.salary), label: ci.label, target: money(ci.targetSal),
-      save: money(S.save), save2: money(Math.max(0, S.save + chalBoost())),
-    });
-  }
+  /* 도전 경로 공통: 원래 삶 → 성공 시의 변화가 한 줄로 보인다 */
+  $('jobLine').innerHTML = t('job.chalLine', {
+    sal: money(S.baseSalary), label: ci.label, target: money(ci.targetSal),
+    save: money(S.baseSave), save2: money(S.save),
+  });
 }
 
 /* ── 10. 인생 이벤트 ── */
@@ -2427,6 +2409,9 @@ function bind() {
         S.job = S.jobTarget;
         const j = jobOf(S.jobTarget);
         if (j) { S.salary = j.sal; S.save = Math.round(j.sal * 0.3); }   // 꿈의 삶으로 수입 전환
+      } else if (S.jobPath === 'startup') {
+        S.job = 'custom';
+        S.salary = S.startupIncome; S.save = Math.round(S.startupIncome * 0.3);   // 목표 수입의 삶으로 전환
       } else {
         S.job = 'custom';
         S.salary = S.baseSalary; S.save = S.baseSave;   // 원래 삶으로 복귀
@@ -2498,10 +2483,15 @@ function bind() {
       S.save = Math.round(S.salary * 0.3);
       S.challenge = 0;   // 수입이 바뀌면 확률도 바뀐다 — 주사위 리셋
       syncBase();
+      if (S.jobPath === 'startup') { S.startupIncome = S.salary; syncStartup(); }   // 창업 목표와 양방향 동기화
       syncCustomSal(); syncJobLine(); renderChalCard();
       updateHash(); return;
     }
-    if (el.id === 'startupIncome') { S.startupIncome = v; S.challenge = 0; syncStartup(); renderChalCard(); syncJobLine(); updateHash(); return; }
+    if (el.id === 'startupIncome') {
+      S.startupIncome = v; S.challenge = 0;
+      S.salary = v; S.save = Math.round(v * 0.3);   // 목표 수입이 아래 수입·다음 페이지로 이어진다
+      syncStartup(); syncCustomSal(); renderChalCard(); syncJobLine(); updateHash(); return;
+    }
     if (el.id === 'cCarPrice') { S.cCarPrice = v; syncMine(); updateHash(); return; }
     if (el.id === 'cRent') { S.cRent = v; syncMine(); updateHash(); return; }
     if (el.id === 'cTripCost') { S.cTripCost = v; syncMine(); syncTripFreq(); updateHash(); return; }
