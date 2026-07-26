@@ -345,6 +345,18 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
   border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-family:inherit;outline:none}
 .txt-in:focus{border-color:var(--gold)}
 .txt-in::placeholder{color:var(--ink-3)}
+/* goal 모드 — 돈을 먼저, 꿈을 거기에 */
+.mode-pick.three{grid-template-columns:repeat(3,1fr);max-width:720px}
+@media (max-width:640px){.mode-pick.three{grid-template-columns:1fr}}
+.goal-card{max-width:640px;margin:16px auto 0;padding:22px 24px;text-align:center}
+.goal-card .rc-row{font-size:14px;color:var(--ink-2);line-height:1.7;margin-bottom:8px}
+.goal-card .rc-row b,.goal-income b{color:var(--gold-2)}
+.goal-income{font-size:16.5px;font-weight:700;color:var(--ink);margin-top:12px;line-height:1.6}
+.gl-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;max-width:520px;margin:0 auto;
+  padding:8px 2px;border-bottom:1px dashed rgba(255,255,255,.07);font-size:13.5px;color:var(--ink-2);text-align:left}
+.gl-row b{color:var(--gold-2);white-space:nowrap}
+.goal-motto{margin-top:16px;font-size:14.5px;font-weight:700;color:var(--gold-2);line-height:1.6}
+
 /* 유명한 곳 선택 칩 */
 .chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .chips-hint{font-size:12.5px;color:var(--ink-3);margin-top:10px}

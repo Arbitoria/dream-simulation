@@ -346,6 +346,18 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
   border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-family:inherit;outline:none}
 .txt-in:focus{border-color:var(--gold)}
 .txt-in::placeholder{color:var(--ink-3)}
+/* goal 모드 — 돈을 먼저, 꿈을 거기에 */
+.mode-pick.three{grid-template-columns:repeat(3,1fr);max-width:720px}
+@media (max-width:640px){.mode-pick.three{grid-template-columns:1fr}}
+.goal-card{max-width:640px;margin:16px auto 0;padding:22px 24px;text-align:center}
+.goal-card .rc-row{font-size:14px;color:var(--ink-2);line-height:1.7;margin-bottom:8px}
+.goal-card .rc-row b,.goal-income b{color:var(--gold-2)}
+.goal-income{font-size:16.5px;font-weight:700;color:var(--ink);margin-top:12px;line-height:1.6}
+.gl-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;max-width:520px;margin:0 auto;
+  padding:8px 2px;border-bottom:1px dashed rgba(255,255,255,.07);font-size:13.5px;color:var(--ink-2);text-align:left}
+.gl-row b{color:var(--gold-2);white-space:nowrap}
+.goal-motto{margin-top:16px;font-size:14.5px;font-weight:700;color:var(--gold-2);line-height:1.6}
+
 /* 유명한 곳 선택 칩 */
 .chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .chips-hint{font-size:12.5px;color:var(--ink-3);margin-top:10px}
@@ -632,9 +644,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
     <!-- 6. 드림카 -->
     <section class="screen" data-screen="6" hidden>
       <header class="s-head"><p class="step-no" data-i18n="car.step"></p><h2 data-i18n="car.h"></h2></header>
-      <div class="mode-pick">
+      <div class="mode-pick three">
         <button class="mode-card" data-dmode="reco" type="button"><span class="pn" data-i18n="mode.reco"></span><span class="pd" data-i18n="mode.recoD"></span></button>
         <button class="mode-card" data-dmode="mine" type="button"><span class="pn" data-i18n="mode.mine"></span><span class="pd" data-i18n="mode.mineD"></span></button>
+        <button class="mode-card" data-dmode="goal" type="button"><span class="pn" data-i18n="mode.goal"></span><span class="pd" data-i18n="mode.goalD"></span></button>
       </div>
       <div class="grid" id="gridCar"></div>
       <div class="glass controls sit-narrow" id="mineCar" hidden>
@@ -651,6 +664,17 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
           </div>
         </div>
         <p class="mort-note" id="cCarLine"></p>
+      </div>
+
+      <div id="goalBox" hidden>
+        <div class="glass controls sit-narrow">
+          <label class="field">
+            <span class="ft"><span data-i18n="goal.amountLabel"></span><output id="goalOut"></output></span>
+            <input type="range" id="goalAmount" min="10000" max="500000" step="5000" value="100000" />
+          </label>
+          <div class="seg four" id="goalPresets"></div>
+        </div>
+        <div class="glass goal-card" id="goalCalc"></div>
       </div>
       <nav class="s-nav"><button class="btn ghost" data-go="5" data-i18n="nav.back"></button><button class="btn glow" data-go="7" data-i18n="nav.next"></button></nav>
     </section>
@@ -1202,6 +1226,16 @@ const L = {
     'mine.mapHintTrip': '지도에서 나라를 고르면 그곳의 유명한 여행 3가지가 열려요.',
     'map.pickHome': '살고 싶은 나라를 클릭하세요.',
     'map.pickTrip': '여행하고 싶은 나라를 클릭하세요.',
+    'mode.goal': '돈을 먼저 모은다', 'mode.goalD': '목표액을 정하고, 꿈을 거기에 맞춘다',
+    'goal.h': '얼마를 모으고 싶나요?',
+    'goal.amountLabel': '목표 종자돈',
+    'goal.retire': '지금 {age}세 — 평균 은퇴는 65세지만, 초고령 사회의 당신 세대는 <b>{ra}세</b> 은퇴가 유력해요. 남은 시간 {y}년.',
+    'goal.invest': '연 {rate}% 투자로 {ra}세까지 매달 <b>{m}</b>을 미래로 보내면 닿아요.',
+    'goal.investNone': '지금 자산만으로도 {ra}세 전에 닿아요 — 나무는 이미 자라고 있어요.',
+    'goal.income': '도달한 날부터 이 나무는 세금을 떼고 <b>월 {inc}</b>의 열매를 평생 줍니다.',
+    'goal.lifeH': '그 열매로 살 수 있는, 평범하지 않은 삶',
+    'goal.none': '이 목표의 열매는 카탈로그의 꿈보다, 자유 시간 그 자체를 사게 돼요.',
+    'goal.motto': '행복은 돈의 크기가 아니라, 현재에 맞춰가는 생활입니다.',
     'calc.nextLife': '인생을 살아보기 →',
     'life.step': '인생', 'life.h': '계획대로만 흘러가진 않죠', 'life.sub': '인생이 끼어듭니다. 하나씩, 당신의 선택은?',
     'life.at': '{age}세',
@@ -1355,6 +1389,16 @@ const L = {
     'mine.mapHintTrip': 'Pick a country on the map — three famous trips there will open up.',
     'map.pickHome': 'Click the country you want to live in.',
     'map.pickTrip': 'Click the country you want to travel to.',
+    'mode.goal': 'Save the money first', 'mode.goalD': 'Set a target, then fit the dream to it',
+    'goal.h': 'How much do you want to save?',
+    'goal.amountLabel': 'Target nest egg',
+    'goal.retire': 'You are {age} — average retirement is 65, but in a super-aged society your generation will likely retire at <b>{ra}</b>. {y} years to go.',
+    'goal.invest': 'Investing at {rate}%/yr, send <b>{m}</b> a month to the future until {ra} and you arrive.',
+    'goal.investNone': 'Your current assets alone arrive before {ra} — the tree is already growing.',
+    'goal.income': 'From that day, after tax, this tree bears <b>{inc}/mo</b> of fruit for life.',
+    'goal.lifeH': 'The not-so-ordinary life that fruit can buy',
+    'goal.none': 'This goal’s fruit buys something better than the catalog — free time itself.',
+    'goal.motto': 'Happiness is not the size of the money — it is a life fitted to the present.',
     'calc.nextLife': 'Live the life →',
     'life.step': 'LIFE', 'life.h': 'Life rarely follows the plan', 'life.sub': 'Life interrupts. One at a time — what do you choose?',
     'life.at': 'Age {age}',
@@ -1508,6 +1552,16 @@ const L = {
     'mine.mapHintTrip': 'Choisissez un pays sur la carte — trois voyages célèbres s’ouvriront.',
     'map.pickHome': 'Cliquez le pays où vous voulez vivre.',
     'map.pickTrip': 'Cliquez le pays où vous voulez voyager.',
+    'mode.goal': 'Épargner d’abord', 'mode.goalD': 'Fixez un objectif, puis ajustez le rêve',
+    'goal.h': 'Combien voulez-vous accumuler ?',
+    'goal.amountLabel': 'Capital cible',
+    'goal.retire': 'Vous avez {age} ans — la retraite moyenne est à 65 ans, mais dans une société super-âgée votre génération partira sans doute à <b>{ra}</b>. Il reste {y} ans.',
+    'goal.invest': 'À {rate}%/an, envoyez <b>{m}</b> par mois vers le futur jusqu’à {ra} ans et vous y êtes.',
+    'goal.investNone': 'Vos actifs actuels suffisent avant {ra} ans — l’arbre pousse déjà.',
+    'goal.income': 'Dès ce jour, après impôts, cet arbre donne <b>{inc}/mois</b> de fruits, à vie.',
+    'goal.lifeH': 'La vie pas ordinaire que ce fruit peut offrir',
+    'goal.none': 'Le fruit de cet objectif achète mieux que le catalogue — du temps libre.',
+    'goal.motto': 'Le bonheur n’est pas la taille de l’argent — c’est une vie ajustée au présent.',
     'calc.nextLife': 'Vivre la vie →',
     'life.step': 'LA VIE', 'life.h': 'La vie suit rarement le plan', 'life.sub': 'La vie s’invite. Une à une — que choisissez-vous ?',
     'life.at': '{age} ans',
@@ -1610,7 +1664,8 @@ const S = {
   baseSalary: 330, baseSave: 60,   // '지금 이대로'의 삶 — 도전 실패 시 여기로 돌아온다
   salary: 330, tenure: 'none', homeValue: 40000, rent: 80, fixedCost: 70, save: 60, assets: 3000,
   car: 'porsche', home: 'bali', trip: 'aurora', tripFreq: 12,
-  dreamMode: 'reco',   // reco=추천 카탈로그 · mine=내가 원하는 삶(직접 입력)
+  dreamMode: 'reco',   // reco=추천 카탈로그 · mine=내가 원하는 삶(직접 입력) · goal=돈을 먼저 모은다
+  goalAmount: 100000,  // goal 모드 목표 종자돈 (만원 · 기본 10억)
   cCarPrice: 15000, cRent: 200, cTripCost: 500,   // 직접 입력 값 (만원 · cTripCost는 1회당)
   cCityNm: '', cTripNm: '',                        // 표시용 이름 (칩 선택 시 채워짐)
   cHomeCC: '', cCityIdx: -1,                       // 살 곳: 지도에서 고른 나라 + 유명 지역 3 중 하나
@@ -1699,10 +1754,33 @@ function catPrice(cat) {
 /* 여행 1회 비용 = m×12 (기존 월예산은 '1년에 한 번' 기준) → 빈도로 월 환산 */
 function tripPerTrip() { return S.dreamMode === 'mine' ? S.cTripCost : mOf('trip', S.trip) * 12; }
 function tripMonthly() { return Math.round(tripPerTrip() / S.tripFreq); }
-function dreamMonthly() { return catM('car') + catM('home') + tripMonthly(); }
-function buyTotal() { return catPrice('car') + catPrice('home') + catPrice('trip'); }
 function taxRate() { return TAXES[S.country] != null ? TAXES[S.country] : 0.154; }
-function seedNeeded() { return dreamMonthly() * 12 / (1 - taxRate()) / 0.04; }
+/* goal 모드: 방향이 뒤집힌다 — 목표 종자돈이 먼저, 꿈의 한 달은 그 열매(4% 세후) */
+function dreamMonthly() {
+  if (S.dreamMode === 'goal') return Math.round(S.goalAmount * 0.04 * (1 - taxRate()) / 12);
+  return catM('car') + catM('home') + tripMonthly();
+}
+function buyTotal() { return catPrice('car') + catPrice('home') + catPrice('trip'); }
+function seedNeeded() { return S.dreamMode === 'goal' ? S.goalAmount : dreamMonthly() * 12 / (1 - taxRate()) / 0.04; }
+
+/* goal 모드 — 은퇴 나이 간이 예측: 10여 년마다 1세씩 늦춰져 온 흐름의 단순화 */
+function goalRetireAge() { return clamp(65 + Math.floor(Math.max(0, 65 - S.age) / 12), 65, 75); }
+/* 그 소득으로 살 수 있는 '평범하지 않은 삶' 조합 3선 (소득 이하 · 차/도시 중복 없이 큰 것부터) */
+function goalLifeExamples(income) {
+  /* '차 없이'·'소박한 여행'도 어엿한 조합 — 열매가 작아도 평범하지 않은 삶은 있다 */
+  const carsOpt = [{ id: 'nocar', e: '🚶', m: 0, nm: { ko: '차 없이', en: 'No car', fr: 'Sans voiture' } }, ...CARS];
+  const tripsOpt = [{ id: 'notrip', e: '🍃', m: 0, nm: { ko: '동네 산책', en: 'Local walks', fr: 'Balades locales' } }, ...TRIPS];
+  const combos = [];
+  for (const c of carsOpt) for (const h of HOMES) for (const tr of tripsOpt) combos.push({ c, h, tr, m: c.m + h.m + tr.m });
+  combos.sort((a, b) => a.m - b.m);
+  const picks = [], usedC = new Set(), usedH = new Set();
+  for (let i = combos.length - 1; i >= 0 && picks.length < 3; i--) {
+    const x = combos[i];
+    if (x.m > income || usedC.has(x.c.id) || usedH.has(x.h.id)) continue;
+    picks.push(x); usedC.add(x.c.id); usedH.add(x.h.id);
+  }
+  return picks;
+}
 
 /* ── 도전 (미래 직업 · 창업) — 확률·준비기간·성공 시 수입 ── */
 function challengeInfo() {
@@ -1792,6 +1870,8 @@ function monthlyNeeded(P, months, ratePct) {
 function applyLang(l) { lang = l; document.documentElement.lang = l; document.querySelectorAll('[data-i18n]').forEach((e) => { e.innerHTML = t(e.dataset.i18n); });
   document.querySelectorAll('#langRow .lang-btn').forEach((b) => b.classList.toggle('glow', b.dataset.lang === l)); }
 function go(n) {
+  /* goal 모드: 꿈 고르기(7·8)는 건너뛴다 — 앞으로 가면 계산으로, 뒤로 가면 목표로 */
+  if (S.dreamMode === 'goal' && (n === 7 || n === 8)) n = screen <= 6 ? 9 : 6;
   screen = n;
   document.querySelectorAll('.screen').forEach((s) => { s.hidden = +s.dataset.screen !== n; });
   $('progressFill').style.width = (n / 11 * 100) + '%';
@@ -1830,12 +1910,12 @@ function sendDream() {
       body: JSON.stringify({
         lang, gender: S.gender, age: S.age, job: S.job, salary: S.salary, save: S.save,
         tenure: S.tenure, assets: S.assets,
-        car: S.dreamMode === 'mine' ? 'custom' : S.car,
+        car: S.dreamMode === 'goal' ? 'goal' : S.dreamMode === 'mine' ? 'custom' : S.car,
         /* 직접 입력이라도 지도에서 고른 곳은 익명 id로 — Dream Index에 잡힌다 (자유 텍스트는 절대 미전송) */
-        home: S.dreamMode === 'mine'
+        home: S.dreamMode === 'goal' ? 'goal' : S.dreamMode === 'mine'
           ? (S.cHomeCC && S.cCityIdx >= 0 ? S.cHomeCC + '-' + worldOf(S.cHomeCC).cities[S.cCityIdx].id : 'custom')
           : S.home,
-        trip: S.dreamMode === 'mine'
+        trip: S.dreamMode === 'goal' ? 'goal' : S.dreamMode === 'mine'
           ? (S.cTripCC && S.cTripIdx >= 0 ? S.cTripCC + '-' + worldOf(S.cTripCC).trips[S.cTripIdx].id : 'custom')
           : S.trip,
         tripFreq: S.tripFreq, rate: S.rate, country: S.country,
@@ -2162,12 +2242,18 @@ function renderGender() {
 }
 function renderGrid(cat, boxId) {
   const mine = S.dreamMode === 'mine';
-  /* 화면 상단 모드 선택 (추천 / 내가 원하는 삶) — 세 화면 공통 */
+  const goal = S.dreamMode === 'goal';
+  /* 화면 상단 모드 선택 (추천 / 내가 원하는 삶 / 돈을 먼저) — 세 화면 공통 */
   const scr = $(boxId).closest('.screen');
   scr.querySelectorAll('.mode-card').forEach((b) => b.classList.toggle('on', b.dataset.dmode === S.dreamMode));
-  $(boxId).hidden = mine;
+  $(boxId).hidden = mine || goal;
   const mineBox = { gridCar: 'mineCar', gridHome: 'mineHome', gridTrip: 'mineTrip' }[boxId];
   $(mineBox).hidden = !mine;
+  if (cat === 'car') {
+    $('goalBox').hidden = !goal;
+    scr.querySelector('h2').textContent = t(goal ? 'goal.h' : 'car.h');
+  }
+  if (goal) { if (cat === 'car') renderGoal(); return; }
   if (mine) { syncMine(); if (cat === 'trip') syncTripFreq(); return; }
   const per = lang === 'ko' ? '월 ' : lang === 'fr' ? '/mois' : '/mo';
   const perTrip = lang === 'ko' ? '1회 ' : lang === 'fr' ? '/voyage' : '/trip';
@@ -2204,6 +2290,42 @@ function syncMine() {
   renderPlaceChips('home');
   renderPlaceChips('trip');
 }
+/* ── goal 모드: 돈을 먼저 모으고, 꿈을 거기에 맞춘다 ── */
+function renderGoal() {
+  $('goalAmount').value = S.goalAmount;
+  $('goalOut').innerHTML = money3(S.goalAmount);
+  /* 프리셋: 5억 · 10억 · $1M · €1M (실환율 환산) */
+  const usd1m = Math.round(1000000 * FX.en.rate / 10000 / 5000) * 5000;
+  const eur1m = Math.round(1000000 * FX.fr.rate / 10000 / 5000) * 5000;
+  const presets = [
+    { v: 50000, l: lang === 'ko' ? '5억' : '₩500M' },
+    { v: 100000, l: lang === 'ko' ? '10억' : '₩1B' },
+    { v: usd1m, l: '$1M' },
+    { v: eur1m, l: '€1M' },
+  ];
+  $('goalPresets').innerHTML = presets.map((p) =>
+    `<button type="button" data-goal="${p.v}" class="${S.goalAmount === p.v ? 'on' : ''}">${p.l}</button>`).join('');
+  const ra = goalRetireAge();
+  const yrs = Math.max(1, ra - S.age);
+  const months = yrs * 12;
+  const r = S.rate / 100 / 12;
+  const futureAssets = S.assets * Math.pow(1 + r, months);
+  const needP = Math.max(0, S.goalAmount - futureAssets);
+  const mNeed = Math.round(monthlyNeeded(needP, months, S.rate));
+  const income = dreamMonthly();
+  const picks = goalLifeExamples(income);
+  const lifeRows = picks.length
+    ? picks.map((x) => `<div class="gl-row"><span>${x.c.e} ${x.c.nm[lang] || x.c.nm.ko} + ${x.h.e} ${x.h.nm[lang] || x.h.nm.ko} + ${x.tr.e} ${x.tr.nm[lang] || x.tr.nm.ko}</span><b>${lang === 'ko' ? '월 ' : ''}${money(x.m)}${lang === 'ko' ? '' : '/mo'}</b></div>`).join('')
+    : `<p class="chal-note">${t('goal.none')}</p>`;
+  $('goalCalc').innerHTML = `
+    <div class="rc-row">${t('goal.retire', { age: S.age, ra, y: yrs })}</div>
+    <div class="rc-row">${needP <= 0 ? t('goal.investNone', { ra }) : t('goal.invest', { rate: S.rate, ra, m: money(mNeed) })}</div>
+    <div class="goal-income">${t('goal.income', { inc: money(income) })}</div>
+    <div class="chal-tag" style="margin-top:16px">${t('goal.lifeH')}</div>
+    ${lifeRows}
+    <p class="goal-motto">${t('goal.motto')}</p>`;
+}
+
 /* 살 곳·여행 — 지도에서 고른 나라의 유명한 곳 3개를 칩으로 */
 function renderPlaceChips(kind) {
   const cc = kind === 'home' ? S.cHomeCC : S.cTripCC;
@@ -2371,8 +2493,10 @@ function renderDiag() {
 
 /* ── 8. 계산 ── */
 function renderCalc() {
-  $('dreamSummary').innerHTML = ['car', 'home', 'trip'].map((c) =>
-    `<span class="ds"><span class="e">${dreamEmoji(c)}</span>${dreamName(c)}</span>`).join('');
+  $('dreamSummary').innerHTML = S.dreamMode === 'goal'
+    ? `<span class="ds"><span class="e">🎯</span>${money(S.goalAmount)}</span>`
+    : ['car', 'home', 'trip'].map((c) =>
+      `<span class="ds"><span class="e">${dreamEmoji(c)}</span>${dreamName(c)}</span>`).join('');
   $('calcSave').value = S.save;
   $('partnerAge').value = Math.max(S.age, S.partnerAge);
   $('partnerMonthly').value = S.partnerMonthly;
@@ -2398,6 +2522,17 @@ function updateReach() {
     <span class="ss-arrow a2">÷4%</span>
     <span class="ss s3">🌳 ${money(N)}</span>`;
   $('rateHint').innerHTML = t('hint.' + S.rate);
+  /* goal 모드: '사기 vs 유지'는 방향이 안 맞으니 감춘다 (목표가 곧 나무) */
+  const goalMode = S.dreamMode === 'goal';
+  $('twoPath').hidden = goalMode;
+  $('seedFlow').hidden = goalMode;
+  $('bvrCard').hidden = goalMode;
+  if (goalMode) $('seedSteps').innerHTML = `
+    <span class="ss s1">🌳 ${money(N)}</span>
+    <span class="ss-arrow a1">×4%</span>
+    <span class="ss s2">${money(Math.round(N * 0.04))}${lang === 'ko' ? '/년' : '/yr'}</span>
+    <span class="ss-arrow a2">÷12</span>
+    <span class="ss s3">${lang === 'ko' ? '월 ' : ''}${money(dm)}${lang === 'ko' ? '' : '/mo'}</span>`;
   $('twoPath').innerHTML = `
     <div class="path-col"><div class="pc-t">${t('calc.buyPath')}</div>
       <div class="pc-v">${money(buyTotal())}</div><div class="pc-n">${t('calc.buyNote')}</div></div>
@@ -2565,9 +2700,10 @@ function encodeState(scrOverride) {
     scr,
     PATHS.indexOf(S.jobPath), JOBS.findIndex((j) => j.id === S.jobTarget) + 1, S.startupIncome, S.challenge,
     S.baseSalary, S.baseSave,
-    S.dreamMode === 'mine' ? 1 : 0, S.cCarPrice, S.cRent, S.cTripCost,
+    ['reco', 'mine', 'goal'].indexOf(S.dreamMode), S.cCarPrice, S.cRent, S.cTripCost,
     WORLD.findIndex((w) => w.id === S.cHomeCC) + 1, S.cCityIdx + 1,
-    WORLD.findIndex((w) => w.id === S.cTripCC) + 1, S.cTripIdx + 1].join('.');
+    WORLD.findIndex((w) => w.id === S.cTripCC) + 1, S.cTripIdx + 1,
+    S.goalAmount].join('.');
 }
 function decodeState(str) {
   const p = str.split('.').map(Number); if (p.length < 22 || p.some(isNaN)) return;
@@ -2599,9 +2735,10 @@ function decodeState(str) {
   if (p.length >= 28) { S.baseSalary = clamp(p[26], 50, 5000); S.baseSave = clamp(p[27], 0, 1200); }
   else { S.baseSalary = S.salary; S.baseSave = S.save; }
   if (p.length >= 32) {
-    S.dreamMode = p[28] === 1 ? 'mine' : 'reco';
+    S.dreamMode = ['reco', 'mine', 'goal'][p[28]] || 'reco';
     S.cCarPrice = clamp(p[29], 0, 60000); S.cRent = clamp(p[30], 0, 1000); S.cTripCost = clamp(p[31], 0, 5000);
   } else { S.dreamMode = 'reco'; }
+  if (p.length >= 37) S.goalAmount = clamp(p[36], 10000, 500000);
   if (p.length >= 36) {
     const hw = WORLD[p[32] - 1];
     S.cHomeCC = hw ? hw.id : ''; S.cCityIdx = clamp(p[33], 0, 3) - 1;
@@ -2688,6 +2825,7 @@ function bind() {
       }
       syncMine(); if (screen === 8) syncTripFreq(); updateHash(); return;
     }
+    const gp = e.target.closest('[data-goal]'); if (gp) { S.goalAmount = +gp.dataset.goal; renderGoal(); updateHash(); return; }
     const dm = e.target.closest('[data-dmode]'); if (dm) {
       S.dreamMode = dm.dataset.dmode;
       renderScreen(screen); updateHash(); return;
@@ -2744,6 +2882,7 @@ function bind() {
       S.salary = v; S.save = Math.round(v * 0.3);   // 목표 수입이 아래 수입·다음 페이지로 이어진다
       syncStartup(); syncCustomSal(); renderChalCard(); syncJobLine(); updateHash(); return;
     }
+    if (el.id === 'goalAmount') { S.goalAmount = v; renderGoal(); updateHash(); return; }
     if (el.id === 'cCarPrice') { S.cCarPrice = v; syncMine(); updateHash(); return; }
     if (el.id === 'cRent') { S.cRent = v; syncMine(); updateHash(); return; }
     if (el.id === 'cTripCost') { S.cTripCost = v; syncMine(); syncTripFreq(); updateHash(); return; }

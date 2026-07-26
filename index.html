@@ -203,9 +203,10 @@
     <!-- 6. 드림카 -->
     <section class="screen" data-screen="6" hidden>
       <header class="s-head"><p class="step-no" data-i18n="car.step"></p><h2 data-i18n="car.h"></h2></header>
-      <div class="mode-pick">
+      <div class="mode-pick three">
         <button class="mode-card" data-dmode="reco" type="button"><span class="pn" data-i18n="mode.reco"></span><span class="pd" data-i18n="mode.recoD"></span></button>
         <button class="mode-card" data-dmode="mine" type="button"><span class="pn" data-i18n="mode.mine"></span><span class="pd" data-i18n="mode.mineD"></span></button>
+        <button class="mode-card" data-dmode="goal" type="button"><span class="pn" data-i18n="mode.goal"></span><span class="pd" data-i18n="mode.goalD"></span></button>
       </div>
       <div class="grid" id="gridCar"></div>
       <div class="glass controls sit-narrow" id="mineCar" hidden>
@@ -222,6 +223,17 @@
           </div>
         </div>
         <p class="mort-note" id="cCarLine"></p>
+      </div>
+
+      <div id="goalBox" hidden>
+        <div class="glass controls sit-narrow">
+          <label class="field">
+            <span class="ft"><span data-i18n="goal.amountLabel"></span><output id="goalOut"></output></span>
+            <input type="range" id="goalAmount" min="10000" max="500000" step="5000" value="100000" />
+          </label>
+          <div class="seg four" id="goalPresets"></div>
+        </div>
+        <div class="glass goal-card" id="goalCalc"></div>
       </div>
       <nav class="s-nav"><button class="btn ghost" data-go="5" data-i18n="nav.back"></button><button class="btn glow" data-go="7" data-i18n="nav.next"></button></nav>
     </section>
