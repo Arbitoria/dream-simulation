@@ -104,6 +104,38 @@ export default {
       }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=300' } });
     }
 
+    /* 언어별 OG — SNS 크롤러는 JS를 안 돌리므로 ?l=en|fr 이면 메타를 서버에서 갈아끼운다.
+       (게임 공유 링크가 이 파라미터를 실어 보낸다 · 해시는 크롤러에 안 보임) */
+    const l = url.searchParams.get('l');
+    if ((l === 'en' || l === 'fr') && url.pathname === '/' && request.method === 'GET') {
+      const OG = {
+        en: [
+          ['<html lang="ko">', '<html lang="en">'],
+          ['당신의 꿈은 몇 살에 이뤄질까? 지금의 나를 넣고 꿈을 고르면, 시간이 답합니다. What age will your dream come true? by ARBITORIA',
+            'What age will your dream come true? Enter who you are today, pick a dream — and time answers. by ARBITORIA'],
+          ['당신의 꿈은 몇 살에 이뤄질까? — Dream Simulation', 'What age will your dream come true? — Dream Simulation'],
+          ['포르쉐, 발리, 오로라 — 꿈을 고르면 시간이 답합니다. 3분, 무료, 개인정보 무저장.',
+            'Porsche, Bali, the northern lights — pick a dream and time answers. 3 min, free, no personal data.'],
+          ['꿈을 고르면 시간이 답합니다. 3분, 무료, 개인정보 무저장.', 'Pick a dream and time answers. 3 min, free, no personal data.'],
+          ['https://arbitoria.com/og.png', 'https://arbitoria.com/og-en.png'],
+        ],
+        fr: [
+          ['<html lang="ko">', '<html lang="fr">'],
+          ['당신의 꿈은 몇 살에 이뤄질까? 지금의 나를 넣고 꿈을 고르면, 시간이 답합니다. What age will your dream come true? by ARBITORIA',
+            'À quel âge ton rêve se réalisera-t-il ? Entrez qui vous êtes, choisissez un rêve — le temps répond. by ARBITORIA'],
+          ['당신의 꿈은 몇 살에 이뤄질까? — Dream Simulation', 'À quel âge ton rêve se réalisera-t-il ? — Dream Simulation'],
+          ['포르쉐, 발리, 오로라 — 꿈을 고르면 시간이 답합니다. 3분, 무료, 개인정보 무저장.',
+            'Porsche, Bali, les aurores — choisis un rêve, le temps répond. 3 min, gratuit, aucune donnée personnelle.'],
+          ['꿈을 고르면 시간이 답합니다. 3분, 무료, 개인정보 무저장.', 'Choisis un rêve, le temps répond. 3 min, gratuit, aucune donnée personnelle.'],
+          ['https://arbitoria.com/og.png', 'https://arbitoria.com/og-fr.png'],
+        ],
+      };
+      const res = await env.ASSETS.fetch(new Request(url.origin + '/', request));
+      let html = await res.text();
+      for (const [from, to] of OG[l]) html = html.split(from).join(to);
+      return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300' } });
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
