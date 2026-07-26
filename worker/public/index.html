@@ -879,7 +879,6 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
         <p class="sp-label" data-i18n="share.label"></p>
         <p class="sp-msg" id="shareMsgText"></p>
         <button class="pill" id="rerollMsg" type="button">🎲 <span data-i18n="share.reroll"></span></button>
-        <button class="pill" id="fbShare" type="button"><svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5 2.5H9a2.5 2.5 0 0 0-2.5 2.5v1.5H4.8V9H6.5v4.5H9V9h1.7l.4-2.5H9V5.2c0-.4.3-.7.7-.7h.8Z" fill="currentColor"/></svg> <span data-i18n="share.fb"></span></button>
       </div>
 
       <nav class="s-nav center">
@@ -1339,8 +1338,7 @@ const L = {
     'toast.copied': '링크를 복사했어요.', 'toast.manual': '주소창의 링크를 복사해 공유하세요.',
     'toast.copiedMsg': '질문과 링크를 함께 복사했어요. 붙여넣어 보내세요.',
     'share.label': '이 질문과 함께 보내집니다', 'share.reroll': '다른 질문',
-    'share.fb': 'Facebook에 공유',
-    'share.fbCopied': '질문을 복사했어요 — 글쓰기 칸에 붙여넣으면 완성돼요.',
+    'share.fbCopied': '질문과 링크를 복사했어요 — 글쓰기 칸에 붙여넣으면 완성돼요.',
   },
   en: {
     'cover.title': 'Dreaming of<br/>my future self', 'cover.sub': 'Enter who you are, choose the dream — time draws the line between them.', 'cover.start': 'Begin',
@@ -1504,8 +1502,7 @@ const L = {
     'toast.copied': 'Link copied.', 'toast.manual': 'Copy the link from your address bar to share.',
     'toast.copiedMsg': 'Question and link copied together. Paste to send.',
     'share.label': 'Sent along with this question', 'share.reroll': 'Another question',
-    'share.fb': 'Share on Facebook',
-    'share.fbCopied': 'Question copied — paste it into the post box and you’re done.',
+    'share.fbCopied': 'Question and link copied — paste into the post box and you’re done.',
   },
   fr: {
     'cover.title': 'Rêver de<br/>mon futur moi', 'cover.sub': 'Entrez qui vous êtes, choisissez le rêve — le temps trace la ligne entre les deux.', 'cover.start': 'Commencer',
@@ -1669,8 +1666,7 @@ const L = {
     'toast.copied': 'Lien copié.', 'toast.manual': 'Copiez le lien de la barre d’adresse pour partager.',
     'toast.copiedMsg': 'Question et lien copiés ensemble. Collez pour envoyer.',
     'share.label': 'Envoyé avec cette question', 'share.reroll': 'Une autre question',
-    'share.fb': 'Partager sur Facebook',
-    'share.fbCopied': 'Question copiée — collez-la dans la publication et c’est prêt.',
+    'share.fbCopied': 'Question et lien copiés — collez-les dans la publication et c’est prêt.',
   },
 };
 function t(k, p) { let s = (L[lang] && L[lang][k]) != null ? L[lang][k] : (L.ko[k] != null ? L.ko[k] : k); if (p) for (const x in p) s = s.replace(new RegExp('\\{' + x + '\\}', 'g'), p[x]); return s; }
@@ -2784,24 +2780,19 @@ function updateHash() { const u = new URL(location.href); u.hash = 'd=' + encode
 /* 공유 링크: 항상 계산 화면(9)으로 + 언어 파라미터(?l=) — SNS 크롤러가 그 언어의 OG 카드를 받는다 */
 function shareLink() {
   const u = new URL(location.origin + '/');
-  if (lang !== 'ko') u.searchParams.set('l', lang);
+  if (lang !== 'ko') u.searchParams.set('lang', lang);
   u.hash = 'd=' + encodeState(9);
   return u.toString();
 }
+/* 공유 버튼 하나로: 모바일=네이티브 공유 시트 · 데스크톱=페이스북 창 + 질문 클립보드 */
 async function share() {
   const link = shareLink();
   if (!currentShareMsg) updateShareMsg();
   const msg = currentShareMsg;
   try { if (navigator.share) { await navigator.share({ title: 'Dream Simulation — ARBITORIA', text: msg, url: link }); return; } } catch (_) {}
-  try { await navigator.clipboard.writeText(msg + '\n' + link); toast(t('toast.copiedMsg')); } catch (_) { toast(t('toast.manual')); }
-}
-/* 페이스북 바로 공유 — 질문을 클립보드에 담아 열고, 붙여넣으면 글이 완성된다 */
-async function shareFb() {
-  const link = shareLink();
-  if (!currentShareMsg) updateShareMsg();
-  try { await navigator.clipboard.writeText(currentShareMsg); } catch (_) {}
+  try { await navigator.clipboard.writeText(msg + '\n' + link); } catch (_) {}
   window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(link)
-    + '&quote=' + encodeURIComponent(currentShareMsg), '_blank', 'noopener,width=680,height=580');
+    + '&quote=' + encodeURIComponent(msg), '_blank', 'noopener,width=680,height=580');
   toast(t('share.fbCopied'));
 }
 let toastT; function toast(m) { const el = $('toast'); el.textContent = m; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 2400); }
@@ -2894,7 +2885,6 @@ function bind() {
     }
     if (e.target.closest('#shareBtn')) { share(); return; }
     if (e.target.closest('#rerollMsg')) { updateShareMsg(true); return; }
-    if (e.target.closest('#fbShare')) { shareFb(); return; }
     if (e.target.closest('#ctaBtn')) { window.open('https://arbitoria.com/family-office', '_blank'); return; }
     if (e.target.closest('#cookieOk')) { try { localStorage.setItem('cookieAck', '1'); } catch (_) {} $('cookieBar').hidden = true; return; }
     if (e.target.closest('#deepToggle')) {

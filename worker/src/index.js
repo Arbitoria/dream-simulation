@@ -106,11 +106,13 @@ export default {
 
     /* 언어별 OG — SNS 크롤러는 JS를 안 돌리므로 ?l=en|fr 이면 메타를 서버에서 갈아끼운다.
        (게임 공유 링크가 이 파라미터를 실어 보낸다 · 해시는 크롤러에 안 보임) */
-    const l = url.searchParams.get('l');
+    const l = url.searchParams.get('lang') || url.searchParams.get('l');
     if ((l === 'en' || l === 'fr') && url.pathname === '/' && request.method === 'GET') {
       const OG = {
         en: [
           ['<html lang="ko">', '<html lang="en">'],
+          ['<link rel="canonical" href="https://arbitoria.com/" />', '<link rel="canonical" href="https://arbitoria.com/?lang=en" />'],
+          ['<meta property="og:url" content="https://arbitoria.com/" />', '<meta property="og:url" content="https://arbitoria.com/?lang=en" />'],
           ['당신의 꿈은 몇 살에 이뤄질까? 지금의 나를 넣고 꿈을 고르면, 시간이 답합니다. What age will your dream come true? by ARBITORIA',
             'What age will your dream come true? Enter who you are today, pick a dream — and time answers. by ARBITORIA'],
           ['당신의 꿈은 몇 살에 이뤄질까? — Dream Simulation', 'What age will your dream come true? — Dream Simulation'],
@@ -121,6 +123,8 @@ export default {
         ],
         fr: [
           ['<html lang="ko">', '<html lang="fr">'],
+          ['<link rel="canonical" href="https://arbitoria.com/" />', '<link rel="canonical" href="https://arbitoria.com/?lang=fr" />'],
+          ['<meta property="og:url" content="https://arbitoria.com/" />', '<meta property="og:url" content="https://arbitoria.com/?lang=fr" />'],
           ['당신의 꿈은 몇 살에 이뤄질까? 지금의 나를 넣고 꿈을 고르면, 시간이 답합니다. What age will your dream come true? by ARBITORIA',
             'À quel âge ton rêve se réalisera-t-il ? Entrez qui vous êtes, choisissez un rêve — le temps répond. by ARBITORIA'],
           ['당신의 꿈은 몇 살에 이뤄질까? — Dream Simulation', 'À quel âge ton rêve se réalisera-t-il ? — Dream Simulation'],
