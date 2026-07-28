@@ -272,8 +272,7 @@ const L = {
     'age.reality': '초고령 사회의 당신 세대에게 90세는 특별한 일이 아닙니다 — 지금부터 <b>{left}년</b>을 더 산다는 뜻이에요.',
     'calc.realityT': '⏳ 현실 체크 — "연금 받으면 되지 않나?"',
     'calc.pensionLine': '{pen}: 월 <b>{p}</b>',
-    'calc.gapLine': '이 꿈의 한 달은 {m} — 연금과의 간극 <b>월 {gap}</b>. 그 간극이 나무가 할 일입니다.',
-    'calc.gapNone': '드물게도, 연금만으로 이 꿈에 닿습니다. 그래도 나무가 있으면 연금이 자유가 됩니다.',
+    'calc.sumLine': '나무가 다 자라면 — 연금 {p} + 열매 {m} = <b>월 {sum}</b>의 삶. 나무는 연금 위에 쌓입니다.',
     'calc.yearsLine': '{age}세에 나무가 다 자라면 — 90세까지 <b>{y}년</b>의 열매가 필요합니다. 노후 준비는 몇 년짜리가 아니라 수십 년짜리입니다.',
     'pen.kr': '국민연금 평균 수령액', 'pen.us': 'Social Security 평균 수령액', 'pen.fr': '프랑스 공적연금 평균',
     'end.tag': '당신의 엔딩',
@@ -407,11 +406,11 @@ const L = {
     'bvr.buyWin': '이 도시에선 <b>사는 쪽이 {d} 앞서요</b>. 그래도 매달의 흐름은 종자돈에서 나옵니다 — 이건 조언이 아니라 이해를 위한 비교예요.',
     'bvr.rentWin': '이 도시에선 <b>렌트 + 투자가 {d} 앞서요</b> — 유지의 길이 숫자로도 이깁니다. 이해를 위한 비교예요.',
     'weight.h': '한 결정의 무게', 'weight.sub': '오늘의 작은 선택이 만드는 차이',
-    'when.h': '언제 시작하느냐의 무게',
+    'when.h': '꿈을 누리는 시간',
     'when.now': '지금 시작', 'when.in': '{y}년 미루면',
-    'when.age': '{age}세 도달', 'when.never': '닿지 못해요',
-    'when.note': '같은 저축인데, {d}년 미루면 꿈이 <b>{y}년</b> 늦게 옵니다 — 미룬 시간은 더해지는 게 아니라 곱해져요.',
-    'when.noteNever': '미루면 이 꿈은 평생 닿지 못하게 됩니다 — 복리는 기다려주지 않아요.',
+    'when.age': '{age}세부터 <b>{y}년</b>', 'when.never': '누릴 시간이 없어요',
+    'when.note': '미루는 {d}년은 준비에서 빠지는 게 아니라, 꿈을 누리는 시간에서 빠집니다 — {a}년이 {b}년이 돼요. (90세 기준)',
+    'when.noteNever': '지금 시작해도 빠듯한 꿈이에요 — 미루면 누릴 시간이 사라집니다.',
     'hab.h': '만약, 조금만 바꾼다면',
     'hab.sub': '판단은 하지 않아요 — 슬라이더를 움직이면 계산만 해드립니다.',
     'hab.cig': '담배, 일주일에 덜 피우는 갑', 'hab.cof': '커피, 일주일에 덜 사는 잔', 'hab.eat': '외식, 한 달에 줄이는 횟수',
@@ -452,8 +451,7 @@ const L = {
     'age.reality': 'In a super-aged society, reaching 90 is no longer special for your generation — that means <b>{left} more years</b> from today.',
     'calc.realityT': '⏳ Reality check — “won’t the pension be enough?”',
     'calc.pensionLine': '{pen}: <b>{p}</b>/mo',
-    'calc.gapLine': 'This dream costs {m} a month — a gap of <b>{gap}/mo</b> versus the pension. That gap is the tree’s job.',
-    'calc.gapNone': 'Rarely, the pension alone reaches this dream. Even then, a tree turns the pension into freedom.',
+    'calc.sumLine': 'When the tree is grown — pension {p} + fruit {m} = <b>{sum}/mo</b> of life. The tree stacks on top of the pension.',
     'calc.yearsLine': 'If your tree is grown at {age}, it must bear fruit for <b>{y} years</b> until 90. Retirement prep isn’t a few years — it’s decades.',
     'pen.kr': 'Korea national pension (avg)', 'pen.us': 'Social Security (avg)', 'pen.fr': 'French public pension (avg)',
     'end.tag': 'Your ending',
@@ -587,11 +585,11 @@ const L = {
     'bvr.buyWin': 'In this city, <b>buying ends {d} ahead</b>. The monthly flow still comes from the seed — a comparison for understanding, not advice.',
     'bvr.rentWin': 'In this city, <b>rent + invest ends {d} ahead</b> — the sustaining road wins in numbers too. For understanding, not advice.',
     'weight.h': 'The weight of one decision', 'weight.sub': 'What a small choice today becomes',
-    'when.h': 'The weight of when you start',
+    'when.h': 'Years spent living the dream',
     'when.now': 'Start now', 'when.in': 'Wait {y} years',
-    'when.age': 'Reach at {age}', 'when.never': 'Never reached',
-    'when.note': 'Same saving — wait {d} years and the dream arrives <b>{y} years</b> later. Delay doesn’t add, it multiplies.',
-    'when.noteNever': 'Wait, and this dream slips out of reach for good — compounding doesn’t wait.',
+    'when.age': '<b>{y} yrs</b> from age {age}', 'when.never': 'No time left to enjoy it',
+    'when.note': 'The {d} years you wait aren’t taken from the preparing — they’re taken from the living: {a} years becomes {b}. (to age 90)',
+    'when.noteNever': 'Even starting now this dream is tight — wait, and the time to live it disappears.',
     'hab.h': 'What if you changed just a little?',
     'hab.sub': 'No judgement — move a slider and we only do the math.',
     'hab.cig': 'Cigarettes: packs less per week', 'hab.cof': 'Coffee: cups less per week', 'hab.eat': 'Dining out: times less per month',
@@ -632,8 +630,7 @@ const L = {
     'age.reality': 'Dans une société super-âgée, atteindre 90 ans n’a plus rien d’exceptionnel pour votre génération — cela signifie <b>{left} années</b> de plus à vivre.',
     'calc.realityT': '⏳ Vérification de réalité — « la pension ne suffira-t-elle pas ? »',
     'calc.pensionLine': '{pen} : <b>{p}</b>/mois',
-    'calc.gapLine': 'Ce rêve coûte {m} par mois — un écart de <b>{gap}/mois</b> face à la pension. Cet écart, c’est le travail de l’arbre.',
-    'calc.gapNone': 'Rarement, la pension seule atteint ce rêve. Même alors, un arbre transforme la pension en liberté.',
+    'calc.sumLine': 'Quand l’arbre est adulte — pension {p} + fruits {m} = <b>{sum}/mois</b> de vie. L’arbre s’ajoute à la pension.',
     'calc.yearsLine': 'Si votre arbre est adulte à {age} ans, il doit porter des fruits pendant <b>{y} ans</b> jusqu’à 90. La retraite ne se prépare pas en années — en décennies.',
     'pen.kr': 'Pension nationale coréenne (moy.)', 'pen.us': 'Social Security (moy.)', 'pen.fr': 'Pension publique française (moy.)',
     'end.tag': 'Votre fin',
@@ -767,11 +764,11 @@ const L = {
     'bvr.buyWin': 'Dans cette ville, <b>acheter finit {d} devant</b>. Le flux mensuel vient toujours du capital — comparaison pour comprendre, pas un conseil.',
     'bvr.rentWin': 'Dans cette ville, <b>louer + investir finit {d} devant</b> — la voie de l’entretien gagne aussi en chiffres. Pour comprendre, pas un conseil.',
     'weight.h': 'Le poids d’une décision', 'weight.sub': 'Ce que devient un petit choix d’aujourd’hui',
-    'when.h': 'Le poids du moment où l’on commence',
+    'when.h': 'Les années à vivre le rêve',
     'when.now': 'Commencer maintenant', 'when.in': 'Attendre {y} ans',
-    'when.age': 'Atteint à {age} ans', 'when.never': 'Jamais atteint',
-    'when.note': 'Même épargne — attendez {d} ans et le rêve arrive <b>{y} ans</b> plus tard. Le retard ne s’additionne pas, il se multiplie.',
-    'when.noteNever': 'Attendez, et ce rêve devient inatteignable — les intérêts composés n’attendent pas.',
+    'when.age': '<b>{y} ans</b> dès {age} ans', 'when.never': 'Plus de temps pour en profiter',
+    'when.note': 'Les {d} ans d’attente ne sont pas pris sur la préparation — ils sont pris sur la vie du rêve : {a} ans deviennent {b}. (jusqu’à 90 ans)',
+    'when.noteNever': 'Même en commençant maintenant, ce rêve est juste — attendez, et le temps d’en profiter disparaît.',
     'hab.h': 'Et si vous changiez juste un peu ?',
     'hab.sub': 'Aucun jugement — bougez un curseur, nous ne faisons que le calcul.',
     'hab.cig': 'Cigarettes : paquets en moins par semaine', 'hab.cof': 'Café : tasses en moins par semaine', 'hab.eat': 'Restaurant : fois en moins par mois',
@@ -1295,15 +1292,15 @@ function renderAgeReality() {
 
 /* 현실 체크 카드: 연금 vs 꿈의 간극 + 몇 년치 열매가 필요한가 */
 function renderReality(months) {
+  /* 격차(결핍)가 아니라 합(더해지는 삶) — 나무의 열매는 연금 위에 쌓인다 */
   const dm = dreamMonthly();
   const pen = PENSION_MW[S.country] != null ? PENSION_MW[S.country] : 65;
-  const gap = dm - pen;
   const reachAge = months === Infinity ? null : S.age + Math.round(months / 12);
   const years = reachAge !== null ? Math.max(0, LIFE_EXPECT - reachAge) : null;
   $('realityCard').innerHTML = `
     <div class="rc-t">${t('calc.realityT')}</div>
     <div class="rc-row">${t('calc.pensionLine', { pen: t('pen.' + S.country), p: money(pen) })}</div>
-    <div class="rc-row rc-gap">${gap > 0 ? t('calc.gapLine', { m: money(dm), gap: money(gap) }) : t('calc.gapNone')}</div>
+    <div class="rc-row rc-sum">${t('calc.sumLine', { p: money(pen), m: money(dm), sum: money(pen + dm) })}</div>
     ${years !== null ? `<div class="rc-years">${t('calc.yearsLine', { age: reachAge, y: years })}</div>` : ''}`;
 }
 
@@ -1759,19 +1756,23 @@ function monthsToReachDelayed(N, delayM) {
   return Infinity;
 }
 function renderWhen(N) {
+  /* '몇 년 늦어진다'는 당연한 산수 — 진짜 이야기는 '꿈을 누리는 시간'이 줄어드는 것.
+     막대 = 90세까지 꿈을 누리는 햇수. 길수록 좋다. */
   const rows = [0, 5, 10].map((d) => {
     const m = monthsToReachDelayed(N, d * 12);
-    return { d, m, age: m === Infinity ? null : S.age + Math.round(m / 12) };
+    const age = m === Infinity ? null : S.age + Math.round(m / 12);
+    const enjoy = age === null ? 0 : Math.max(0, LIFE_EXPECT - age);
+    return { d, age, enjoy };
   });
-  const maxY = 100 - S.age;
+  const maxE = Math.max(1, LIFE_EXPECT - S.age);
   const bar = (r) => {
-    const y = r.m === Infinity ? maxY : Math.round(r.m / 12);
-    const pct = Math.min(100, Math.round(y / maxY * 100));
+    const pct = Math.round(r.enjoy / maxE * 100);
     return `<span class="meter"><span class="meter-fill ${r.d === 0 ? '' : r.d === 5 ? ' mid' : ' low'}" style="width:${pct}%"></span></span>`;
   };
-  const label = (r) => r.age === null ? t('when.never') : t('when.age', { age: r.age });
-  const base = rows[0], late = rows[2];
-  const lost = (base.m !== Infinity && late.m !== Infinity) ? Math.round((late.m - base.m) / 12) : null;
+  const label = (r) => r.age === null ? t('when.never') : t('when.age', { age: r.age, y: r.enjoy });
+  const a = rows[0].enjoy, b = rows[2].enjoy;
+  const note = rows[0].age === null ? t('when.noteNever')
+    : t('when.note', { d: 10, a, b });
   $('whenCard').innerHTML = `
     <h3>${t('when.h')}</h3>
     <div class="when-rows">
@@ -1779,7 +1780,7 @@ function renderWhen(N) {
       <div class="when-row"><span class="wr-l">${t('when.in', { y: 5 })}</span>${bar(rows[1])}<b>${label(rows[1])}</b></div>
       <div class="when-row"><span class="wr-l">${t('when.in', { y: 10 })}</span>${bar(rows[2])}<b>${label(rows[2])}</b></div>
     </div>
-    <p class="when-note">${lost !== null && lost >= 1 ? t('when.note', { d: 10, y: lost }) : t('when.noteNever')}</p>`;
+    <p class="when-note">${note}</p>`;
 }
 
 /* ── 습관의 무게 — 만약에, 조금만 바꾼다면 (판단은 안 한다, 계산만 한다) ── */
