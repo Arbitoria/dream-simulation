@@ -320,6 +320,27 @@
 
         <div class="glass when-card" id="whenCard"></div>
 
+        <div class="glass habit-card" id="habitCard">
+          <h3 data-i18n="hab.h"></h3>
+          <p class="hab-sub" data-i18n="hab.sub"></p>
+          <div class="hab-rows">
+            <label class="field">
+              <span class="ft">🚬 <span data-i18n="hab.cig"></span><output id="hCigOut"></output></span>
+              <input type="range" id="hCig" min="0" max="7" step="1" value="0" />
+            </label>
+            <label class="field">
+              <span class="ft">☕ <span data-i18n="hab.cof"></span><output id="hCofOut"></output></span>
+              <input type="range" id="hCof" min="0" max="7" step="1" value="0" />
+            </label>
+            <label class="field">
+              <span class="ft">🍽️ <span data-i18n="hab.eat"></span><output id="hEatOut"></output></span>
+              <input type="range" id="hEat" min="0" max="8" step="1" value="0" />
+            </label>
+          </div>
+          <div class="hab-result" id="habResult"></div>
+          <p class="chal-note" data-i18n="hab.gap"></p>
+        </div>
+
         <div class="glass controls">
           <label class="field">
             <span class="ft"><span data-i18n="calc.saveEcho"></span><output id="calcSaveOut"></output></span>

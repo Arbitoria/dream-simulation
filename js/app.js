@@ -412,6 +412,17 @@ const L = {
     'when.age': '{age}세 도달', 'when.never': '닿지 못해요',
     'when.note': '같은 저축인데, {d}년 미루면 꿈이 <b>{y}년</b> 늦게 옵니다 — 미룬 시간은 더해지는 게 아니라 곱해져요.',
     'when.noteNever': '미루면 이 꿈은 평생 닿지 못하게 됩니다 — 복리는 기다려주지 않아요.',
+    'hab.h': '만약, 조금만 바꾼다면',
+    'hab.sub': '판단은 하지 않아요 — 슬라이더를 움직이면 계산만 해드립니다.',
+    'hab.cig': '담배, 일주일에 덜 피우는 갑', 'hab.cof': '커피, 일주일에 덜 사는 잔', 'hab.eat': '외식, 한 달에 줄이는 횟수',
+    'hab.perWeek': '주 {n}', 'hab.perMonth': '월 {n}',
+    'hab.hint': '움직여보세요 — 작은 습관이 시간으로 바뀌는 걸 볼 수 있어요.',
+    'hab.sum': '매달 {m}이 미래로 더 갑니다',
+    'hab.faster': '꿈이 <b>{y}년</b> 일찍 — {age}세에 옵니다',
+    'hab.unlocks': '닿지 못하던 꿈이 <b>{age}세</b>에 닿게 됩니다',
+    'hab.small': '아직 1년을 당기진 못해요 — 조금 더 움직여보세요.',
+    'hab.money30': '30년 굴리면 {m} (연 {rate}% 명목 기준 — 물가를 빼면 이보다 작아요)',
+    'hab.gap': '참고 — 벨기에 가계 통계(2022): 외식 7% · 문화여가 7.7% ≫ 주류·담배 1.7%. 줄여야 한다고 믿는 것과, 실제로 큰 것은 다를 수 있어요.',
     'weight.plus30': '매달 30만원 더 넣으면', 'weight.plus30f': '도달이 {y}년 빨라져요',
     'weight.delay': '시작을 10년 미루면', 'weight.delayf': '같은 나이에 닿으려면 매달 {x}배 필요해요',
     'weight.nothing': '아무것도 안 하면', 'weight.nothingf': '기다릴수록 더 큰 나무가 필요해요 — 30년 뒤엔 {v} (물가 4%/년)',
@@ -581,6 +592,17 @@ const L = {
     'when.age': 'Reach at {age}', 'when.never': 'Never reached',
     'when.note': 'Same saving — wait {d} years and the dream arrives <b>{y} years</b> later. Delay doesn’t add, it multiplies.',
     'when.noteNever': 'Wait, and this dream slips out of reach for good — compounding doesn’t wait.',
+    'hab.h': 'What if you changed just a little?',
+    'hab.sub': 'No judgement — move a slider and we only do the math.',
+    'hab.cig': 'Cigarettes: packs less per week', 'hab.cof': 'Coffee: cups less per week', 'hab.eat': 'Dining out: times less per month',
+    'hab.perWeek': '{n}/wk', 'hab.perMonth': '{n}/mo',
+    'hab.hint': 'Try it — watch a small habit turn into time.',
+    'hab.sum': '{m} more flows to your future every month',
+    'hab.faster': 'The dream arrives <b>{y} years</b> earlier — at {age}',
+    'hab.unlocks': 'A dream that was out of reach now arrives at <b>{age}</b>',
+    'hab.small': 'Not a full year yet — nudge it a little more.',
+    'hab.money30': 'Compounded 30 years: {m} (nominal at {rate}%/yr — less after inflation)',
+    'hab.gap': 'For reference — Belgian household data (2022): dining out 7% · culture & leisure 7.7% ≫ alcohol & tobacco 1.7%. What you think you should cut and what is actually big may differ.',
     'weight.plus30': 'Add ₩300K a month', 'weight.plus30f': 'You arrive {y} years sooner',
     'weight.delay': 'Delay the start by 10 years', 'weight.delayf': 'Reaching the same age takes {x}× more each month',
     'weight.nothing': 'Do nothing', 'weight.nothingf': 'Waiting grows the tree you need — {v} in 30 years (4%/yr inflation)',
@@ -750,6 +772,17 @@ const L = {
     'when.age': 'Atteint à {age} ans', 'when.never': 'Jamais atteint',
     'when.note': 'Même épargne — attendez {d} ans et le rêve arrive <b>{y} ans</b> plus tard. Le retard ne s’additionne pas, il se multiplie.',
     'when.noteNever': 'Attendez, et ce rêve devient inatteignable — les intérêts composés n’attendent pas.',
+    'hab.h': 'Et si vous changiez juste un peu ?',
+    'hab.sub': 'Aucun jugement — bougez un curseur, nous ne faisons que le calcul.',
+    'hab.cig': 'Cigarettes : paquets en moins par semaine', 'hab.cof': 'Café : tasses en moins par semaine', 'hab.eat': 'Restaurant : fois en moins par mois',
+    'hab.perWeek': '{n}/sem', 'hab.perMonth': '{n}/mois',
+    'hab.hint': 'Essayez — regardez une petite habitude devenir du temps.',
+    'hab.sum': '{m} de plus part vers votre futur chaque mois',
+    'hab.faster': 'Le rêve arrive <b>{y} ans</b> plus tôt — à {age} ans',
+    'hab.unlocks': 'Un rêve hors de portée arrive désormais à <b>{age} ans</b>',
+    'hab.small': 'Pas encore une année entière — poussez un peu plus.',
+    'hab.money30': 'Composé sur 30 ans : {m} (nominal à {rate}%/an — moins après inflation)',
+    'hab.gap': 'Repère — budget des ménages belges (2022) : restaurant 7% · culture et loisirs 7,7% ≫ alcool et tabac 1,7%. Ce qu’on croit devoir couper et ce qui pèse vraiment peuvent différer.',
     'weight.plus30': 'Ajoutez 300 k₩ par mois', 'weight.plus30f': 'Vous arrivez {y} ans plus tôt',
     'weight.delay': 'Retardez le départ de 10 ans', 'weight.delayf': 'Atteindre le même âge exige {x}× plus par mois',
     'weight.nothing': 'Ne rien faire', 'weight.nothingf': 'Attendre agrandit l’arbre qu’il vous faut — {v} dans 30 ans (inflation 4%/an)',
@@ -1694,6 +1727,7 @@ function updateReach() {
   renderBvr();
   renderWeight(N, months);
   renderWhen(N);
+  renderHabits();
 }
 
 /* ── 사기 vs 렌트 (선택 도시 · GAME_HANDOFF §8) ── */
@@ -1746,6 +1780,41 @@ function renderWhen(N) {
       <div class="when-row"><span class="wr-l">${t('when.in', { y: 10 })}</span>${bar(rows[2])}<b>${label(rows[2])}</b></div>
     </div>
     <p class="when-note">${lost !== null && lost >= 1 ? t('when.note', { d: 10, y: lost }) : t('when.noteNever')}</p>`;
+}
+
+/* ── 습관의 무게 — 만약에, 조금만 바꾼다면 (판단은 안 한다, 계산만 한다) ── */
+/* 나라별 대략 단가 (만원 · 단순화): 담배 1갑 · 커피 1잔 · 외식 1회 */
+const HABIT_PRICE = {
+  kr: { cig: 0.45, cof: 0.5, eat: 3 },
+  us: { cig: 1.3, cof: 0.85, eat: 7 },
+  fr: { cig: 1.8, cof: 0.6, eat: 6 },
+};
+const HAB = { cig: 0, cof: 0, eat: 0 };   // 줄이는 양 — 공유·저장 안 하는 일시적 '만약에'
+function habitMonthly() {
+  const p = HABIT_PRICE[S.country] || HABIT_PRICE.kr;
+  return Math.round(HAB.cig * p.cig * 4.33 + HAB.cof * p.cof * 4.33 + HAB.eat * p.eat);
+}
+function renderHabits() {
+  $('hCig').value = HAB.cig; $('hCof').value = HAB.cof; $('hEat').value = HAB.eat;
+  $('hCigOut').textContent = t('hab.perWeek', { n: HAB.cig });
+  $('hCofOut').textContent = t('hab.perWeek', { n: HAB.cof });
+  $('hEatOut').textContent = t('hab.perMonth', { n: HAB.eat });
+  const saved = habitMonthly();
+  if (saved <= 0) { $('habResult').innerHTML = `<p class="hab-hint">${t('hab.hint')}</p>`; return; }
+  const N = seedNeeded();
+  const base = monthsToReach(N);
+  const fast = monthsToReach(N, { extra: saved });
+  const yrs = (base !== Infinity && fast !== Infinity) ? Math.round((base - fast) / 12) : null;
+  const nowReach = base === Infinity, thenReach = fast !== Infinity;
+  let big;
+  if (nowReach && thenReach) big = t('hab.unlocks', { age: S.age + Math.round(fast / 12) });
+  else if (yrs !== null && yrs >= 1) big = t('hab.faster', { y: yrs, age: S.age + Math.round(fast / 12) });
+  else big = t('hab.small');
+  const fv30 = Math.round(fv(0, saved, S.rate, 360));
+  $('habResult').innerHTML = `
+    <div class="hab-sum">${t('hab.sum', { m: money(saved) })}</div>
+    <div class="hab-big">${big}</div>
+    <div class="hab-money">${t('hab.money30', { m: money(fv30), rate: S.rate })}</div>`;
 }
 
 /* ── 한 결정의 무게 ── */
@@ -2052,6 +2121,9 @@ function bind() {
       S.salary = v; S.save = Math.round(v * 0.3);   // 목표 수입이 아래 수입·다음 페이지로 이어진다
       syncStartup(); syncCustomSal(); renderChalCard(); syncJobLine(); updateHash(); return;
     }
+    if (el.id === 'hCig') { HAB.cig = v; schedule(renderHabits); return; }
+    if (el.id === 'hCof') { HAB.cof = v; schedule(renderHabits); return; }
+    if (el.id === 'hEat') { HAB.eat = v; schedule(renderHabits); return; }
     if (el.id === 'goalAmount') { S.goalAmount = v; renderGoal(); updateHash(); return; }
     if (el.id === 'cCarPrice') { S.cCarPrice = v; syncMine(); updateHash(); return; }
     if (el.id === 'cRent') { S.cRent = v; syncMine(); updateHash(); return; }
