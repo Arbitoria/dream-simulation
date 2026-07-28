@@ -345,6 +345,16 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
   border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-family:inherit;outline:none}
 .txt-in:focus{border-color:var(--gold)}
 .txt-in::placeholder{color:var(--ink-3)}
+/* 시작 시점의 무게 */
+.when-card{margin-top:14px;padding:22px 24px}
+.when-card h3{font-size:16px;font-weight:800;color:var(--ink);text-align:center;margin-bottom:14px}
+.when-rows{display:flex;flex-direction:column;gap:10px;max-width:520px;margin:0 auto}
+.when-row{display:flex;align-items:center;gap:12px;font-size:13px}
+.when-row .wr-l{min-width:110px;text-align:right;color:var(--ink-3);font-weight:700;font-size:12px}
+.when-row b{color:var(--gold-2);white-space:nowrap;font-size:13px}
+.when-note{text-align:center;font-size:13.5px;color:var(--ink-2);margin-top:14px;line-height:1.6}
+.when-note b{color:var(--gold-2)}
+
 /* goal 모드 — 돈을 먼저, 꿈을 거기에 */
 .mode-pick.three{grid-template-columns:repeat(3,1fr);max-width:720px}
 @media (max-width:640px){.mode-pick.three{grid-template-columns:1fr}}
