@@ -2822,7 +2822,8 @@ function drawViz(N, months, svgEl) {
   const svg = svgEl || $('viz'), W = 520, H = 240, padL = 14, padR = 14, padT = 20, padB = 30;
   const x0 = padL, x1 = W - padR, y0 = H - padB, y1 = padT;
   const r = S.rate / 100 / 12;
-  const endM = months === Infinity ? (100 - S.age) * 12 : Math.round(months * 1.12);
+  /* 축 고정: 목표가 아니라 90세까지의 타임라인 기준 — 점·선을 끌어도 곡선은 움직이지 않는다 */
+  const endM = Math.max(24, (LIFE_EXPECT - S.age) * 12);
   const pts = []; let bal = S.assets;
   const balArr = new Float64Array(endM + 1);   // 노란 점 드래그용 — 달별 잔액
   for (let m = 0; m <= endM; m++) {
@@ -2867,7 +2868,10 @@ function drawViz(N, months, svgEl) {
       let hm = endM;
       for (let m = 0; m <= endM; m++) if (balArr[m] >= N) { hm = m; break; }
       const hx = sx(hm), hy = sy(balArr[hm]);
-      return `<g class="tdot-g">
+      const hage = S.age + Math.round(hm / 12);
+      return `<line id="tvline" x1="${hx.toFixed(1)}" y1="${hy.toFixed(1)}" x2="${hx.toFixed(1)}" y2="${y0}" stroke="#C9A961" stroke-width="1" stroke-dasharray="2 4" opacity=".55"/>
+      <text id="tage" x="${hx.toFixed(1)}" y="${y0 + 18}" font-size="11.5" fill="#E4C77B" text-anchor="middle" font-weight="800" font-family="Pretendard">${hage}${lang === 'ko' ? '세' : ''}</text>
+      <g class="tdot-g">
         <circle id="thit" cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="18" fill="transparent"/>
         <circle id="tdot" cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="6" fill="#C9A961" stroke="#0B1F17" stroke-width="2"/>
       </g>`;
@@ -2902,6 +2906,9 @@ function bindVizDrag(svg) {
     q('tdot').setAttribute('cx', cx); q('tdot').setAttribute('cy', cy);
     q('thit').setAttribute('cx', cx); q('thit').setAttribute('cy', cy);
     q('tline').setAttribute('y1', cy); q('tline').setAttribute('y2', cy);
+    q('tvline').setAttribute('x1', cx); q('tvline').setAttribute('x2', cx); q('tvline').setAttribute('y1', cy);
+    q('tage').setAttribute('x', cx);
+    q('tage').textContent = (S.age + Math.round(m / 12)) + (lang === 'ko' ? '세' : '');
     const ty = Math.max(24, cy);
     q('tmoney').setAttribute('y', ty - 19); q('tmoney').textContent = money(val);
     q('ttree').setAttribute('y', ty - 6);
