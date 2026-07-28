@@ -371,6 +371,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 /* 그래프 목표선 드래그 */
 #viz,#vizFinal{touch-action:pan-y}
 .target-g{cursor:ns-resize}
+.probe-g{cursor:grab}
+.probe-g:active{cursor:grabbing}
 
 /* 시작 시점의 무게 */
 .when-card{margin-top:14px;padding:22px 24px}
@@ -2898,7 +2900,18 @@ function drawViz(N, months, svgEl) {
     <path d="${path}" fill="none" stroke="#C9A961" stroke-width="2.5" stroke-linejoin="round"/>
     <g class="target-g"><rect x="${x0}" y="${(pY - 14).toFixed(1)}" width="${x1 - x0}" height="28" fill="transparent"/>
       <text x="${x1 - 4}" y="${(pY - 6).toFixed(1)}" font-size="12" fill="#E4C77B" text-anchor="end" font-family="Pretendard">↕</text></g>
-    ${rx !== null ? `<circle cx="${rx.toFixed(1)}" cy="${pY.toFixed(1)}" r="5.5" fill="#C9A961" stroke="#0B1F17" stroke-width="2"/>` : ''}`;
+    ${rx !== null ? `<circle cx="${rx.toFixed(1)}" cy="${pY.toFixed(1)}" r="5.5" fill="#C9A961" stroke="#0B1F17" stroke-width="2"/>` : ''}
+    ${(() => {
+      /* 곡선 탐색 점 — 잡고 끌면 그 나이의 잔액이 보인다 */
+      const pm = Math.round(endM * 0.55);
+      const pv = balArr[pm];
+      const pcx = sx(pm), pcy = sy(pv);
+      return `<g class="probe-g">
+        <circle id="probeHit" cx="${pcx.toFixed(1)}" cy="${pcy.toFixed(1)}" r="18" fill="transparent"/>
+        <circle id="probeDot" cx="${pcx.toFixed(1)}" cy="${pcy.toFixed(1)}" r="5.5" fill="#3FA37C" stroke="#0B1F17" stroke-width="2"/>
+        <text id="probeLbl" x="${Math.min(Math.max(pcx, 60), W - 60).toFixed(1)}" y="${Math.max(12, pcy - 12).toFixed(1)}" font-size="11" fill="#8FBAA0" text-anchor="middle" font-weight="700" font-family="Pretendard">${S.age + Math.round(pm / 12)}${lang === 'ko' ? '세' : ''} · ${money(pv)}</text>
+      </g>`;
+    })()}`;
   svg.__viz = { endM, maxY, x0, x1, y0, y1, balArr };
   bindVizDrag(svg);
 }
@@ -2906,10 +2919,11 @@ function drawViz(N, months, svgEl) {
 function bindVizDrag(svg) {
   if (svg.__dragBound) return;
   svg.__dragBound = true;
-  let dragging = false;
+  let dragging = null;   // 'target'=노란 목표선 · 'probe'=곡선 탐색 점
   svg.addEventListener('pointerdown', (e) => {
-    if (!e.target.closest('.target-g')) return;
-    dragging = true;
+    if (e.target.closest('.probe-g')) dragging = 'probe';
+    else if (e.target.closest('.target-g')) dragging = 'target';
+    else return;
     try { svg.setPointerCapture(e.pointerId); } catch (_) {}
     e.preventDefault();
   });
@@ -2917,16 +2931,33 @@ function bindVizDrag(svg) {
     if (!dragging) return;
     const v = svg.__viz; if (!v) return;
     const rect = svg.getBoundingClientRect();
-    const py = (e.clientY - rect.top) / rect.height * 240;
-    let val = (v.y0 - py) / (v.y0 - v.y1) * v.maxY;
-    val = clamp(Math.round(val / 1000) * 1000, 10000, 500000);
-    if (S.dreamMode !== 'goal') { S.dreamMode = 'goal'; toast(t('viz.dragGoal')); }
-    if (S.goalAmount !== val) {
-      S.goalAmount = val;
-      schedule(screen === 11 ? renderGen : renderCalc);
+    if (dragging === 'target') {
+      const py = (e.clientY - rect.top) / rect.height * 240;
+      let val = (v.y0 - py) / (v.y0 - v.y1) * v.maxY;
+      val = clamp(Math.round(val / 1000) * 1000, 10000, 500000);
+      if (S.dreamMode !== 'goal') { S.dreamMode = 'goal'; toast(t('viz.dragGoal')); }
+      if (S.goalAmount !== val) {
+        S.goalAmount = val;
+        schedule(screen === 11 ? renderGen : renderCalc);
+      }
+      return;
     }
+    /* 탐색 점: 곡선을 따라 좌우로 — 그 나이의 잔액을 보여준다 */
+    const px = (e.clientX - rect.left) / rect.width * 520;
+    let m = Math.round((px - v.x0) / (v.x1 - v.x0) * v.endM);
+    m = Math.max(0, Math.min(v.endM, m));
+    const val = v.balArr[m];
+    const cx = v.x0 + m / v.endM * (v.x1 - v.x0);
+    const cy = v.y0 - Math.min(val, v.maxY) / v.maxY * (v.y0 - v.y1);
+    const dot = svg.querySelector('#probeDot'), hit = svg.querySelector('#probeHit'), lbl = svg.querySelector('#probeLbl');
+    if (!dot) return;
+    dot.setAttribute('cx', cx); dot.setAttribute('cy', cy);
+    hit.setAttribute('cx', cx); hit.setAttribute('cy', cy);
+    lbl.setAttribute('x', Math.min(Math.max(cx, 60), 460));
+    lbl.setAttribute('y', Math.max(12, cy - 12));
+    lbl.textContent = (S.age + Math.round(m / 12)) + (lang === 'ko' ? '세' : '') + ' · ' + money(val);
   });
-  const up = () => { if (dragging) { dragging = false; updateHash(); } };
+  const up = () => { if (dragging === 'target') updateHash(); dragging = null; };
   svg.addEventListener('pointerup', up);
   svg.addEventListener('pointercancel', up);
 }

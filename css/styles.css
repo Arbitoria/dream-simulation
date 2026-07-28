@@ -348,6 +348,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
 /* 그래프 목표선 드래그 */
 #viz,#vizFinal{touch-action:pan-y}
 .target-g{cursor:ns-resize}
+.probe-g{cursor:grab}
+.probe-g:active{cursor:grabbing}
 
 /* 시작 시점의 무게 */
 .when-card{margin-top:14px;padding:22px 24px}
