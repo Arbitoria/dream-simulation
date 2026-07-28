@@ -345,6 +345,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
   border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-family:inherit;outline:none}
 .txt-in:focus{border-color:var(--gold)}
 .txt-in::placeholder{color:var(--ink-3)}
+/* 그래프 이정표 드래그 */
+#viz,#vizFinal{touch-action:pan-y}
+.mile-g{cursor:grab}
+.mile-g:active{cursor:grabbing}
+
 /* 시작 시점의 무게 */
 .when-card{margin-top:14px;padding:22px 24px}
 .when-card h3{font-size:16px;font-weight:800;color:var(--ink);text-align:center;margin-bottom:14px}

@@ -1881,7 +1881,9 @@ function drawViz(N, months, svgEl) {
   /* 이정표: 목표의 ¼·½이 '몇 살에' 모이는지 — 결과만이 아니라 과정을 보여준다 */
   const miles = [{ v: N * 0.25 }, { v: N * 0.5 }].map((x) => ({ ...x, m: null }));
   const pts = []; let bal = S.assets;
+  const balArr = new Float64Array(endM + 1);   // 드래그 탐색용 — 달별 잔액
   for (let m = 0; m <= endM; m++) {
+    balArr[m] = bal;
     if (m % Math.max(1, Math.round(endM / 110)) === 0 || m === endM) pts.push({ m, bal });
     for (const mi of miles) if (mi.m === null && bal >= mi.v) mi.m = m;
     bal = bal * (1 + r) + contribAt(m);
@@ -1899,16 +1901,19 @@ function drawViz(N, months, svgEl) {
     const mm = yy * 12; if (mm > endM) break;
     ticks += `<text x="${sx(mm).toFixed(1)}" y="${y0 + 18}" font-size="10.5" fill="#7E9284" text-anchor="middle" font-family="Pretendard">${S.age + yy}${lang === 'ko' ? '세' : ''}</text>`;
   }
-  /* Y축 돈 눈금 + 이정표 점 (곡선 위) */
+  /* Y축 돈 눈금 + 드래그 가능한 이정표 점 (곡선을 따라 움직이며 과정을 탐색) */
   let mileLines = '', mileDots = '';
-  for (const mi of miles) {
-    if (mi.m === null || mi.m < 6 || mi.m > endM - 6) continue;
+  miles.forEach((mi, i) => {
+    if (mi.m === null || mi.m < 6 || mi.m > endM - 6) return;
     const my = sy(mi.v), mx = sx(mi.m);
-    mileLines += `<line x1="${x0}" y1="${my.toFixed(1)}" x2="${x1}" y2="${my.toFixed(1)}" stroke="rgba(255,255,255,.07)" stroke-width="1" stroke-dasharray="2 5"/>
-      <text x="${x0 + 2}" y="${(my - 4).toFixed(1)}" font-size="10" fill="#7E9284" font-family="Pretendard">${money(mi.v)}</text>`;
-    mileDots += `<circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="4" fill="#3FA37C" stroke="#0B1F17" stroke-width="1.8"/>
-      <text x="${mx.toFixed(1)}" y="${(my - 9).toFixed(1)}" font-size="10.5" fill="#8FBAA0" text-anchor="middle" font-weight="700" font-family="Pretendard">${S.age + Math.round(mi.m / 12)}${lang === 'ko' ? '세' : ''}</text>`;
-  }
+    mileLines += `<line id="mline${i}" x1="${x0}" y1="${my.toFixed(1)}" x2="${x1}" y2="${my.toFixed(1)}" stroke="rgba(255,255,255,.07)" stroke-width="1" stroke-dasharray="2 5"/>
+      <text id="mmon${i}" x="${x0 + 2}" y="${(my - 4).toFixed(1)}" font-size="10" fill="#7E9284" font-family="Pretendard">${money(mi.v)}</text>`;
+    mileDots += `<g class="mile-g" data-i="${i}">
+      <circle id="mhit${i}" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="16" fill="transparent"/>
+      <circle id="mdot${i}" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="4.5" fill="#3FA37C" stroke="#0B1F17" stroke-width="1.8"/>
+      <text id="mage${i}" x="${mx.toFixed(1)}" y="${(my - 10).toFixed(1)}" font-size="10.5" fill="#8FBAA0" text-anchor="middle" font-weight="700" font-family="Pretendard">${S.age + Math.round(mi.m / 12)}${lang === 'ko' ? '세' : ''}</text>
+    </g>`;
+  });
   let joinMark = '';
   if (S.partner) {
     const jm = (S.partnerAge - S.age) * 12;
@@ -1923,13 +1928,52 @@ function drawViz(N, months, svgEl) {
       <stop offset="0" stop-color="#C9A961" stop-opacity=".4"/><stop offset="1" stop-color="#C9A961" stop-opacity="0"/></linearGradient></defs>
     <line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y0}" stroke="rgba(255,255,255,.12)" stroke-width="1"/>${ticks}
     <line x1="${x0}" y1="${pY.toFixed(1)}" x2="${x1}" y2="${pY.toFixed(1)}" stroke="#E4C77B" stroke-width="1.2" stroke-dasharray="3 5"/>
-    <text x="${x1}" y="${(pY - 19).toFixed(1)}" font-size="11.5" fill="#E4C77B" text-anchor="end" font-family="Pretendard" font-weight="700">${money(N)}</text>
-    <text x="${x1}" y="${(pY - 6).toFixed(1)}" font-size="10.5" fill="#E4C77B" text-anchor="end" font-family="Pretendard">${t('viz.tree', { m: money(dreamMonthly()) })}</text>
+    <text x="${x0 + 2}" y="${(pY - 19).toFixed(1)}" font-size="11.5" fill="#E4C77B" text-anchor="start" font-family="Pretendard" font-weight="700">${money(N)}</text>
+    <text x="${x0 + 2}" y="${(pY - 6).toFixed(1)}" font-size="10.5" fill="#E4C77B" text-anchor="start" font-family="Pretendard">${t('viz.tree', { m: money(dreamMonthly()) })}</text>
     ${joinMark}${mileLines}
     <path d="${area}" fill="url(#vz)"/>
     <path d="${path}" fill="none" stroke="#C9A961" stroke-width="2.5" stroke-linejoin="round"/>
     ${mileDots}
     ${rx !== null ? `<circle cx="${rx.toFixed(1)}" cy="${pY.toFixed(1)}" r="5.5" fill="#C9A961" stroke="#0B1F17" stroke-width="2"/>` : ''}`;
+  svg.__viz = { endM, maxY, x0, x1, y0, y1, balArr };
+  bindVizDrag(svg);
+}
+/* 이정표 점 드래그 — 곡선 위 아무 지점의 나이·금액을 손으로 훑어본다 */
+function bindVizDrag(svg) {
+  if (svg.__dragBound) return;
+  svg.__dragBound = true;
+  let active = null;
+  svg.addEventListener('pointerdown', (e) => {
+    const g = e.target.closest('.mile-g');
+    if (!g) return;
+    active = g.dataset.i;
+    try { svg.setPointerCapture(e.pointerId); } catch (_) {}
+    e.preventDefault();
+  });
+  svg.addEventListener('pointermove', (e) => {
+    if (active === null) return;
+    const v = svg.__viz; if (!v) return;
+    const rect = svg.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width * 520;
+    let m = Math.round((px - v.x0) / (v.x1 - v.x0) * v.endM);
+    m = Math.max(0, Math.min(v.endM, m));
+    const val = v.balArr[m];
+    const cx = v.x0 + m / v.endM * (v.x1 - v.x0);
+    const cy = v.y0 - Math.min(val, v.maxY) / v.maxY * (v.y0 - v.y1);
+    const q = (id) => svg.querySelector('#' + id + active);
+    const dot = q('mdot'), hit = q('mhit'), age = q('mage'), line = q('mline'), mon = q('mmon');
+    if (!dot) return;
+    dot.setAttribute('cx', cx); dot.setAttribute('cy', cy);
+    hit.setAttribute('cx', cx); hit.setAttribute('cy', cy);
+    age.setAttribute('x', cx); age.setAttribute('y', cy - 10);
+    age.textContent = (S.age + Math.round(m / 12)) + (lang === 'ko' ? '세' : '');
+    line.setAttribute('y1', cy); line.setAttribute('y2', cy);
+    mon.setAttribute('y', Math.max(10, cy - 4));
+    mon.textContent = money(val);
+  });
+  const up = () => { active = null; };
+  svg.addEventListener('pointerup', up);
+  svg.addEventListener('pointercancel', up);
 }
 
 /* ═══ 공유 (해시 · 19필드) ═══ */
