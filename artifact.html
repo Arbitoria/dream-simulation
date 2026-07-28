@@ -346,10 +346,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cur
   border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-family:inherit;outline:none}
 .txt-in:focus{border-color:var(--gold)}
 .txt-in::placeholder{color:var(--ink-3)}
-/* 그래프 이정표 드래그 */
+/* 그래프 목표선 드래그 */
 #viz,#vizFinal{touch-action:pan-y}
-.mile-g{cursor:grab}
-.mile-g:active{cursor:grabbing}
+.target-g{cursor:ns-resize}
 
 /* 시작 시점의 무게 */
 .when-card{margin-top:14px;padding:22px 24px}
@@ -1353,6 +1352,7 @@ const L = {
     'when.age': '{age}세부터 <b>{y}년</b>', 'when.never': '누릴 시간이 없어요',
     'when.note': '미루는 {d}년은 준비에서 빠지는 게 아니라, 꿈을 누리는 시간에서 빠집니다 — {a}년이 {b}년이 돼요. (90세 기준)',
     'when.noteNever': '지금 시작해도 빠듯한 꿈이에요 — 미루면 누릴 시간이 사라집니다.',
+    'viz.dragGoal': '선이 곧 목표예요 — 직접 정한 금액 모드로 바꿨어요.',
     'hab.h': '만약, 조금만 바꾼다면',
     'hab.sub': '판단은 하지 않아요 — 슬라이더를 움직이면 계산만 해드립니다.',
     'hab.cig': '담배, 일주일에 덜 피우는 갑', 'hab.cof': '커피, 일주일에 덜 사는 잔', 'hab.eat': '외식, 한 달에 줄이는 횟수',
@@ -1532,6 +1532,7 @@ const L = {
     'when.age': '<b>{y} yrs</b> from age {age}', 'when.never': 'No time left to enjoy it',
     'when.note': 'The {d} years you wait aren’t taken from the preparing — they’re taken from the living: {a} years becomes {b}. (to age 90)',
     'when.noteNever': 'Even starting now this dream is tight — wait, and the time to live it disappears.',
+    'viz.dragGoal': 'The line is the goal — switched to set-your-own-number mode.',
     'hab.h': 'What if you changed just a little?',
     'hab.sub': 'No judgement — move a slider and we only do the math.',
     'hab.cig': 'Cigarettes: packs less per week', 'hab.cof': 'Coffee: cups less per week', 'hab.eat': 'Dining out: times less per month',
@@ -1711,6 +1712,7 @@ const L = {
     'when.age': '<b>{y} ans</b> dès {age} ans', 'when.never': 'Plus de temps pour en profiter',
     'when.note': 'Les {d} ans d’attente ne sont pas pris sur la préparation — ils sont pris sur la vie du rêve : {a} ans deviennent {b}. (jusqu’à 90 ans)',
     'when.noteNever': 'Même en commençant maintenant, ce rêve est juste — attendez, et le temps d’en profiter disparaît.',
+    'viz.dragGoal': 'La ligne est l’objectif — passage en mode montant libre.',
     'hab.h': 'Et si vous changiez juste un peu ?',
     'hab.sub': 'Aucun jugement — bougez un curseur, nous ne faisons que le calcul.',
     'hab.cig': 'Cigarettes : paquets en moins par semaine', 'hab.cof': 'Café : tasses en moins par semaine', 'hab.eat': 'Restaurant : fois en moins par mois',
@@ -2843,18 +2845,14 @@ function drawViz(N, months, svgEl) {
     const mm = yy * 12; if (mm > endM) break;
     ticks += `<text x="${sx(mm).toFixed(1)}" y="${y0 + 18}" font-size="10.5" fill="#7E9284" text-anchor="middle" font-family="Pretendard">${S.age + yy}${lang === 'ko' ? '세' : ''}</text>`;
   }
-  /* Y축 돈 눈금 + 드래그 가능한 이정표 점 (곡선을 따라 움직이며 과정을 탐색) */
-  let mileLines = '', mileDots = '';
-  miles.forEach((mi, i) => {
+  /* Y축 돈 눈금 — ¼·½ 지점의 금액과 그때의 나이 (과정 표시, 정적) */
+  let mileLines = '';
+  miles.forEach((mi) => {
     if (mi.m === null || mi.m < 6 || mi.m > endM - 6) return;
     const my = sy(mi.v), mx = sx(mi.m);
-    mileLines += `<line id="mline${i}" x1="${x0}" y1="${my.toFixed(1)}" x2="${x1}" y2="${my.toFixed(1)}" stroke="rgba(255,255,255,.07)" stroke-width="1" stroke-dasharray="2 5"/>
-      <text id="mmon${i}" x="${x0 + 2}" y="${(my - 4).toFixed(1)}" font-size="10" fill="#7E9284" font-family="Pretendard">${money(mi.v)}</text>`;
-    mileDots += `<g class="mile-g" data-i="${i}">
-      <circle id="mhit${i}" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="16" fill="transparent"/>
-      <circle id="mdot${i}" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="4.5" fill="#3FA37C" stroke="#0B1F17" stroke-width="1.8"/>
-      <text id="mage${i}" x="${mx.toFixed(1)}" y="${(my - 10).toFixed(1)}" font-size="10.5" fill="#8FBAA0" text-anchor="middle" font-weight="700" font-family="Pretendard">${S.age + Math.round(mi.m / 12)}${lang === 'ko' ? '세' : ''}</text>
-    </g>`;
+    mileLines += `<line x1="${x0}" y1="${my.toFixed(1)}" x2="${x1}" y2="${my.toFixed(1)}" stroke="rgba(255,255,255,.07)" stroke-width="1" stroke-dasharray="2 5"/>
+      <text x="${x0 + 2}" y="${(my - 4).toFixed(1)}" font-size="10" fill="#7E9284" font-family="Pretendard">${money(mi.v)}</text>
+      <text x="${mx.toFixed(1)}" y="${(my - 6).toFixed(1)}" font-size="10.5" fill="#8FBAA0" text-anchor="middle" font-weight="700" font-family="Pretendard">${S.age + Math.round(mi.m / 12)}${lang === 'ko' ? '세' : ''}</text>`;
   });
   let joinMark = '';
   if (S.partner) {
@@ -2875,45 +2873,37 @@ function drawViz(N, months, svgEl) {
     ${joinMark}${mileLines}
     <path d="${area}" fill="url(#vz)"/>
     <path d="${path}" fill="none" stroke="#C9A961" stroke-width="2.5" stroke-linejoin="round"/>
-    ${mileDots}
+    <g class="target-g"><rect x="${x0}" y="${(pY - 14).toFixed(1)}" width="${x1 - x0}" height="28" fill="transparent"/>
+      <text x="${x1 - 4}" y="${(pY - 6).toFixed(1)}" font-size="12" fill="#E4C77B" text-anchor="end" font-family="Pretendard">↕</text></g>
     ${rx !== null ? `<circle cx="${rx.toFixed(1)}" cy="${pY.toFixed(1)}" r="5.5" fill="#C9A961" stroke="#0B1F17" stroke-width="2"/>` : ''}`;
   svg.__viz = { endM, maxY, x0, x1, y0, y1, balArr };
   bindVizDrag(svg);
 }
-/* 이정표 점 드래그 — 곡선 위 아무 지점의 나이·금액을 손으로 훑어본다 */
+/* 노란 목표선 드래그 — 선을 올리고 내리면 꿈의 크기(목표 종자돈)가 바뀐다 */
 function bindVizDrag(svg) {
   if (svg.__dragBound) return;
   svg.__dragBound = true;
-  let active = null;
+  let dragging = false;
   svg.addEventListener('pointerdown', (e) => {
-    const g = e.target.closest('.mile-g');
-    if (!g) return;
-    active = g.dataset.i;
+    if (!e.target.closest('.target-g')) return;
+    dragging = true;
     try { svg.setPointerCapture(e.pointerId); } catch (_) {}
     e.preventDefault();
   });
   svg.addEventListener('pointermove', (e) => {
-    if (active === null) return;
+    if (!dragging) return;
     const v = svg.__viz; if (!v) return;
     const rect = svg.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width * 520;
-    let m = Math.round((px - v.x0) / (v.x1 - v.x0) * v.endM);
-    m = Math.max(0, Math.min(v.endM, m));
-    const val = v.balArr[m];
-    const cx = v.x0 + m / v.endM * (v.x1 - v.x0);
-    const cy = v.y0 - Math.min(val, v.maxY) / v.maxY * (v.y0 - v.y1);
-    const q = (id) => svg.querySelector('#' + id + active);
-    const dot = q('mdot'), hit = q('mhit'), age = q('mage'), line = q('mline'), mon = q('mmon');
-    if (!dot) return;
-    dot.setAttribute('cx', cx); dot.setAttribute('cy', cy);
-    hit.setAttribute('cx', cx); hit.setAttribute('cy', cy);
-    age.setAttribute('x', cx); age.setAttribute('y', cy - 10);
-    age.textContent = (S.age + Math.round(m / 12)) + (lang === 'ko' ? '세' : '');
-    line.setAttribute('y1', cy); line.setAttribute('y2', cy);
-    mon.setAttribute('y', Math.max(10, cy - 4));
-    mon.textContent = money(val);
+    const py = (e.clientY - rect.top) / rect.height * 240;
+    let val = (v.y0 - py) / (v.y0 - v.y1) * v.maxY;
+    val = clamp(Math.round(val / 1000) * 1000, 10000, 500000);
+    if (S.dreamMode !== 'goal') { S.dreamMode = 'goal'; toast(t('viz.dragGoal')); }
+    if (S.goalAmount !== val) {
+      S.goalAmount = val;
+      schedule(screen === 11 ? renderGen : renderCalc);
+    }
   });
-  const up = () => { active = null; };
+  const up = () => { if (dragging) { dragging = false; updateHash(); } };
   svg.addEventListener('pointerup', up);
   svg.addEventListener('pointercancel', up);
 }
